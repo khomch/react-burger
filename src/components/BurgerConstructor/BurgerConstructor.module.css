@@ -1,0 +1,85 @@
+.constr {
+    grid-area: constr;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.constrContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+.constrContainer::-webkit-scrollbar-track-piece {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    background-color: #2F2F35;
+}
+
+.constrContainer::-webkit-scrollbar-thumb {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    background-color: #8485AA;
+}
+
+.toppingsWindow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* height: calc(86px*3); */
+    height: calc(100vh - 504px);
+    max-height: calc(88px*5);
+    overflow-y: auto;
+    align-content: start;
+}
+
+.toppingsWindow::-webkit-scrollbar {
+    width: 6px;
+}
+
+.toppingsWindow::-webkit-scrollbar-track-piece {
+    background-color: #2F2F35;
+}
+
+.toppingsWindow::-webkit-scrollbar-thumb {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    background-color: #8485AA;
+}
+
+.inside {
+    margin-top: 10px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.inside:first-of-type {
+    margin-top: 0px;
+}
+
+.outside {
+    margin-right: 16px;
+}
+
+.icon {
+    margin-right: 10px;
+}
+
+.iconOutside {
+    visibility: hidden;
+    margin-right: 10px;
+}
+
+.total {
+    margin-top: 28px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.totalPrice {
+    margin-right: 40px;
+}

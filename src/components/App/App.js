@@ -1,8 +1,9 @@
 import React from 'react';
 import AppStyles from './App.module.css';
-import AppHeader from '../AppHeader/AppHeader'
+import AppHeader from '../AppHeader/AppHeader';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import api from '../../utils/data'
+import api from '../../utils/data';
+import ingredientsList from '../../utils/ingredients-list';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 
 // console.log(api)
@@ -18,7 +19,7 @@ function App() {
         </h1>
         <section className={AppStyles.burgers}>
           <BurgerIngredients data={api}/>
-          <BurgerConstructor data={api}/>
+          <BurgerConstructor data={ingredientsList}/>
         </section>
         
       </main>

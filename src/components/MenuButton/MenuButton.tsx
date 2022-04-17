@@ -6,10 +6,7 @@ import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 function MenuButton() {
   return (
-    <>
       <BurgerIcon type="primary" />
-      
-    </>
   );
 }
 

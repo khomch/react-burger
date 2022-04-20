@@ -31,3 +31,8 @@
   height: 100%;
 }
 
+.chooseIngredient {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+}

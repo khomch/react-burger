@@ -1,11 +1,13 @@
 import React from 'react';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
 import ingredientsPropTypes from '../../utils/types';
-import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 
 
 
 function BurgerIngredients(props) {
+  console.log(props)
 
   return (
     <section className={BurgerIngredientsStyles.ingredients}>
@@ -73,6 +75,10 @@ function BurgerIngredients(props) {
   );
 }
 
-BurgerIngredients.propTypes = ingredientsPropTypes;
+BurgerIngredients.propTypes = {
+  data: ingredientsPropTypes.data.isRequired,
+  handleAddIngredient: PropTypes.func.isRequired,
+  handleOpenIngredient: PropTypes.func.isRequired
+};
 
 export default BurgerIngredients;

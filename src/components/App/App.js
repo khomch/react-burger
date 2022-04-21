@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppStyles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import OrderDetails from '../OrderDetails/OrderDetails';
+import Modal from '../Modal/Modal';
 
 
 const URL = "https://norma.nomoreparties.space/api/ingredients";
@@ -23,20 +24,22 @@ function App() {
   const [modalState, setModalState] = useState(false)
   // стейт для открытия окна тотал
   const [totalState, setTotalState] = useState(false);
-// стейт для подсчета общей суммы
+  // стейт для подсчета общей суммы
   const [totalSum, setTotalSum] = useState(0);
 
 
   const handleTotalPrice = () => {
-    const ingredientsPrices = choosenIndredients.map(i => i.price)
-    const pricesSum = ingredientsPrices.reduce((acc, total) => acc + total, 0)
-    return setTotalSum(choosenBun.price + pricesSum)
+
+    if (choosenIndredients || choosenBun) {
+      const ingredientsPrices = choosenIndredients.map(i => i.price)
+      const pricesSum = ingredientsPrices.reduce((acc, total) => acc + total, 0)
+      return setTotalSum((!choosenBun.price ? 0 : choosenBun.price) + pricesSum)
+    }
   }
 
   useEffect(() => {
     handleTotalPrice()
   }, [choosenIndredients, choosenBun])
-  
 
 
   // хэндлер открытия ингредиента
@@ -54,29 +57,12 @@ function App() {
     } else {
       setChoosenIngredients([...choosenIndredients, newIngredient]);
     }
-    closeModal();
   }
 
-  // закрываем модальное окно по esc
-  const escFunction = useCallback((event) => {
-    if (event.key === 'Escape') {
-      closeModal();
-    }
-  });
-
-  useEffect(() => {
-    document.addEventListener("keydown", escFunction);
-
-    return () => {
-      document.removeEventListener("keydown", escFunction);
-    };
-  }, [escFunction]);
-
-
-    // хэндлер открытия окна
-    const openModal = () => {
-      setModalState(true)
-    }
+  // хэндлер открытия окна
+  const openModal = () => {
+    setModalState(true)
+  }
 
   // хэндлер закрытия окна
   const closeModal = () => {
@@ -103,7 +89,12 @@ function App() {
   useEffect(() => {
     function fetchData() {
       return fetch(URL)
-        .then(res => res.json())
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          return Promise.reject(`Ошибка ${res.status}`);
+        })
         .then(data => setIngredientsData(data))
         .catch(err => console.log(err));
     }
@@ -112,25 +103,25 @@ function App() {
 
   return (
     <div className={AppStyles.app}>
-      <AppHeader />
 
-      {openIngredient
-        &&
-        <IngredientDetails
-          ingredientData={openIngredient}
-          closeModal={closeModal}
-          modalState={modalState}
-          handleOverlayClick={handleOverlayClick}
-          handleAddIngredient={handleAddIngredient}
-        />}
-
-      {totalState 
-        && <OrderDetails
-        openModal={openModal}
+      <Modal
         closeModal={closeModal}
         modalState={modalState}
         handleOverlayClick={handleOverlayClick}
-      />}
+      >
+        {Object.keys(openIngredient).length !== 0
+          &&
+          <IngredientDetails
+            ingredientData={openIngredient}
+            handleAddIngredient={handleAddIngredient}
+          />}
+
+        {totalState
+          && <OrderDetails
+          />}
+
+      </Modal>
+      <AppHeader />
 
 
       <main className={AppStyles.main}>
@@ -148,7 +139,7 @@ function App() {
             ?
             <div className={AppStyles.chooseIngredient}><p className="text text_type_main-large">Выберите ингредиент</p></div>
             :
-            <BurgerConstructor bun={choosenBun} ingredients={choosenIndredients} handleTotalClick={handleTotalClick} totalSum={totalSum}/>}
+            <BurgerConstructor bun={choosenBun} ingredients={choosenIndredients} handleTotalClick={handleTotalClick} totalSum={totalSum} />}
         </section>
 
       </main>

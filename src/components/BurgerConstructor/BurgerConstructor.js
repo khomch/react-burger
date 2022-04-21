@@ -2,6 +2,7 @@ import React from 'react';
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ingredientsPropTypes from '../../utils/types';
+import PropTypes from 'prop-types';
 
 
 
@@ -29,9 +30,10 @@ function BurgerConstructor(props) {
 
         <div className={BurgerConstructorStyles.toppingsWindow}>
 
-          {props.ingredients.map((ingredient) => {
+          {props.ingredients.map((ingredient, index) => {
+
             return (
-              <div className={BurgerConstructorStyles.insideIngrediend} key={ingredient._id}>
+              <div className={BurgerConstructorStyles.insideIngrediend} key={`${ingredient._id}${index}`}>
                 <div className={BurgerConstructorStyles.icon}><DragIcon type="primary" /></div>
                 <div className={BurgerConstructorStyles.inside}>
                   <ConstructorElement
@@ -78,7 +80,12 @@ function BurgerConstructor(props) {
   );
 }
 
-BurgerConstructor.propTypes = ingredientsPropTypes;
+BurgerConstructor.propTypes = {
+  bun: ingredientsPropTypes.bun,
+  ingredients: ingredientsPropTypes.ingredients,
+  handleTotalClick: PropTypes.func.isRequired,
+  totalSum: PropTypes.number.isRequired
+};
 
 
 export default BurgerConstructor;

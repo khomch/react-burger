@@ -1,19 +1,10 @@
 import React from 'react';
 import OrderDetailsStyles from './OrderDetails.module.css';
-import Modal from '../Modal/Modal';
-import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import ingredientsPropTypes from '../../utils/types'
+import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-function OrderDetails(props) {
+function OrderDetails() {
 
     return (
-
-        <Modal
-            toggleModal={props.toggleModal}
-            modalState={props.modalState}
-            closeModal={props.closeModal}
-            handleOverlayClick={props.handleOverlayClick}
-        >
 
             <div className={OrderDetailsStyles.orderDetails}>
                 <div className={OrderDetailsStyles.container}>
@@ -25,11 +16,8 @@ function OrderDetails(props) {
                 </div>
 
             </div>
-        </Modal>
 
     )
 }
-
-OrderDetails.propTypes = ingredientsPropTypes;
 
 export default OrderDetails;

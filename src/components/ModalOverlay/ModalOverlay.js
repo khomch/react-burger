@@ -1,21 +1,17 @@
 import React from 'react';
-import * as ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import ModalOverlayStyles from './ModalOverlay.module.css';
 
-const modalRoot = document.getElementById('root');
+function ModalOverlay(props) {
 
-class ModalOverlay extends React.Component {
-
-    render() {
-
-        return ReactDOM.createPortal(
-            <div className={this.props.modalState === true ? ModalOverlayStyles.modalOverlay : ModalOverlayStyles.modalOverlayHidden}>
-            </div>
-            ,
-            modalRoot
-        );
-    }
+    return (
+        <div className={props.modalState === true ? ModalOverlayStyles.modalOverlay : ModalOverlayStyles.modalOverlayHidden}>
+        </div>
+    );
 }
 
+ModalOverlay.propTypes = {
+    modalState: PropTypes.bool.isRequired
+}
 
 export default ModalOverlay;

@@ -2,6 +2,7 @@ import React from 'react';
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ingredientsPropTypes from '../../utils/types';
+import PropTypes from 'prop-types';
 
 
 
@@ -15,24 +16,24 @@ function BurgerConstructor(props) {
       <div className={BurgerConstructorStyles.constrContainer}>
 
         <div className={BurgerConstructorStyles.outside}>
-          <div className={BurgerConstructorStyles.iconOutside}><DragIcon type="primary" /></div>
 
-          <ConstructorElement
+          {!props.bun.name ? <p className="text text_type_main-default text_color_inactive">Выберите булку</p> : <ConstructorElement
             type="top"
             isLocked={true}
-            text={`${props.data[0].name} (верх)`}
-            price={props.data[0].price}
-            thumbnail={props.data[0].image}
-          />
+            text={`${props.bun.name} (верх)`}
+            price={props.bun.price}
+            thumbnail={props.bun.image}
+          />}
 
         </div>
 
 
         <div className={BurgerConstructorStyles.toppingsWindow}>
 
-          {props.data.slice(1).map((ingredient) => {
+          {props.ingredients.map((ingredient, index) => {
+
             return (
-              <div className={BurgerConstructorStyles.insideIngrediend} key={ingredient._id}>
+              <div className={BurgerConstructorStyles.insideIngrediend} key={`${ingredient._id}${index}`}>
                 <div className={BurgerConstructorStyles.icon}><DragIcon type="primary" /></div>
                 <div className={BurgerConstructorStyles.inside}>
                   <ConstructorElement
@@ -41,20 +42,21 @@ function BurgerConstructor(props) {
                     thumbnail={ingredient.image}
                   /></div>
               </div>
-      
-          )})}
+
+            )
+          })}
 
         </div>
 
 
         <div className={BurgerConstructorStyles.outside}>
-          <ConstructorElement
+          {props.bun.name && <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={`${props.data[0].name} (низ)`}
-            price={props.data[0].price}
-            thumbnail={props.data[0].image}
-          />
+            text={`${props.bun.name} (низ)`}
+            price={props.bun.price}
+            thumbnail={props.bun.image}
+          />}
         </div>
 
       </div>
@@ -63,10 +65,10 @@ function BurgerConstructor(props) {
       <div className={BurgerConstructorStyles.total}>
 
         <p className={`text text_type_digits-medium ${BurgerConstructorStyles.totalPrice}`}>
-          610 <CurrencyIcon type="primary" />
+          {props.totalSum} <CurrencyIcon type="primary" />
         </p>
 
-        <Button type="primary" size="medium">
+        <Button type="primary" size="medium" onClick={props.handleTotalClick}>
           Оформить заказ
         </Button>
 
@@ -74,10 +76,16 @@ function BurgerConstructor(props) {
 
 
     </section>
+
   );
 }
 
-BurgerConstructor.propTypes = ingredientsPropTypes;
+BurgerConstructor.propTypes = {
+  bun: ingredientsPropTypes.bun,
+  ingredients: ingredientsPropTypes.ingredients,
+  handleTotalClick: PropTypes.func.isRequired,
+  totalSum: PropTypes.number.isRequired
+};
 
 
 export default BurgerConstructor;

@@ -1,11 +1,13 @@
 import React from 'react';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
 import ingredientsPropTypes from '../../utils/types';
-import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 
 
 
 function BurgerIngredients(props) {
+  console.log(props)
 
   return (
     <section className={BurgerIngredientsStyles.ingredients}>
@@ -27,7 +29,7 @@ function BurgerIngredients(props) {
           .filter((item) => item.type === 'bun')
           .map((ingredient) => {
             return (
-              <div className={BurgerIngredientsStyles.ingredient} key={ingredient._id}>
+              <div className={BurgerIngredientsStyles.ingredient} key={ingredient._id} onClick={props.handleOpenIngredient} id={ingredient._id}>
                 <img className={BurgerIngredientsStyles.image} src={ingredient.image} alt={ingredient.name} />
                 <Counter count={1} size="default" />
                 <p className={`${BurgerIngredientsStyles.price} text text_type_digits-default`}>{ingredient.price} <CurrencyIcon type="primary" /></p>
@@ -42,7 +44,7 @@ function BurgerIngredients(props) {
           .filter((item) => item.type === 'sauce')
           .map((ingredient) => {
             return (
-              <div className={BurgerIngredientsStyles.ingredient} key={ingredient._id}>
+              <div className={BurgerIngredientsStyles.ingredient} key={ingredient._id} onClick={props.handleOpenIngredient} id={ingredient._id}>
                 <img className={BurgerIngredientsStyles.image} src={ingredient.image} alt={ingredient.name} />
                 <Counter count={1} size="default" />
                 <p className={`${BurgerIngredientsStyles.price} text text_type_digits-default`}>{ingredient.price} <CurrencyIcon type="primary" /></p>
@@ -57,7 +59,7 @@ function BurgerIngredients(props) {
           .filter((item) => item.type === 'main')
           .map((ingredient) => {
             return (
-              <div className={BurgerIngredientsStyles.ingredient} key={ingredient._id}>
+              <div className={BurgerIngredientsStyles.ingredient} key={ingredient._id} onClick={props.handleOpenIngredient} id={ingredient._id}>
                 <img className={BurgerIngredientsStyles.image} src={ingredient.image} alt={ingredient.name} />
                 <Counter count={1} size="default" />
                 <p className={`${BurgerIngredientsStyles.price} text text_type_digits-default`}>{ingredient.price} <CurrencyIcon type="primary" /></p>
@@ -73,6 +75,10 @@ function BurgerIngredients(props) {
   );
 }
 
-BurgerIngredients.propTypes = ingredientsPropTypes;
+BurgerIngredients.propTypes = {
+  data: ingredientsPropTypes.data.isRequired,
+  handleAddIngredient: PropTypes.func.isRequired,
+  handleOpenIngredient: PropTypes.func.isRequired
+};
 
 export default BurgerIngredients;

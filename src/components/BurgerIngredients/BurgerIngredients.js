@@ -5,9 +5,7 @@ import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger
 import PropTypes from 'prop-types';
 
 
-
 function BurgerIngredients(props) {
-  console.log(props)
 
   return (
     <section className={BurgerIngredientsStyles.ingredients}>

@@ -6,9 +6,11 @@ import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import Modal from '../Modal/Modal';
+import { IngredientsContext } from '../../utils/context';
 
 
 const URL = "https://norma.nomoreparties.space/api/ingredients";
+const SENDORDERURL = "https://norma.nomoreparties.space/api/orders";
 
 function App() {
 
@@ -26,14 +28,15 @@ function App() {
   const [totalState, setTotalState] = useState(false);
   // стейт для подсчета общей суммы
   const [totalSum, setTotalSum] = useState(0);
+  // стейт для номера заказа и названия бургера
+  const [orderInfo, setOrderInfo] = useState({});
 
 
   const handleTotalPrice = () => {
-
     if (choosenIndredients || choosenBun) {
       const ingredientsPrices = choosenIndredients.map(i => i.price)
       const pricesSum = ingredientsPrices.reduce((acc, total) => acc + total, 0)
-      return setTotalSum((!choosenBun.price ? 0 : choosenBun.price) + pricesSum)
+      return setTotalSum((!choosenBun.price ? 0 : choosenBun.price * 2) + pricesSum)
     }
   }
 
@@ -79,8 +82,14 @@ function App() {
     }
   }
 
+
   // хэндлер открытия тотала 
   const handleTotalClick = () => {
+    const choosenBunIdArray = [];
+    choosenBunIdArray.splice(0, 1, choosenBun._id);
+    const choosenIngredientsIdsArray = choosenIndredients.map(i => i._id);
+    const ingredientsIdsArray = choosenBunIdArray.concat(choosenIngredientsIdsArray);
+    sendOrder(ingredientsIdsArray);
     setTotalState(true);
     openModal();
   }
@@ -101,49 +110,72 @@ function App() {
     fetchData()
   }, [])
 
+  //отправка заказа на сервер
+  const sendOrder = (data) => {
+    return fetch(SENDORDERURL, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify({
+        ingredients: data
+      })
+    }).then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка ${res.status}`);
+    })
+    .then(data => setOrderInfo(data))
+    .catch(err => console.log(err));
+  }
+
   return (
-    <div className={AppStyles.app}>
+    <IngredientsContext.Provider value={{ choosenIndredients, choosenBun, orderInfo, totalSum }}>
+      <div className={AppStyles.app}>
 
-      <Modal
-        closeModal={closeModal}
-        modalState={modalState}
-        handleOverlayClick={handleOverlayClick}
-      >
-        {Object.keys(openIngredient).length !== 0
-          &&
-          <IngredientDetails
-            ingredientData={openIngredient}
-            handleAddIngredient={handleAddIngredient}
-          />}
+        <Modal
+          closeModal={closeModal}
+          modalState={modalState}
+          handleOverlayClick={handleOverlayClick}
+        >
+          {Object.keys(openIngredient).length !== 0
+            &&
+            <IngredientDetails
+              ingredientData={openIngredient}
+              handleAddIngredient={handleAddIngredient}
+            />}
 
-        {totalState
-          && <OrderDetails
-          />}
+          {totalState
+            && <OrderDetails
+            />}
 
-      </Modal>
-      <AppHeader />
+        </Modal>
+        <AppHeader />
 
 
-      <main className={AppStyles.main}>
-        <h1 className={`text text_type_main-large ${AppStyles.h1}`}>
-          Соберите бургер
-        </h1>
-        <section className={AppStyles.burgers}>
-          {!ingredientsData.data
-            ?
-            "Загрузка..."
-            :
-            <BurgerIngredients data={ingredientsData.data} handleAddIngredient={handleAddIngredient} handleOpenIngredient={handleOpenIngredient} />}
+        <main className={AppStyles.main}>
+          <h1 className={`text text_type_main-large ${AppStyles.h1}`}>
+            Соберите бургер
+          </h1>
+          <section className={AppStyles.burgers}>
+            {!ingredientsData.data
+              ?
+              "Загрузка..."
+              :
+              <BurgerIngredients data={ingredientsData.data} handleAddIngredient={handleAddIngredient} handleOpenIngredient={handleOpenIngredient} />}
 
-          {!choosenBun.name && !choosenIndredients[0]
-            ?
-            <div className={AppStyles.chooseIngredient}><p className="text text_type_main-large">Выберите ингредиент</p></div>
-            :
-            <BurgerConstructor bun={choosenBun} ingredients={choosenIndredients} handleTotalClick={handleTotalClick} totalSum={totalSum} />}
-        </section>
+            {!choosenBun.name && !choosenIndredients[0]
+              ?
+              <div className={AppStyles.chooseIngredient}><p className="text text_type_main-large">Выберите ингредиент</p></div>
+              :
+              <BurgerConstructor handleTotalClick={handleTotalClick} />
+            }
+          </section>
 
-      </main>
-    </div>
+        </main>
+      </div>
+    </IngredientsContext.Provider>
   );
 }
 

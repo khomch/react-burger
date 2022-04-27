@@ -105,7 +105,7 @@ function App() {
   useEffect(() => {
     function fetchData() {
       return fetch(`${baseUrl}ingredients/`)
-        .then(res => checkResponse(res))
+        .then(checkResponse)
         .then(data => setIngredientsData(data))
         .catch(err => console.log(err));
     }
@@ -122,7 +122,7 @@ function App() {
       body: JSON.stringify({
         ingredients: data
       })
-    }).then(res => checkResponse(res))
+    }).then(checkResponse)
       .then(data => {
         setOrderInfo(data);
         setChoosenIngredients([]);

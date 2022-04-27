@@ -9,8 +9,7 @@ import Modal from '../Modal/Modal';
 import { IngredientsContext } from '../../utils/context';
 
 
-const URL = "https://norma.nomoreparties.space/api/ingredients";
-const SENDORDERURL = "https://norma.nomoreparties.space/api/orders";
+const baseUrl = "https://norma.nomoreparties.space/api/";
 
 function App() {
 
@@ -94,16 +93,19 @@ function App() {
     openModal();
   }
 
+  // проверяем ответ сервера
+  const checkResponse = (res) => {
+    if (!res.ok) {
+      return Promise.reject(`Error: ${res.status}`);
+    }
+    return res.json();
+  }
+
   // получаем данные при загрузке
   useEffect(() => {
     function fetchData() {
-      return fetch(URL)
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          return Promise.reject(`Ошибка ${res.status}`);
-        })
+      return fetch(`${baseUrl}ingredients/`)
+        .then(res => checkResponse(res))
         .then(data => setIngredientsData(data))
         .catch(err => console.log(err));
     }
@@ -112,7 +114,7 @@ function App() {
 
   //отправка заказа на сервер
   const sendOrder = (data) => {
-    return fetch(SENDORDERURL, {
+    return fetch(`${baseUrl}orders/`, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -120,14 +122,13 @@ function App() {
       body: JSON.stringify({
         ingredients: data
       })
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка ${res.status}`);
-    })
-    .then(data => setOrderInfo(data))
-    .catch(err => console.log(err));
+    }).then(res => checkResponse(res))
+      .then(data => {
+        setOrderInfo(data);
+        setChoosenIngredients([]);
+        setChoosenBun({});
+      })
+      .catch(err => console.log(err));
   }
 
   return (

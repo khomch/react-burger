@@ -1,28 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
-import ingredientsPropTypes from '../../utils/types';
+import ingredientPropTypes from '../../utils/types';
 import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 
 
 function BurgerIngredients(props) {
+  // стейт для переключения табов
+  const [currentTab, setCurrentTab] = useState('buns');
+
+  // функция переключения таба
+  const onTabClick = (tab) => {
+    setCurrentTab(tab);
+    const element = document.getElementById(tab);
+    if (element) element.scrollIntoView({behavior: "smooth"});
+  };
 
   return (
     <section className={BurgerIngredientsStyles.ingredients}>
       <div className={`text text_type_main-default ${BurgerIngredientsStyles.tabs}`}>
-        <Tab value="one" active={true} onClick={console.log}>
+        <Tab value="buns" active={currentTab === "buns"} onClick={onTabClick}>
           Булки
         </Tab>
-        <Tab value="two" active={false} onClick={console.log}>
+        <Tab value="sauces" active={currentTab === "sauces"} onClick={onTabClick}>
           Соусы
         </Tab>
-        <Tab value="three" active={false} onClick={console.log}>
+        <Tab value="mains" active={currentTab === "mains"} onClick={onTabClick}>
           Начинки
         </Tab>
       </div>
       <div className={BurgerIngredientsStyles.ingredientsContainer}>
 
-        <h2 className={BurgerIngredientsStyles.h2}>Булки</h2>
+        <h2 className={BurgerIngredientsStyles.h2} id="buns">Булки</h2>
         {props.data
           .filter((item) => item.type === 'bun')
           .map((ingredient) => {
@@ -37,7 +46,7 @@ function BurgerIngredients(props) {
           })
         }
 
-        <h2 className={BurgerIngredientsStyles.h2}>Соусы</h2>
+        <h2 className={BurgerIngredientsStyles.h2} id="sauces">Соусы</h2>
         {props.data
           .filter((item) => item.type === 'sauce')
           .map((ingredient) => {
@@ -52,7 +61,7 @@ function BurgerIngredients(props) {
           })
         }
 
-        <h2 className={BurgerIngredientsStyles.h2}>Начинки</h2>
+        <h2 className={BurgerIngredientsStyles.h2} id="mains">Начинки</h2>
         {props.data
           .filter((item) => item.type === 'main')
           .map((ingredient) => {
@@ -74,7 +83,7 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  data: ingredientsPropTypes.data.isRequired,
+  data: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
   handleAddIngredient: PropTypes.func.isRequired,
   handleOpenIngredient: PropTypes.func.isRequired
 };

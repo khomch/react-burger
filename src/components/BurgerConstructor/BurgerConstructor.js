@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import ingredientsPropTypes from '../../utils/types';
 import PropTypes from 'prop-types';
 import { IngredientsContext } from '../../utils/context';
 

@@ -38,6 +38,7 @@
 
 .link__text {
     padding-left: 8px !important;
+    text-decoration: none;
     justify-self: center;
     color: #8585AD;
 }

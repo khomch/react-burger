@@ -13,8 +13,7 @@
 
 .ingredientsContainer {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-direction: column;
     height: calc(100vh - 235px);
     overflow-y: auto;
 
@@ -36,28 +35,14 @@
     background-color: #8485AA;
 }
 
-.ingredient {
-    position: relative;
+.ingredientList {
+    list-style: none;
     display: flex;
-    flex-direction: column;
-    max-width: 240px;
-    margin-left: 28px;
-    margin-right: 28px;
-    cursor: pointer;
-}
-
-.image {
-    max-height: 120px;
-}
-
-.price {
-    align-self: center;
-    display: flex;
-}
-
-.name {
-    align-self: center;
-    text-align: center;
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0;
+    padding-top: 20px;
 }
 
 .h2 {

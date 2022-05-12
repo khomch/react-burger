@@ -1,79 +1,92 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
-import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
-import { IngredientsContext } from '../../utils/context';
-
-
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from 'react-dnd';
+import { addDraggedIngredient } from '../../services/actions'
+import DraggableCard from '../DraggableCard/DraggableCard';
 
 
 function BurgerConstructor(props) {
-  const { choosenIndredients, choosenBun, totalSum } = useContext(IngredientsContext)
+  const { selectedBun, selectedIngredients, total } = useSelector(store => store)
+
+  const dispatch = useDispatch();
+
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: "ingredient",
+    collect: monitor => ({
+      isHover: monitor.isOver()
+    }),
+    drop(itemId) {
+      dispatch(addDraggedIngredient(itemId))
+    }
+  });
+
+  const className = `${BurgerConstructorStyles.constr} ${isHover ? BurgerConstructorStyles.isHover : ""}`
 
   return (
-    <section className={BurgerConstructorStyles.constr}>
+    <section className={className} ref={dropTarget}>
+
+      {!selectedBun.name && !selectedIngredients[0]
+        ?
+        <div className={BurgerConstructorStyles.chooseIngredient}><p className="text text_type_main-large">Выберите ингредиент</p></div>
+        :
+        <div className={BurgerConstructorStyles.constrContainer} >
+
+          <div className={BurgerConstructorStyles.outside}>
+
+            {
+              !selectedBun.name ? <p className="text text_type_main-default text_color_inactive">Выберите булку</p>
+                :
+                <ConstructorElement
+                  type="top"
+                  isLocked={true}
+                  text={`${selectedBun.name} (верх)`}
+                  price={selectedBun.price}
+                  thumbnail={selectedBun.image}
+                />}
+
+          </div>
 
 
-      <div className={BurgerConstructorStyles.constrContainer}>
+          <div className={BurgerConstructorStyles.toppingsWindow}>
 
-        <div className={BurgerConstructorStyles.outside}>
+            {selectedIngredients.map((ingredient, index) => {
 
-          {!choosenBun.name ? <p className="text text_type_main-default text_color_inactive">Выберите булку</p> : <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={`${choosenBun.name} (верх)`}
-            price={choosenBun.price}
-            thumbnail={choosenBun.image}
-          />}
+              return (
+                <DraggableCard ingredient={ingredient} key={ingredient.nanoid} index={index} />
+              )
+            })}
+
+          </div>
+
+
+          <div className={BurgerConstructorStyles.outside}>
+            {selectedBun.name && <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={`${selectedBun.name} (низ)`}
+              price={selectedBun.price}
+              thumbnail={selectedBun.image}
+            />}
+          </div>
 
         </div>
+      }
 
+      {total > 0 &&
+        <div className={BurgerConstructorStyles.total}>
 
-        <div className={BurgerConstructorStyles.toppingsWindow}>
+          <p className={`text text_type_digits-medium ${BurgerConstructorStyles.totalPrice}`}>
+            {total} <CurrencyIcon type="primary" />
+          </p>
 
-          {choosenIndredients.map((ingredient, index) => {
+          <Button type="primary" size="medium" onClick={props.handleTotalClick}>
+            Оформить заказ
+          </Button>
 
-            return (
-              <div className={BurgerConstructorStyles.insideIngrediend} key={`${ingredient._id}${index}`}>
-                <div className={BurgerConstructorStyles.icon}><DragIcon type="primary" /></div>
-                <div className={BurgerConstructorStyles.inside}>
-                  <ConstructorElement
-                    text={ingredient.name}
-                    price={ingredient.price}
-                    thumbnail={ingredient.image}
-                  /></div>
-              </div>
-
-            )
-          })}
-
-        </div>
-
-
-        <div className={BurgerConstructorStyles.outside}>
-          {choosenBun.name && <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={`${choosenBun.name} (низ)`}
-            price={choosenBun.price}
-            thumbnail={choosenBun.image}
-          />}
-        </div>
-
-      </div>
-
-
-      <div className={BurgerConstructorStyles.total}>
-
-        <p className={`text text_type_digits-medium ${BurgerConstructorStyles.totalPrice}`}>
-          {totalSum} <CurrencyIcon type="primary" />
-        </p>
-
-        <Button type="primary" size="medium" onClick={props.handleTotalClick}>
-          Оформить заказ
-        </Button>
-
-      </div>
+        </div>}
 
 
     </section>

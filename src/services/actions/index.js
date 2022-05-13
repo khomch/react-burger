@@ -45,13 +45,12 @@ export function getIngredients() {
                         type: GET_INGREDIENTS_SUCCESS,
                         ingredients: res.data
                     })
-                } else {
-                    dispatch({
-                        type: GET_INGREDIENTS_FAILED
-                    })
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => dispatch({
+                type: GET_INGREDIENTS_FAILED,
+                err: err
+            }));
     }
 }
 
@@ -85,13 +84,12 @@ export function sendOrder(data) {
                     dispatch({
                         type: CLOSE_ORDER,
                     })
-                } else {
-                    dispatch({
-                        type: SEND_ORDER_FAILED
-                    })
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => dispatch({
+                type: GET_INGREDIENTS_FAILED,
+                err: err
+            }));
     }
 }
 

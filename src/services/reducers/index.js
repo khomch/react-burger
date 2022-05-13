@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import update from 'immutability-helper';
 
 import {
@@ -46,7 +45,7 @@ export const rootReducer = (state = initialState, action) => {
                 ...state,
                 selectedIngredients: [...state.selectedIngredients, 
                     { ...ingredient, 
-                        nanoid: nanoid()}],
+                        nanoid: action.nanoid}],
             }
         } else if (ingredient.type === "bun") {
             return {

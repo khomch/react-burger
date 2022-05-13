@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid';
+
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
 export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
@@ -12,6 +14,7 @@ export const GET_TOTAL = 'GET_TOTAL';
 export const ADD_DRAGGED_INGREDIENT = 'ADD_DRAGGED_INGREDIENT';
 export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
 export const UPDATE_SELECTED_INGREDIENTS = 'UPDATE_SELECTED_INGREDIENTS';
+
 
 
 const baseUrl = "https://norma.nomoreparties.space/api/";
@@ -98,7 +101,8 @@ export function addSelectedIngredient(e) {
     return function (dispatch) {
         dispatch({
             type: ADD_INGREDIENT,
-            selectedIngredientId: e.currentTarget.id
+            selectedIngredientId: e.currentTarget.id,
+            nanoid: nanoid()
 
         })
     }
@@ -109,7 +113,8 @@ export function addDraggedIngredient(ingredient) {
     return function (dispatch) {
         dispatch({
             type: ADD_DRAGGED_INGREDIENT,
-            selectedIngredientId: ingredient._id
+            selectedIngredientId: ingredient._id,
+            nanoid: nanoid()
 
         })
     }
@@ -153,7 +158,7 @@ export function getTotal(sum) {
     }
 }
 
-// удаляем ингредиент из конструктора
+// удаляем ингредиент из кон    структора
 export function deleteIngredient(e) {
     return function (dispatch) {
         dispatch({

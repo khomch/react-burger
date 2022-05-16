@@ -1,20 +1,33 @@
 import React, { useState } from 'react';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
-import ingredientPropTypes from '../../utils/types';
-import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import Ingredient from '../Ingredient/Ingredient';
+
 
 
 function BurgerIngredients(props) {
   // стейт для переключения табов
   const [currentTab, setCurrentTab] = useState('buns');
-
   // функция переключения таба
   const onTabClick = (tab) => {
     setCurrentTab(tab);
     const element = document.getElementById(tab);
-    if (element) element.scrollIntoView({behavior: "smooth"});
+    if (element) element.scrollIntoView({ behavior: "smooth" });
   };
+
+  const {
+    ingredients,
+  } = useSelector(store => store)
+
+  function visibleCategory() {
+    const ingredientsContainer = document.getElementById('container');
+    const containerCoords =  ingredientsContainer.getBoundingClientRect();
+    const currentElementInCat = document.elementFromPoint(containerCoords.top, containerCoords.top);
+    const currentCategory = currentElementInCat.closest('ul');
+    return setCurrentTab(currentCategory.id);
+  }
 
   return (
     <section className={BurgerIngredientsStyles.ingredients}>
@@ -29,52 +42,44 @@ function BurgerIngredients(props) {
           Начинки
         </Tab>
       </div>
-      <div className={BurgerIngredientsStyles.ingredientsContainer}>
 
-        <h2 className={BurgerIngredientsStyles.h2} id="buns">Булки</h2>
-        {props.data
-          .filter((item) => item.type === 'bun')
-          .map((ingredient) => {
-            return (
-              <div className={BurgerIngredientsStyles.ingredient} key={ingredient._id} onClick={props.handleOpenIngredient} id={ingredient._id}>
-                <img className={BurgerIngredientsStyles.image} src={ingredient.image} alt={ingredient.name} />
-                <Counter count={1} size="default" />
-                <p className={`${BurgerIngredientsStyles.price} text text_type_digits-default`}>{ingredient.price} <CurrencyIcon type="primary" /></p>
-                <p className={`${BurgerIngredientsStyles.name} text text_type_main-default`}>{ingredient.name}</p>
-              </div>
-            )
-          })
-        }
+      <div className={BurgerIngredientsStyles.ingredientsContainer} id="container" onScroll={visibleCategory}>
 
-        <h2 className={BurgerIngredientsStyles.h2} id="sauces">Соусы</h2>
-        {props.data
-          .filter((item) => item.type === 'sauce')
-          .map((ingredient) => {
-            return (
-              <div className={BurgerIngredientsStyles.ingredient} key={ingredient._id} onClick={props.handleOpenIngredient} id={ingredient._id}>
-                <img className={BurgerIngredientsStyles.image} src={ingredient.image} alt={ingredient.name} />
-                <Counter count={1} size="default" />
-                <p className={`${BurgerIngredientsStyles.price} text text_type_digits-default`}>{ingredient.price} <CurrencyIcon type="primary" /></p>
-                <p className={`${BurgerIngredientsStyles.name} text text_type_main-default`}>{ingredient.name}</p>
-              </div>
-            )
-          })
-        }
+        <ul className={BurgerIngredientsStyles.ingredientList} id="buns">
+          <h2 className={BurgerIngredientsStyles.h2}>Булки</h2>
+          {ingredients
+            .filter((item) => item.type === 'bun')
+            .map((ingredient) => {
+              return (
+                <Ingredient key={ingredient._id} ingredient={ingredient} handleOpenIngredient={props.handleOpenIngredient} />
+              )
+            })
+          }
+        </ul>
 
-        <h2 className={BurgerIngredientsStyles.h2} id="mains">Начинки</h2>
-        {props.data
-          .filter((item) => item.type === 'main')
-          .map((ingredient) => {
-            return (
-              <div className={BurgerIngredientsStyles.ingredient} key={ingredient._id} onClick={props.handleOpenIngredient} id={ingredient._id}>
-                <img className={BurgerIngredientsStyles.image} src={ingredient.image} alt={ingredient.name} />
-                <Counter count={1} size="default" />
-                <p className={`${BurgerIngredientsStyles.price} text text_type_digits-default`}>{ingredient.price} <CurrencyIcon type="primary" /></p>
-                <p className={`${BurgerIngredientsStyles.name} text text_type_main-default`}>{ingredient.name}</p>
-              </div>
-            )
-          })
-        }
+        <ul className={BurgerIngredientsStyles.ingredientList} id="sauces">
+          <h2 className={BurgerIngredientsStyles.h2} >Соусы</h2>
+          {ingredients
+            .filter((item) => item.type === 'sauce')
+            .map((ingredient) => {
+              return (
+                <Ingredient key={ingredient._id} ingredient={ingredient} handleOpenIngredient={props.handleOpenIngredient} />
+              )
+            })
+          }
+        </ul>
+
+        <ul className={BurgerIngredientsStyles.ingredientList} id="mains">
+          <h2 className={BurgerIngredientsStyles.h2} >Начинки</h2>
+          {ingredients
+            .filter((item) => item.type === 'main')
+            .map((ingredient) => {
+              return (
+                <Ingredient key={ingredient._id} ingredient={ingredient} handleOpenIngredient={props.handleOpenIngredient} />
+              )
+            })
+          }
+        </ul>
 
       </div>
 
@@ -83,8 +88,6 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
-  handleAddIngredient: PropTypes.func.isRequired,
   handleOpenIngredient: PropTypes.func.isRequired
 };
 

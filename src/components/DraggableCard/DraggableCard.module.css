@@ -84,8 +84,8 @@
     width: 100%;
 }
 
-.icon {
-    
+.icon:hover {
+    cursor: move;
 }
 
 .total {

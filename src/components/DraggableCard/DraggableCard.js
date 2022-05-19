@@ -1,10 +1,9 @@
 import React, { useCallback, useRef } from 'react';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import DraggableCardStyles from './DraggableCard.module.css';
-import { deleteIngredient } from '../../services/actions'
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
-import { updateSelectedIngredients } from '../../services/actions';
+import { updateSelectedIngredients, deleteIngredient } from '../../services/actions';
 import ingredientPropTypes from '../../utils/types';
 import PropTypes from 'prop-types';
 

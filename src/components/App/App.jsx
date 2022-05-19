@@ -7,7 +7,7 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import Modal from '../Modal/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIngredients, addSelectedIngredient, openSelectedIngredient, closeModal, sendOrder, getTotal } from '../../services/actions';
+import { getIngredients, addSelectedIngredient, openSelectedIngredient, closeModal, sendOrder } from '../../services/actions';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
@@ -51,18 +51,6 @@ function App() {
   const handleOpenIngredient = (e) => {
     dispatch(openSelectedIngredient(e));
   }
-
-  const handleTotalPrice = useCallback(() => {
-    if (selectedIngredients || selectedBun) {
-      const ingredientsPrices = selectedIngredients.map(i => i.price)
-      const pricesSum = ingredientsPrices.reduce((acc, total) => acc + total, 0)
-      return dispatch(getTotal((!selectedBun.price ? 0 : selectedBun.price * 2) + pricesSum))
-    }
-  }, [dispatch, selectedBun, selectedIngredients])
-
-  useEffect(() => {
-    handleTotalPrice()
-  }, [selectedIngredients, selectedBun, handleTotalPrice])
 
   // хэндлер открытия тотала 
   const handleTotalClick = () => {

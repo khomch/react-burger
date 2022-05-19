@@ -10,7 +10,6 @@ export const SEND_ORDER_REQUEST = 'SEND_ORDER_REQUEST';
 export const SEND_ORDER_SUCCESS = 'SEND_ORDER_SUCCESS';
 export const SEND_ORDER_FAILED = 'SEND_ORDER_FAILED';
 export const CLOSE_ORDER = 'CLOSE_ORDER';
-export const GET_TOTAL = 'GET_TOTAL';
 export const ADD_DRAGGED_INGREDIENT = 'ADD_DRAGGED_INGREDIENT';
 export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
 export const UPDATE_SELECTED_INGREDIENTS = 'UPDATE_SELECTED_INGREDIENTS';
@@ -96,84 +95,59 @@ export function sendOrder(data) {
 
 // экшн добавления ингредиента
 export function addSelectedIngredient(e) {
-    return function (dispatch) {
-        dispatch({
-            type: ADD_INGREDIENT,
-            selectedIngredientId: e.currentTarget.id,
-            nanoid: nanoid()
-
-        })
+    return {
+        type: ADD_INGREDIENT,
+        selectedIngredientId: e.currentTarget.id,
+        nanoid: nanoid()
     }
 }
 
 // экшн добавления перетаскиванием
 export function addDraggedIngredient(ingredient) {
-    return function (dispatch) {
-        dispatch({
-            type: ADD_DRAGGED_INGREDIENT,
-            selectedIngredientId: ingredient._id,
-            nanoid: nanoid()
-
-        })
+    return {
+        type: ADD_DRAGGED_INGREDIENT,
+        selectedIngredientId: ingredient._id,
+        nanoid: nanoid()
     }
 }
 
 // открываем выбранный ингредиент
 export function openSelectedIngredient(e) {
-    return function (dispatch) {
-        dispatch({
-            type: OPEN_SELECTED_INGREDIENT,
-            currentIngredientId: e.currentTarget.id
-        })
+    return {
+        type: OPEN_SELECTED_INGREDIENT,
+        currentIngredientId: e.currentTarget.id
     }
 }
 
 // закрываем модалку
 export function closeModal() {
-    return function (dispatch) {
-        dispatch({
-            type: CLOSE_MODAL
-        })
+    return {
+        type: CLOSE_MODAL
     }
 }
 
 // отправляем заказ
 export function closeOrder() {
-    return function (dispatch) {
-        dispatch({
-            type: CLOSE_ORDER
-        })
+    return {
+        type: CLOSE_ORDER
     }
 }
 
-// отправляем заказ
-export function getTotal(sum) {
-    return function (dispatch) {
-        dispatch({
-            type: GET_TOTAL,
-            total: sum
-        })
-    }
-}
 
 // удаляем ингредиент из кон    структора
 export function deleteIngredient(e) {
-    return function (dispatch) {
-        dispatch({
-            type: DELETE_INGREDIENT,
-            ingredientToDelNanoId: e.currentTarget.id
-        })
+    return {
+        type: DELETE_INGREDIENT,
+        ingredientToDelNanoId: e.currentTarget.id
     }
 }
 
 // обновляем список
 export function updateSelectedIngredients(dragIndex, hoverIndex) {
-    return function (dispatch) {
-        dispatch({
-            type: UPDATE_SELECTED_INGREDIENTS,
-            dragIndex: dragIndex,
-            hoverIndex: hoverIndex
-        })
+    return {
+        type: UPDATE_SELECTED_INGREDIENTS,
+        dragIndex: dragIndex,
+        hoverIndex: hoverIndex
     }
 }
 

@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
-import { addDraggedIngredient } from '../../services/actions'
+import { addDraggedIngredient } from '../../services/actions/'
 import DraggableCard from '../DraggableCard/DraggableCard';
 
 
 function BurgerConstructor(props) {
-  const { selectedBun, selectedIngredients, total } = useSelector(store => store)
+  const { selectedBun, selectedIngredients } = useSelector(store => store)
+
+  const [total, setTotal] = useState(0)
 
   const dispatch = useDispatch();
 
@@ -22,6 +24,18 @@ function BurgerConstructor(props) {
       dispatch(addDraggedIngredient(itemId))
     }
   });
+
+  const handleTotalPrice = useCallback(() => {
+    if (selectedIngredients || selectedBun) {
+      const ingredientsPrices = selectedIngredients.map(i => i.price)
+      const pricesSum = ingredientsPrices.reduce((acc, total) => acc + total, 0)
+      return setTotal((!selectedBun.price ? 0 : selectedBun.price * 2) + pricesSum)
+    }
+  }, [selectedBun, selectedIngredients])
+
+  useEffect(() => {
+    handleTotalPrice()
+  }, [selectedIngredients, selectedBun, handleTotalPrice])
 
   const className = `${BurgerConstructorStyles.constr} ${isHover ? BurgerConstructorStyles.isHover : ""}`
 

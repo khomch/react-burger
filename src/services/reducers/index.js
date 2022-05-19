@@ -11,7 +11,6 @@ import {
     SEND_ORDER_REQUEST,
     SEND_ORDER_SUCCESS,
     CLOSE_ORDER,
-    GET_TOTAL,
     ADD_DRAGGED_INGREDIENT,
     DELETE_INGREDIENT,
     UPDATE_SELECTED_INGREDIENTS,
@@ -31,8 +30,6 @@ const initialState = {
     order: {},
     orderRequest: false,
     orderFailed: false,
-
-    total: {}
 };
 
 export const rootReducer = (state = initialState, action) => {
@@ -122,13 +119,6 @@ export const rootReducer = (state = initialState, action) => {
                 ...state,
                 selectedBun: [],
                 selectedIngredients: [],
-            }
-        }
-
-        case GET_TOTAL: {
-            return {
-                ...state,
-                total: action.total
             }
         }
 

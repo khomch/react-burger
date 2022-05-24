@@ -1,10 +1,12 @@
 import React from 'react';
-import IngredientsStyles from './Ingredient.module.css';
+import IngredientsStyles from './ingredient.module.css';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientPropTypes from '../../utils/types';
 import PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
+import { Link, useRouteMatch, useParams } from 'react-router-dom';
+
 
 
 function Ingredient({ ingredient, handleOpenIngredient }) {
@@ -12,7 +14,7 @@ function Ingredient({ ingredient, handleOpenIngredient }) {
   const {
     selectedBun,
     selectedIngredients
-  } = useSelector(store => store)
+  } = useSelector(store => store.ingredientsStore)
 
   const handleIngredientCount = (ingr) => {
     const countOne = 1;
@@ -32,12 +34,14 @@ function Ingredient({ ingredient, handleOpenIngredient }) {
   });
 
   return (
+
     <li ref={dragRef} className={IngredientsStyles.ingredient} style={{ opacity }} key={ingredient._id} onClick={handleOpenIngredient} id={ingredient._id}>
-      <img className={IngredientsStyles.image} src={ingredient.image} alt={ingredient.name} />
+      <img className={IngredientsStyles.image} src={ingredient.image} alt={ingredient.name} />  
       {handleIngredientCount(ingredient) > 0 && <Counter count={handleIngredientCount(ingredient)} size="default" />}
       <p className={`${IngredientsStyles.price} text text_type_digits-default`}>{ingredient.price} <CurrencyIcon type="primary" /></p>
       <p className={`${IngredientsStyles.name} text text_type_main-default`}>{ingredient.name}</p>
-    </li>
+    </li >
+
   )
 }
 

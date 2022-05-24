@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import BurgerIngredientsStyles from './BurgerIngredients.module.css';
+import BurgerIngredientsStyles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import Ingredient from '../Ingredient/Ingredient';
+import Ingredient from '../ingredient/ingredient';
 
 
 
@@ -19,7 +19,7 @@ function BurgerIngredients(props) {
 
   const {
     ingredients,
-  } = useSelector(store => store)
+  } = useSelector(store => store.ingredientsStore)
 
   function visibleCategory() {
     const ingredientsContainer = document.getElementById('container');

@@ -1,15 +1,15 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import BurgerConstructorStyles from './BurgerConstructor.module.css';
+import BurgerConstructorStyles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
-import { addDraggedIngredient } from '../../services/actions/'
-import DraggableCard from '../DraggableCard/DraggableCard';
+import { addDraggedIngredient } from '../../services/actions/ingredients'
+import DraggableCard from '../draggable-card/draggable-card';
 
 
 function BurgerConstructor(props) {
-  const { selectedBun, selectedIngredients } = useSelector(store => store)
+  const { selectedBun, selectedIngredients } = useSelector (store => store.ingredientsStore)
 
   const [total, setTotal] = useState(0)
 

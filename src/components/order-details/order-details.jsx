@@ -1,5 +1,5 @@
 import React from 'react';
-import OrderDetailsStyles from './OrderDetails.module.css';
+import OrderDetailsStyles from './order-details.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
 
@@ -7,7 +7,7 @@ function OrderDetails() {
     // получаем данные из стора
     const {
         order
-    } = useSelector(store => store)
+    } = useSelector(store => store.ingredientsStore)
 
     return (
 

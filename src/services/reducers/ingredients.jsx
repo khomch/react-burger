@@ -1,5 +1,4 @@
 import update from 'immutability-helper';
-
 import {
     GET_INGREDIENTS_FAILED,
     GET_INGREDIENTS_REQUEST,
@@ -14,7 +13,7 @@ import {
     ADD_DRAGGED_INGREDIENT,
     DELETE_INGREDIENT,
     UPDATE_SELECTED_INGREDIENTS,
-} from "../actions";
+} from "../actions/ingredients";
 
 const initialState = {
     ingredients: [],
@@ -32,17 +31,20 @@ const initialState = {
     orderFailed: false,
 };
 
-export const rootReducer = (state = initialState, action) => {
+
+export const ingredientsReducer = (state = initialState, action) => {
     function defineIngredientByType(array) {
-        
+
         const ingredient = array.find((element) => (element._id === action.selectedIngredientId));
 
         if (ingredient.type !== "bun") {
             return {
                 ...state,
-                selectedIngredients: [...state.selectedIngredients, 
-                    { ...ingredient, 
-                        nanoid: action.nanoid}],
+                selectedIngredients: [...state.selectedIngredients,
+                {
+                    ...ingredient,
+                    nanoid: action.nanoid
+                }],
             }
         } else if (ingredient.type === "bun") {
             return {
@@ -136,7 +138,7 @@ export const rootReducer = (state = initialState, action) => {
         case UPDATE_SELECTED_INGREDIENTS: {
             return {
                 ...state,
-                selectedIngredients: update([...state.selectedIngredients], { $splice: [[action.dragIndex, 1],[action.hoverIndex, 0, [...state.selectedIngredients][action.dragIndex]]]})
+                selectedIngredients: update([...state.selectedIngredients], { $splice: [[action.dragIndex, 1], [action.hoverIndex, 0, [...state.selectedIngredients][action.dragIndex]]] })
             }
         }
 
@@ -145,5 +147,3 @@ export const rootReducer = (state = initialState, action) => {
         }
     }
 }
-
-

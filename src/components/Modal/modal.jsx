@@ -1,8 +1,8 @@
 import { React, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as ReactDOM from 'react-dom';
-import ModuleStyles from './Modal.module.css';
-import ModalOverlay from '../ModalOverlay/ModalOverlay';
+import ModuleStyles from './modal.module.css';
+import ModalOverlay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 const modalRoot = document.getElementById('modals');

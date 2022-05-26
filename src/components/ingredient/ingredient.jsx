@@ -47,7 +47,7 @@ function Ingredient({ ingredient, handleOpenIngredient }) {
     <li ref={dragRef} className={IngredientsStyles.ingredient} style={{ opacity }} key={ingredient._id} onClick={handleOpenIngredient} id={ingredient._id}>
      <img onClick={openIngredient} className={IngredientsStyles.image} src={ingredient.image} alt={ingredient.name} />
       {handleIngredientCount(ingredient) > 0 && <Counter count={handleIngredientCount(ingredient)} size="default" />}
-      <p className={`${IngredientsStyles.price} text text_type_digits-default`}>{ingredient.price} <CurrencyIcon type="primary" /></p>
+      <p className={`${IngredientsStyles.price} text text_type_digits-default`}>{ingredient.price} <CurrencyIcon type="primary" /></p>
       <p className={`${IngredientsStyles.name} text text_type_main-default`}>{ingredient.name}</p>
     </li >
 

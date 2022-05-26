@@ -1,12 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppStyles from './app.module.css';
 import AppHeader from '../app-header/app-header';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 import { HomePage, Login, Register, ForgotPassword, Profile, ResetPassword } from '../../pages';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  setIfDirectEnter,
+} from '../../services/actions/entrance';
 
 
 function App() {
+  const dispatch = useDispatch();
+
+  const {
+    directEnter
+  } = useSelector(store => store.enter)
+
+  useEffect(() => {
+    if (window.performance.navigation.type === 1) {
+      dispatch(setIfDirectEnter(false));
+    }
+  }, [dispatch])
+
+
   return (
     <Router>
       <div className={AppStyles.app}>
@@ -16,9 +34,7 @@ function App() {
         <main className={AppStyles.main}>
 
           <Switch>
-            <Route path="/" exact={true}>
-              <HomePage />
-            </Route>
+
             <Route path="/login" exact={true}>
               <Login />
             </Route>
@@ -35,14 +51,26 @@ function App() {
             <ProtectedRoute path="/profile" exact={true}>
               <Profile />
             </ProtectedRoute>
+
             <ProtectedRoute path="/feed" exact={true}>
             </ProtectedRoute>
+
+            {directEnter
+              &&
+              <Route
+                path='/ingredients/:id' exact={true}>
+                <IngredientDetails  />
+              </Route>}
+
+            <Route path={"/"}>
+              <HomePage />
+            </Route>
 
           </Switch>
 
         </main>
       </div>
-    </Router>
+    </Router >
   );
 }
 

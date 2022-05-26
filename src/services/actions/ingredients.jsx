@@ -112,10 +112,10 @@ export function addDraggedIngredient(ingredient) {
 }
 
 // открываем выбранный ингредиент
-export function openSelectedIngredient(e) {
+export function openSelectedIngredient(id) {
     return {
         type: OPEN_SELECTED_INGREDIENT,
-        currentIngredientId: e.currentTarget.id
+        currentIngredientId: id
     }
 }
 

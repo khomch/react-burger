@@ -4,15 +4,13 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import { NavLink, useLocation } from 'react-router-dom';
 
 
-
-
 function AppHeader() {
   const location = useLocation();
-  
+
   return (
     <header className={AppHeaderStyles.header}>
       <nav className={AppHeaderStyles.nav}>
-        
+
         <ul className={AppHeaderStyles.links}>
 
           <li className={AppHeaderStyles.links__item}>
@@ -26,7 +24,7 @@ function AppHeader() {
               Конструктор
             </NavLink>
           </li>
-          
+
           <li className={AppHeaderStyles.links__item}>
             <ListIcon
               type={location.pathname === "/feed" ? "primary" : "secondary"} />
@@ -56,7 +54,7 @@ function AppHeader() {
             Личный кабинет
           </NavLink>
         </div>
-        
+
       </nav>
     </header>
   );

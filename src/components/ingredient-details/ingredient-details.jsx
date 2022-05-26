@@ -1,52 +1,73 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import IngredientDetailsStyles from './ingredient-details.module.css';
-import PropTypes from 'prop-types';
-import ingredientPropTypes from '../../utils/types'
+import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+    getIngredients,
+    addSelectedIngredient
+} from '../../services/actions/ingredients';
+
 
 function IngredientDetails(props) {
 
-    return (
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getIngredients());
+    }, [dispatch])
 
-        <div className={IngredientDetailsStyles.ingredientDetails} onClick={props.handleAddIngredient} id={props.ingredientData._id}>
-            <div className={IngredientDetailsStyles.container}>
-                <h2 className={`text text_type_main-large ${IngredientDetailsStyles.title}`}>Детали ингредиента</h2>
-                <img src={props.ingredientData.image_large}
-                    alt={props.ingredientData.name}
-                    className={IngredientDetailsStyles.image}
-                ></img>
+    const addIngredient = useCallback((e) => {
+        dispatch(addSelectedIngredient(e));
+    }, [dispatch])
 
-                <p className={`text text_type_main-medium ${IngredientDetailsStyles.name}`}>{props.ingredientData.name}</p>
-                <ul className={IngredientDetailsStyles.nutritionList}>
-                    <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`} >
-                        <p>Калории, ккал</p>
-                        <p>{props.ingredientData.calories}</p>
-                    </li>
+    const {
+        ingredients
+    } = useSelector(store => store.ingredientsStore)
 
-                    <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`}>
-                        <p>Белки, г</p>
-                        <p>{props.ingredientData.proteins}</p>
-                    </li>
+    let { id } = useParams();
 
-                    <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`}>
-                        <p>Жиры, г</p>
-                        <p>{props.ingredientData.fat}</p>
-                    </li>
+    const ingredientToShow = ingredients.find(ingredient => ingredient._id === id)
 
-                    <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`}>
-                        <p>Углеводы, г</p>
-                        <p>{props.ingredientData.carbohydrates}</p>
-                    </li>
+    if (ingredientToShow) {
 
-                </ul>
+        return (
+
+            <div className={IngredientDetailsStyles.ingredientDetails} onClick={addIngredient} id={ingredientToShow._id}>
+                <div className={IngredientDetailsStyles.container}>
+                    <h2 className={`text text_type_main-large ${IngredientDetailsStyles.title}`}>Детали ингредиента</h2>
+                    <img src={ingredientToShow.image_large}
+                        alt={ingredientToShow.name}
+                        className={IngredientDetailsStyles.image}
+                    ></img>
+
+                    <p className={`text text_type_main-medium ${IngredientDetailsStyles.name}`}>{ingredientToShow.name}</p>
+                    <ul className={IngredientDetailsStyles.nutritionList}>
+                        <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`} >
+                            <p>Калории, ккал</p>
+                            <p>{ingredientToShow.calories}</p>
+                        </li>
+
+                        <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`}>
+                            <p>Белки, г</p>
+                            <p>{ingredientToShow.proteins}</p>
+                        </li>
+
+                        <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`}>
+                            <p>Жиры, г</p>
+                            <p>{ingredientToShow.fat}</p>
+                        </li>
+
+                        <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`}>
+                            <p>Углеводы, г</p>
+                            <p>{ingredientToShow.carbohydrates}</p>
+                        </li>
+
+                    </ul>
+                </div>
             </div>
-        </div>
 
-    )
+        )
+    }
+
 }
-
-IngredientDetails.propTypes = {
-    handleAddIngredient: PropTypes.func.isRequired,
-    ingredientData: ingredientPropTypes.isRequired
-};
 
 export default IngredientDetails;

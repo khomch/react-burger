@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom'
 
 import Modal from '../modal/modal';
 
@@ -8,13 +9,23 @@ import {
     closeModal
 } from '../../services/actions/ingredients';
 
-export default function Modals({children}) {
+export default function Modals({ children }) {
 
     const dispatch = useDispatch();
+    const history = useHistory();
+
+    const close = useCallback(
+        () => {
+            history.replace('/')
+        },
+        [history]
+    );
 
     // хэндлер закрытия окна
     const closeModalWindow = () => {
+        close()
         dispatch(closeModal());
+
     }
 
     // хэндлер закрытия по клику на оверлэй

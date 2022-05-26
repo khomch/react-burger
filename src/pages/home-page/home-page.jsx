@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import styles from './home.module.css';
@@ -8,20 +8,19 @@ import BurgerConstructor from '../../components/burger-constructor/burger-constr
 import IngredientDetails from '../../components/ingredient-details/ingredient-details';
 import OrderDetails from '../../components/order-details/order-details';
 import Modals from '../../components/modals/modals'
-import { Redirect, useRouteMatch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory, useRouteMatch } from 'react-router-dom';
 import {
     openSelectedIngredient,
     sendOrder,
-    getIngredients,
-    addSelectedIngredient,
+    getIngredients
 } from '../../services/actions/ingredients';
-
+import {
+    setIfDirectEnter,
+} from '../../services/actions/entrance';
 
 export function HomePage() {
-
-    const { url, path } = useRouteMatch();
-    console.log(path)
-
+    const match = useRouteMatch();
+    const history = useHistory();
     const dispatch = useDispatch();
 
     // получаем данные из стора
@@ -33,31 +32,47 @@ export function HomePage() {
         order
     } = useSelector(store => store.ingredientsStore)
 
+    const {
+        user
+    } = useSelector(store => store.auth)
+
+    const findIdInUrl = history.location.pathname.slice(history.location.pathname.lastIndexOf('/') + 1);
+
+    useEffect(() => {
+        if (ingredients.find(ingredient => ingredient._id === findIdInUrl)) {
+
+            dispatch(openSelectedIngredient(findIdInUrl));
+        }
+    }, [ingredients, dispatch, findIdInUrl])
 
     useEffect(() => {
         dispatch(getIngredients());
     }, [dispatch])
 
-    const addIngredient = useCallback((e) => {
-        dispatch(addSelectedIngredient(e));
+    useEffect(() => {
+        dispatch(setIfDirectEnter(false));
     }, [dispatch])
 
-    const [ingredientToOpen, setIngredientToOpen] = useState('')
+
     // хэндлер открытия ингредиента
     const handleOpenIngredient = (e) => {
-        console.log(e.currentTarget.id)
-        dispatch(openSelectedIngredient(e));
-        setIngredientToOpen(e.currentTarget.id)
+        dispatch(openSelectedIngredient(e.currentTarget.id));
     }
 
     // хэндлер открытия тотала 
     const handleTotalClick = () => {
-        const choosenBunIdArray = [];
-        choosenBunIdArray.splice(0, 1, selectedBun._id);
-        const choosenIngredientsIdsArray = selectedIngredients.map(i => i._id);
-        const ingredientsIdsArray = choosenBunIdArray.concat(choosenIngredientsIdsArray);
-        dispatch(sendOrder(ingredientsIdsArray));
+
+        if (!user.email) {
+            history.push('/login')
+        } else {
+            const choosenBunIdArray = [];
+            choosenBunIdArray.splice(0, 1, selectedBun._id);
+            const choosenIngredientsIdsArray = selectedIngredients.map(i => i._id);
+            const ingredientsIdsArray = choosenBunIdArray.concat(choosenIngredientsIdsArray);
+            dispatch(sendOrder(ingredientsIdsArray));
+        }
     }
+
 
     return (
         <>
@@ -81,19 +96,29 @@ export function HomePage() {
                 </DndProvider>
             </section>
 
+
             <Modals >
                 {Object.keys(currentIngredient).length !== 0
                     &&
-                    <IngredientDetails
-                        ingredientData={currentIngredient}
-                        handleAddIngredient={addIngredient}
-                    />
+                    <Switch>
+                        <Route
+                            path={`${match.path}ingredients/:id`}
+                            children={() => {
+                                return (
+                                    <IngredientDetails
+                                    />
+                                );
+                            }}
+                        />
 
+
+                    </Switch>
                 }
                 {Object.keys(order).length !== 0
                     && <OrderDetails
                     />}
             </Modals>
+
         </>
     );
 }

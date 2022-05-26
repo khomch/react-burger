@@ -1,4 +1,6 @@
 import { nanoid } from 'nanoid';
+import { checkResponse } from '../../utils/check-response';
+import { baseUrl } from '../../utils/constants';
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
@@ -15,16 +17,6 @@ export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
 export const UPDATE_SELECTED_INGREDIENTS = 'UPDATE_SELECTED_INGREDIENTS';
 
 
-
-const baseUrl = "https://norma.nomoreparties.space/api/";
-
-// проверяем ответ сервера
-const checkResponse = (res) => {
-    if (!res.ok) {
-        return Promise.reject(`Error: ${res.status}`);
-    }
-    return res.json();
-}
 
 const getIngredientsRequest = () => {
     return (fetch(`${baseUrl}ingredients/`)

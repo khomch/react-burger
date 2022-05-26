@@ -1,4 +1,6 @@
 import { setCookie, getCookie, deleteCookie } from '../../utils/cookies'
+import { baseUrl } from '../../utils/constants';
+import { checkResponse } from '../../utils/check-response';
 
 export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST';
 export const FORGOT_PASSWORD_FAILED = 'FORGOT_PASSWORD_FAILED';
@@ -21,16 +23,6 @@ export const GET_USER_FAILED = 'GET_USER_FAILED';
 export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
 export const UPDATE_USER_FAILED = 'UPDATE_USER_FAILED';
-
-const baseUrl = "https://norma.nomoreparties.space/api/";
-
-// проверяем ответ сервера
-const checkResponse = (res) => {
-    if (!res.ok) {
-        return Promise.reject(`Error: ${res.status}`);
-    }
-    return res.json();
-}
 
 const registrationRequest = (data) => {
     console.log(data)

@@ -9,20 +9,20 @@ const modalRoot = document.getElementById('modals');
 
 function Modal(props) {
 
-  // закрываем модальное окно по esc
-  const handlePressEsc = useCallback((event) => {
-    if (event.key === 'Escape') {
-      props.closeModal();
-    }
-  }, [props]);
+    // закрываем модальное окно по esc
+    const handlePressEsc = useCallback((event) => {
+        if (event.key === 'Escape') {
+            props.closeModal();
+        }
+    }, [props]);
 
-  useEffect(() => {
-    document.addEventListener("keydown", handlePressEsc);
+    useEffect(() => {
+        document.addEventListener("keydown", handlePressEsc);
 
-    return () => {
-      document.removeEventListener("keydown", handlePressEsc);
-    };
-  }, [handlePressEsc]);
+        return () => {
+            document.removeEventListener("keydown", handlePressEsc);
+        };
+    }, [handlePressEsc]);
 
     return ReactDOM.createPortal(
         props.children &&

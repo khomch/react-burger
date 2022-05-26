@@ -7,71 +7,71 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  setIfDirectEnter,
+    setIfDirectEnter,
 } from '../../services/actions/entrance';
 
 
 function App() {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const {
-    directEnter
-  } = useSelector(store => store.enter)
+    const {
+        directEnter
+    } = useSelector(store => store.enter)
 
-  useEffect(() => {
-    if (window.performance.navigation.type === 1) {
-      dispatch(setIfDirectEnter(false));
-    }
-  }, [dispatch])
+    useEffect(() => {
+        if (window.performance.navigation.type === 1) {
+            dispatch(setIfDirectEnter(false));
+        }
+    }, [dispatch])
 
 
-  return (
-    <Router>
-      <div className={AppStyles.app}>
+    return (
+        <Router>
+            <div className={AppStyles.app}>
 
-        <AppHeader />
+                <AppHeader />
 
-        <main className={AppStyles.main}>
+                <main className={AppStyles.main}>
 
-          <Switch>
+                    <Switch>
 
-            <Route path="/login" exact={true}>
-              <Login />
-            </Route>
-            <Route path="/register" exact={true}>
-              <Register />
-            </Route>
-            <Route path="/forgot-password" exact={true}>
-              <ForgotPassword />
-            </Route>
-            <Route path="/reset-password" exact={true}>
-              <ResetPassword />
-            </Route>
+                        <Route path="/login" exact={true}>
+                            <Login />
+                        </Route>
+                        <Route path="/register" exact={true}>
+                            <Register />
+                        </Route>
+                        <Route path="/forgot-password" exact={true}>
+                            <ForgotPassword />
+                        </Route>
+                        <Route path="/reset-password" exact={true}>
+                            <ResetPassword />
+                        </Route>
 
-            <ProtectedRoute path="/profile" exact={true}>
-              <Profile />
-            </ProtectedRoute>
+                        <ProtectedRoute path="/profile" exact={true}>
+                            <Profile />
+                        </ProtectedRoute>
 
-            <ProtectedRoute path="/feed" exact={true}>
-            </ProtectedRoute>
+                        <ProtectedRoute path="/feed" exact={true}>
+                        </ProtectedRoute>
 
-            {directEnter
-              &&
-              <Route
-                path='/ingredients/:id' exact={true}>
-                <IngredientDetails  />
-              </Route>}
+                        {directEnter
+                            &&
+                            <Route
+                                path='/ingredients/:id' exact={true}>
+                                <IngredientDetails  />
+                            </Route>}
 
-            <Route path={"/"}>
-              <HomePage />
-            </Route>
+                        <Route path={"/"}>
+                            <HomePage />
+                        </Route>
 
-          </Switch>
+                    </Switch>
 
-        </main>
-      </div>
-    </Router >
-  );
+                </main>
+            </div>
+        </Router >
+    );
 }
 
 export default App;

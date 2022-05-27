@@ -47,4 +47,4 @@ Modal.propTypes = {
     modalState: PropTypes.bool.isRequired
 };
 
-export default Modal;
+export default Modal; 

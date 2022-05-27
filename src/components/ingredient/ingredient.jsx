@@ -59,4 +59,4 @@ Ingredient.propTypes = {
   handleOpenIngredient: PropTypes.func.isRequired
 };
 
-export default Ingredient;
+export default Ingredient; 

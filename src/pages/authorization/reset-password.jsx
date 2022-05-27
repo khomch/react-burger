@@ -53,10 +53,9 @@ export function ResetPassword() {
     if (history.location.state.from === "/forgot-password") {
 
         return (
-            <>
                 <section className={styles.container}>
 
-                    <form className={styles.form}>
+                    <form className={styles.form} onSubmit={handleResetPassword}>
                         <h1 className={`text text_type_main-medium ${styles.h1}`}>
                             Восстановление пароля
                         </h1>
@@ -67,7 +66,7 @@ export function ResetPassword() {
                             <Input placeholder="Введите код из письма" size={'default'} name="token" onChange={onChange} value={form.token} />
                         </div>
                         <div className={styles.button}>
-                            <Button type="primary" size="medium" onClick={handleResetPassword}>
+                            <Button type="primary" size="medium">
                                 Сохранить
                             </Button>
                         </div>
@@ -76,7 +75,6 @@ export function ResetPassword() {
                     </form>
 
                 </section>
-            </>
         );
     }
 

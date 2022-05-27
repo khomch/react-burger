@@ -8,20 +8,19 @@ import BurgerConstructor from '../../components/burger-constructor/burger-constr
 import IngredientDetails from '../../components/ingredient-details/ingredient-details';
 import OrderDetails from '../../components/order-details/order-details';
 import Modals from '../../components/modals/modals'
-import { Switch, Route, useHistory, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, useHistory, useRouteMatch, useLocation } from 'react-router-dom';
 import {
     openSelectedIngredient,
     sendOrder,
-    getIngredients
 } from '../../services/actions/ingredients';
-import {
-    setIfDirectEnter,
-} from '../../services/actions/entrance';
 
 export function HomePage() {
     const match = useRouteMatch();
     const history = useHistory();
+    const location = useLocation();
     const dispatch = useDispatch();
+
+    const background = location.state && location.state.background;
 
     // получаем данные из стора
     const {
@@ -45,14 +44,6 @@ export function HomePage() {
         }
     }, [ingredients, dispatch, findIdInUrl])
 
-    useEffect(() => {
-        dispatch(getIngredients());
-    }, [dispatch])
-
-    useEffect(() => {
-        dispatch(setIfDirectEnter(false));
-    }, [dispatch])
-
 
     // хэндлер открытия ингредиента
     const handleOpenIngredient = (e) => {
@@ -73,6 +64,20 @@ export function HomePage() {
         }
     }
 
+    if (!background && location.pathname !== '/') {
+        return (
+            <Route
+                path={`${match.path}ingredients/:id`}
+                children={() => {
+                    return (
+                        <IngredientDetails
+                        />
+                    );
+                }}
+            />
+        )
+    }
+
 
     return (
         <>
@@ -89,18 +94,17 @@ export function HomePage() {
                         :
                         <BurgerIngredients handleOpenIngredient={handleOpenIngredient} />
                     }
-
                     {
                         <BurgerConstructor handleTotalClick={handleTotalClick} />
                     }
                 </DndProvider>
             </section>
 
-
-            <Modals >
-                {Object.keys(currentIngredient).length !== 0
-                    &&
-                    <Switch>
+            {Object.keys(currentIngredient).length !== 0
+                && background
+                &&
+                <Switch>
+                    <Modals >
                         <Route
                             path={`${match.path}ingredients/:id`}
                             children={() => {
@@ -110,15 +114,17 @@ export function HomePage() {
                                 );
                             }}
                         />
+                    </Modals>
+                </Switch>
+            }
 
-
-                    </Switch>
-                }
-                {Object.keys(order).length !== 0
-                    && <OrderDetails
-                    />}
-            </Modals>
+            {Object.keys(order).length !== 0
+                &&
+                <Modals>
+                    <OrderDetails />
+                </Modals>
+            }
 
         </>
-    );
+    )
 }

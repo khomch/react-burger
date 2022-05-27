@@ -1,20 +1,15 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import IngredientDetailsStyles from './ingredient-details.module.css';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-    getIngredients,
     addSelectedIngredient
 } from '../../services/actions/ingredients';
 
 
-function IngredientDetails(props) {
+function IngredientDetails() {
 
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getIngredients());
-    }, [dispatch])
-
     const addIngredient = useCallback((e) => {
         dispatch(addSelectedIngredient(e));
     }, [dispatch])
@@ -23,7 +18,7 @@ function IngredientDetails(props) {
         ingredients
     } = useSelector(store => store.ingredientsStore)
 
-    let { id } = useParams();
+    const { id } = useParams();
 
     const ingredientToShow = ingredients.find(ingredient => ingredient._id === id)
 

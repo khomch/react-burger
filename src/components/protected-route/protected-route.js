@@ -1,9 +1,10 @@
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getUser } from '../../services/actions/auth';
 import { useSelector, useDispatch } from 'react-redux';
 
 export function ProtectedRoute({ children, ...rest }) {
+    const location = useLocation();
     const {
         user
     } = useSelector(store => store.auth)
@@ -22,8 +23,10 @@ export function ProtectedRoute({ children, ...rest }) {
                     children
                 ) : (
                     <Redirect
-                        to='/login'
-                    />
+                        to={{
+                            pathname: "/login",
+                            state: { from: location.pathname }
+                        }} />
                 )
             }
         />

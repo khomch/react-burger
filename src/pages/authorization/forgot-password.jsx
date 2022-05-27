@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from './authorization.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useHistory } from 'react-router-dom';
@@ -12,8 +12,8 @@ export function ForgotPassword() {
     const {
         forgotPasswordSuccess
     } = useSelector(store => store.auth)
-    
-    const [form, setValue] = useState({ email: ''});
+
+    const [form, setValue] = useState({ email: '' });
 
     const onChange = e => {
         setValue({ ...form, [e.target.name]: e.target.value });
@@ -28,7 +28,7 @@ export function ForgotPassword() {
         [dispatch, form]
     );
 
-        if (forgotPasswordSuccess) {
+    if (forgotPasswordSuccess) {
         return (
             <Redirect
                 to={{
@@ -39,26 +39,24 @@ export function ForgotPassword() {
     }
 
     return (
-        <>
-            <section className={styles.container}>
+        <section className={styles.container}>
 
-                <form className={styles.form} >
-                    <h1 className={`text text_type_main-medium ${styles.h1}`}>
-                        Восстановление пароля
-                    </h1>
-                    <div className={styles.input}>
-                        <Input type={'email'} placeholder="Укажите Email" name="email" size={'default'} onChange={onChange} value={form.email}/>
-                    </div>
-                    <div className={styles.button}>
-                        <Button type="primary" size="medium" onClick={handleForgotPassword}>
-                            Восстановить
-                        </Button>
-                    </div>
-                    <p className="text text_type_main-default">Вспомнили пароль? <Link to={'/login'} className={styles.textButton}>Войти</Link></p>
+            <form className={styles.form} onSubmit={handleForgotPassword}>
+                <h1 className={`text text_type_main-medium ${styles.h1}`}>
+                    Восстановление пароля
+                </h1>
+                <div className={styles.input}>
+                    <Input type={'email'} placeholder="Укажите Email" name="email" size={'default'} onChange={onChange} value={form.email} />
+                </div>
+                <div className={styles.button}>
+                    <Button type="primary" size="medium">
+                        Восстановить
+                    </Button>
+                </div>
+                <p className="text text_type_main-default">Вспомнили пароль? <Link to={'/login'} className={styles.textButton}>Войти</Link></p>
 
-                </form>
+            </form>
 
-            </section>
-        </>
+        </section>
     );
 }

@@ -1,0 +1,23 @@
+.ingredient {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-width: 240px;
+    margin-left: 28px;
+    margin-right: 28px;
+    cursor: pointer;
+}
+
+.image {
+    max-height: 120px;
+}
+
+.price {
+    align-self: center;
+    display: flex;
+}
+
+.name {
+    align-self: center;
+    text-align: center;
+} 

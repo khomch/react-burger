@@ -1,25 +1,30 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, FC, MouseEvent } from 'react';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import DraggableCardStyles from './draggable-card.module.css';
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { updateSelectedIngredients, deleteIngredient } from '../../services/actions/ingredients';
-import ingredientPropTypes from '../../utils/types';
-import PropTypes from 'prop-types';
+import { TConstructorIngredient } from '../../utils/types';
 
-function DraggableCard({ ingredient, index }) {
+
+interface IDraggebleCard {
+    ingredient: TConstructorIngredient,
+    index: number
+}
+
+export const DraggableCard: FC<IDraggebleCard> = ({ ingredient, index }) => {
 
     const dispatch = useDispatch();
 
-    const handleDeleteIngredient = (e) => {
+    const handleDeleteIngredient = (e: MouseEvent) => {
         return dispatch(deleteIngredient(e))
     }
 
-    const moveCard = useCallback((dragIndex, hoverIndex) => {
+    const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
         dispatch(updateSelectedIngredients(dragIndex, hoverIndex))
     }, [dispatch])
 
-    const ref = useRef(null)
+    const ref = useRef<HTMLDivElement>(null)
 
     const [, drop] = useDrop({
         accept: "ingr",
@@ -28,20 +33,20 @@ function DraggableCard({ ingredient, index }) {
                 handlerId: monitor.getHandlerId(),
             }
         },
-        hover(item, monitor) {
+        hover(item: {index: number}, monitor) {
             if (!ref.current) {
                 return
             }
-            const dragIndex = item.index
-            const hoverIndex = index
+            const dragIndex = item?.index;
+            const hoverIndex: number = index;
             if (dragIndex === hoverIndex) {
                 return
             }
             const hoverBoundingRect = ref.current?.getBoundingClientRect()
             const hoverMiddleY =
                 (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-            const clientOffset = monitor.getClientOffset()
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top
+            const clientOffset = monitor.getClientOffset() as DOMRect
+            const hoverClientY: number = clientOffset.y - hoverBoundingRect.top
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return
             }
@@ -63,6 +68,7 @@ function DraggableCard({ ingredient, index }) {
         }),
     })
     const opacity = isDragging ? 0 : 1
+
     preview(drop(ref))
 
     return (
@@ -77,10 +83,3 @@ function DraggableCard({ ingredient, index }) {
         </div>
     )
 }
-
-DraggableCard.propTypes = {
-    ingredient: ingredientPropTypes.isRequired,
-    index: PropTypes.number.isRequired
-  };
-
-export default DraggableCard;

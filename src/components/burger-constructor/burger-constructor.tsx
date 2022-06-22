@@ -1,17 +1,21 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, FC } from 'react';
 import BurgerConstructorStyles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { addDraggedIngredient } from '../../services/actions/ingredients'
-import DraggableCard from '../draggable-card/draggable-card';
+import { DraggableCard } from '../draggable-card/draggable-card';
+import { TConstructorIngredient } from '../../utils/types';
 
 
-function BurgerConstructor(props) {
-  const { selectedBun, selectedIngredients } = useSelector (store => store.ingredientsStore)
+interface IBurgerConstructor {
+  handleTotalClick: () => void
+};
 
-  const [total, setTotal] = useState(0)
+export const BurgerConstructor: FC<IBurgerConstructor> = ({ handleTotalClick }) => {
+  const { selectedBun, selectedIngredients }: any = useSelector<any>(store => store.ingredientsStore)
+
+  const [total, setTotal] = useState<number>(0)
 
   const dispatch = useDispatch();
 
@@ -27,9 +31,9 @@ function BurgerConstructor(props) {
 
   const handleTotalPrice = useCallback(() => {
     if (selectedIngredients || selectedBun) {
-      const ingredientsPrices = selectedIngredients.map(i => i.price)
-      const pricesSum = ingredientsPrices.reduce((acc, total) => acc + total, 0)
-      return setTotal((!selectedBun.price ? 0 : selectedBun.price * 2) + pricesSum)
+      const ingredientsPrices: number[] = selectedIngredients.map((i: TConstructorIngredient) => i.price)
+      const pricesSum: number = ingredientsPrices.reduce((acc, total) => acc + total, 0)
+      setTotal((!selectedBun.price ? 0 : selectedBun.price * 2) + pricesSum)
     }
   }, [selectedBun, selectedIngredients])
 
@@ -66,10 +70,10 @@ function BurgerConstructor(props) {
 
           <div className={BurgerConstructorStyles.toppingsWindow}>
 
-            {selectedIngredients.map((ingredient, index) => {
+            {selectedIngredients.map((ingredient: TConstructorIngredient, index: number) => {
 
               return (
-                <DraggableCard ingredient={ingredient} key={ingredient.nanoid} index={index} />
+                <DraggableCard key={ingredient.nanoid} ingredient={ingredient} index={index} />
               )
             })}
 
@@ -96,7 +100,7 @@ function BurgerConstructor(props) {
             {total} <CurrencyIcon type="primary" />
           </p>
 
-          <Button type="primary" size="medium" onClick={props.handleTotalClick}>
+          <Button type="primary" size="medium" onClick={handleTotalClick}>
             Оформить заказ
           </Button>
 
@@ -107,10 +111,3 @@ function BurgerConstructor(props) {
 
   );
 }
-
-BurgerConstructor.propTypes = {
-  handleTotalClick: PropTypes.func.isRequired,
-};
-
-
-export default BurgerConstructor;

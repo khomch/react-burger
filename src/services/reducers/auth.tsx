@@ -27,7 +27,7 @@ const initialState = {
     forgotPasswordSuccess: false,
     forgotPasswordRequest: false,
     forgotPasswordFailed: false,
-    
+
     resetPasswordSuccess: false,
     resetPasswordRequest: false,
     resetPasswordFailed: false,
@@ -53,8 +53,8 @@ const initialState = {
 };
 
 
-export const authReducer = (state = initialState, action) => {
-   
+export const authReducer = (state = initialState, action: { type: string, user: {} }) => {
+
     switch (action.type) {
         case FORGOT_PASSWORD_REQUEST: {
             return {

@@ -1,6 +1,7 @@
 import { setCookie, getCookie, deleteCookie } from '../../utils/cookies'
 import { baseUrl } from '../../utils/constants';
 import { checkResponse } from '../../utils/check-response';
+import { ILoginReq, ILoginResp, IRegistrationReq, IRegistrationResp, IUserRequestReq, IUserRequestResp } from '../../utils/types';
 
 export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST';
 export const FORGOT_PASSWORD_FAILED = 'FORGOT_PASSWORD_FAILED';
@@ -24,8 +25,9 @@ export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
 export const UPDATE_USER_FAILED = 'UPDATE_USER_FAILED';
 
-const registrationRequest = (data) => {
-    console.log(data)
+
+
+const registrationRequest = (data: IRegistrationReq): Promise<IRegistrationResp> => {
     return (fetch(`${baseUrl}auth/register`, {
         headers: {
             'Content-Type': 'application/json'
@@ -40,14 +42,13 @@ const registrationRequest = (data) => {
         .then(checkResponse))
 }
 
-export function registration(data) {
-    return function (dispatch) {
+export const registration = (data: IRegistrationReq): any => {
+    return function (dispatch: any) {
         dispatch({
             type: REGISTRATION_REQUEST
         })
         registrationRequest(data)
             .then(res => {
-
                 if (res && res.success) {
                     console.log(res)
                     dispatch({
@@ -63,7 +64,7 @@ export function registration(data) {
     }
 }
 
-const loginRequest = (data) => {
+const loginRequest = (data: ILoginReq): Promise<ILoginResp> => {
     return (fetch(`${baseUrl}auth/login`, {
         headers: {
             'Content-Type': 'application/json'
@@ -92,7 +93,7 @@ const updateToken = async () => {
         })
 }
 
-const setToken = (res) => {
+const setToken = (res: ILoginResp) => {
     if (res.success && res.accessToken.indexOf('Bearer') === 0) {
         setCookie('token', res.accessToken.split('Bearer ')[1], { expires: 1200 });
         setCookie('refreshToken', res.refreshToken);
@@ -124,8 +125,8 @@ const getUserRequest = () =>
         referrerPolicy: 'no-referrer'
     });
 
-export function getUser() {
-    return function (dispatch) {
+export const getUser = ():any  => {
+    return function (dispatch: any) {
         if (getCookie('token') || getCookie('refreshToken')) {
             dispatch({
                 type: GET_USER_REQUEST
@@ -151,9 +152,7 @@ export function getUser() {
     }
 }
 
-
-
-const updateUserRequest = (data) => {
+const updateUserRequest = (data: Partial<IUserRequestReq>): Promise<IUserRequestResp> => {
     return (fetch(`${baseUrl}auth/user`, {
         headers: {
             'Content-Type': 'application/json',
@@ -161,7 +160,7 @@ const updateUserRequest = (data) => {
         },
         method: "PATCH",
         body: JSON.stringify({
-            email: data.email,
+            email: data.login,
             name: data.name,
             password: data.password
         })
@@ -169,15 +168,13 @@ const updateUserRequest = (data) => {
         .then(checkResponse))
 }
 
-
-export function updateUser(data) {
-    return function (dispatch) {
+export const updateUser = (data: Partial<IUserRequestReq>) => {
+    return function (dispatch: any) {
         dispatch({
             type: UPDATE_USER_REQUEST
         })
         updateUserRequest(data)
             .then(res => {
-
                 if (res && res.success) {
                     dispatch({
                         type: UPDATE_USER_SUCCESS,
@@ -193,8 +190,8 @@ export function updateUser(data) {
 }
 
 
-export function login(data) {
-    return function (dispatch) {
+export const login = (data: ILoginReq): any => {
+    return function (dispatch: any) {
         dispatch({
             type: LOGIN_REQUEST
         })
@@ -227,8 +224,8 @@ const logoutRequest = () => {
         .then(checkResponse))
 }
 
-export function logout() {
-    return function (dispatch) {
+export const logout = () => {
+    return function (dispatch: any) {
         dispatch({
             type: LOGOUT_REQUEST
         })
@@ -252,7 +249,7 @@ export function logout() {
 }
 
 
-const forgotPasswordRequest = (data) => {
+const forgotPasswordRequest = (data: string) => {
     return (fetch(`${baseUrl}password-reset/`, {
         headers: {
             'Content-Type': 'application/json'
@@ -265,8 +262,8 @@ const forgotPasswordRequest = (data) => {
         .then(checkResponse))
 }
 
-export function forgotPassword(data) {
-    return function (dispatch) {
+export const forgotPassword = (data: string) => {
+    return function (dispatch: any) {
         dispatch({
             type: FORGOT_PASSWORD_REQUEST
         })
@@ -285,7 +282,7 @@ export function forgotPassword(data) {
     }
 }
 
-const resetPasswordRequest = (data) => {
+const resetPasswordRequest = (data: { password: string, token: string }) => {
     return (fetch(`${baseUrl}password-reset/reset/`, {
         headers: {
             'Content-Type': 'application/json'
@@ -299,8 +296,8 @@ const resetPasswordRequest = (data) => {
         .then(checkResponse))
 }
 
-export function resetPassword(data) {
-    return function (dispatch) {
+export const resetPassword = (data: { password: string, token: string }): any => {
+    return function (dispatch: any) {
         dispatch({
             type: RESET_PASSWORD_REQUEST
         })

@@ -32,10 +32,10 @@ const initialState = {
 };
 
 
-export const ingredientsReducer = (state = initialState, action) => {
-    function defineIngredientByType(array) {
+export const ingredientsReducer = (state = initialState, action: { type: string, selectedIngredientId: string, currentIngredientId: string, nanoid: string, ingredients: {}[], order: {}[], dragIndex: number, hoverIndex: number, ingredientToDelNanoId: string }) => {
+    function defineIngredientByType(array: any) {
 
-        const ingredient = array.find((element) => (element._id === action.selectedIngredientId));
+        const ingredient = array.find((element: { _id: string }) => (element._id === action.selectedIngredientId));
 
         if (ingredient.type !== "bun") {
             return {
@@ -82,7 +82,7 @@ export const ingredientsReducer = (state = initialState, action) => {
         case OPEN_SELECTED_INGREDIENT: {
             return {
                 ...state,
-                currentIngredient: state.ingredients.find((element) => (element._id === action.currentIngredientId)),
+                currentIngredient: state.ingredients.find((element: { _id: string }) => (element._id === action.currentIngredientId)),
                 modalState: true,
             }
         }
@@ -131,7 +131,7 @@ export const ingredientsReducer = (state = initialState, action) => {
         case DELETE_INGREDIENT: {
             return {
                 ...state,
-                selectedIngredients: [...state.selectedIngredients].filter(element => element.nanoid !== action.ingredientToDelNanoId)
+                selectedIngredients: [...state.selectedIngredients].filter((element: { nanoid: string }) => element.nanoid !== action.ingredientToDelNanoId)
             }
         }
 

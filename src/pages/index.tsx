@@ -1,4 +1,4 @@
-import { HomePage } from './home-page/home-page.jsx';
+import { HomePage } from './home-page/home-page';
 import { Login } from './authorization/login';
 import { Register } from './authorization/register';
 import { ForgotPassword } from './authorization/forgot-password';

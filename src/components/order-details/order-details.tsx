@@ -3,11 +3,11 @@ import OrderDetailsStyles from './order-details.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
 
-function OrderDetails() {
+export const OrderDetails = () => {
     // получаем данные из стора
     const {
         order
-    } = useSelector(store => store.ingredientsStore)
+    }:any = useSelector<any>(store => store.ingredientsStore)
 
     return (
 
@@ -23,6 +23,4 @@ function OrderDetails() {
         </div>
 
     )
-}
-
-export default OrderDetails;
+};

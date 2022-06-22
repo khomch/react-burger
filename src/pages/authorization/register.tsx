@@ -10,13 +10,13 @@ export function Register() {
     const {
         user,
         getUserRequest
-    } = useSelector(store => store.auth)
+    }: any = useSelector<any>(store => store.auth)
 
     const dispatch = useDispatch();
 
-    const [form, setValue] = useState({ email: '', password: '', name: '' });
+    const [form, setValue] = useState<{ email: string, password: string, name: string }>({ email: '', password: '', name: '' });
 
-    const onChange = e => {
+    const onChange = (e: { target: { name: string; value: string; }; }) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
 

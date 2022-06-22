@@ -1,15 +1,16 @@
-import React, { useCallback } from 'react';
-
+import React, { ReactNode, useCallback, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom'
-
-import Modal from '../modal/modal';
-
+import { Modal } from '../modal/modal';
 import {
     closeModal
 } from '../../services/actions/ingredients';
 
-export default function Modals({ children }) {
+interface IModals {
+    children: ReactNode
+}
+
+export const Modals: FC<IModals> = ({ children }) => {
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -22,14 +23,14 @@ export default function Modals({ children }) {
     );
 
     // хэндлер закрытия окна
-    const closeModalWindow = () => {
+    const closeModalWindow = ():void => {
         close()
         dispatch(closeModal());
 
     }
 
     // хэндлер закрытия по клику на оверлэй
-    const handleOverlayClick = (e) => {
+    const handleOverlayClick = (e: any):void =>{
         if (e.target === e.currentTarget) {
             closeModalWindow();
         }
@@ -38,7 +39,7 @@ export default function Modals({ children }) {
     // получаем данные из стора о состоянии модального окна
     const {
         modalState,
-    } = useSelector(store => store.ingredientsStore)
+    }:any = useSelector<any>(store => store.ingredientsStore)
 
 
     return (

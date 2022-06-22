@@ -3,21 +3,22 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import styles from './home.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import BurgerIngredients from '../../components/burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
-import IngredientDetails from '../../components/ingredient-details/ingredient-details';
-import OrderDetails from '../../components/order-details/order-details';
-import Modals from '../../components/modals/modals'
+import { BurgerIngredients } from '../../components/burger-ingredients/burger-ingredients';
+import { BurgerConstructor } from '../../components/burger-constructor/burger-constructor';
+import { IngredientDetails } from '../../components/ingredient-details/ingredient-details';
+import { OrderDetails } from '../../components/order-details/order-details';
+import { Modals } from '../../components/modals/modals'
 import { Switch, Route, useHistory, useRouteMatch, useLocation } from 'react-router-dom';
 import {
     openSelectedIngredient,
     sendOrder,
 } from '../../services/actions/ingredients';
+import { TIngredient } from '../../utils/types';
 
-export function HomePage() {
+export const HomePage = () => {
     const match = useRouteMatch();
     const history = useHistory();
-    const location = useLocation();
+    const location: { state: { background: string }, pathname: string } = useLocation();
     const dispatch = useDispatch();
 
     const background = location.state && location.state.background;
@@ -29,16 +30,16 @@ export function HomePage() {
         selectedBun,
         currentIngredient,
         order
-    } = useSelector(store => store.ingredientsStore)
+    }: any = useSelector<any>(store => store.ingredientsStore)
 
     const {
         user
-    } = useSelector(store => store.auth)
+    }: any = useSelector<any>(store => store.auth)
 
     const findIdInUrl = history.location.pathname.slice(history.location.pathname.lastIndexOf('/') + 1);
 
     useEffect(() => {
-        if (ingredients.find(ingredient => ingredient._id === findIdInUrl)) {
+        if (ingredients.find((ingredient: TIngredient) => ingredient._id === findIdInUrl)) {
 
             dispatch(openSelectedIngredient(findIdInUrl));
         }
@@ -46,7 +47,7 @@ export function HomePage() {
 
 
     // хэндлер открытия ингредиента
-    const handleOpenIngredient = (e) => {
+    const handleOpenIngredient = (e: { currentTarget: { id: string; }; }) => {
         dispatch(openSelectedIngredient(e.currentTarget.id));
     }
 
@@ -56,9 +57,9 @@ export function HomePage() {
         if (!user.email) {
             history.push('/login')
         } else {
-            const choosenBunIdArray = [];
+            const choosenBunIdArray: string[] = [];
             choosenBunIdArray.splice(0, 1, selectedBun._id);
-            const choosenIngredientsIdsArray = selectedIngredients.map(i => i._id);
+            const choosenIngredientsIdsArray = selectedIngredients.map((i: TIngredient) => i._id);
             const ingredientsIdsArray = choosenBunIdArray.concat(choosenIngredientsIdsArray);
             dispatch(sendOrder(ingredientsIdsArray));
         }

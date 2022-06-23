@@ -10,13 +10,13 @@ interface IModal {
   children: ReactNode,
   closeModal: () => void,
   modalState: boolean,
-  handleOverlayClick: (e: any) => void
+  handleOverlayClick: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 
 export const Modal: FC<IModal> = ({ children, closeModal, modalState, handleOverlayClick }) => {
 
   // закрываем модальное окно по esc
-  const handlePressEsc = useCallback((event) => {
+  const handlePressEsc = useCallback((event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       closeModal();
     }

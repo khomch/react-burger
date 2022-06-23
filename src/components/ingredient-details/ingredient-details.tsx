@@ -5,12 +5,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
     addSelectedIngredient
 } from '../../services/actions/ingredients';
+import { TIngredient } from '../../utils/types';
 
 
-export const IngredientDetails = ():any => {
+export const IngredientDetails = () => {
 
     const dispatch = useDispatch();
-    const addIngredient = useCallback((e) => {
+    const addIngredient = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         dispatch(addSelectedIngredient(e));
     }, [dispatch])
 
@@ -20,47 +21,46 @@ export const IngredientDetails = ():any => {
 
     const { id }: { id: string } = useParams();
 
-    const ingredientToShow: any = ingredients.find((ingredient: { _id: string }) => ingredient._id === id)
+    const ingredientToShow = ingredients.find((ingredient: TIngredient) => ingredient._id === id)
 
-if (ingredientToShow) {
+    if (ingredientToShow) {
+        return (
+            <div className={IngredientDetailsStyles.ingredientDetails} onClick={addIngredient} id={ingredientToShow._id}>
+                <div className={IngredientDetailsStyles.container}>
+                    <h2 className={`text text_type_main-large ${IngredientDetailsStyles.title}`}>Детали ингредиента</h2>
+                    <img src={ingredientToShow.image_large}
+                        alt={ingredientToShow.name}
+                        className={IngredientDetailsStyles.image}
+                    ></img>
 
-    return (
+                    <p className={`text text_type_main-medium ${IngredientDetailsStyles.name}`}>{ingredientToShow.name}</p>
+                    <ul className={IngredientDetailsStyles.nutritionList}>
+                        <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`} >
+                            <p>Калории, ккал</p>
+                            <p>{ingredientToShow.calories}</p>
+                        </li>
 
-        <div className={IngredientDetailsStyles.ingredientDetails} onClick={addIngredient} id={ingredientToShow._id}>
-            <div className={IngredientDetailsStyles.container}>
-                <h2 className={`text text_type_main-large ${IngredientDetailsStyles.title}`}>Детали ингредиента</h2>
-                <img src={ingredientToShow.image_large}
-                    alt={ingredientToShow.name}
-                    className={IngredientDetailsStyles.image}
-                ></img>
+                        <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`}>
+                            <p>Белки, г</p>
+                            <p>{ingredientToShow.proteins}</p>
+                        </li>
 
-                <p className={`text text_type_main-medium ${IngredientDetailsStyles.name}`}>{ingredientToShow.name}</p>
-                <ul className={IngredientDetailsStyles.nutritionList}>
-                    <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`} >
-                        <p>Калории, ккал</p>
-                        <p>{ingredientToShow.calories}</p>
-                    </li>
+                        <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`}>
+                            <p>Жиры, г</p>
+                            <p>{ingredientToShow.fat}</p>
+                        </li>
 
-                    <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`}>
-                        <p>Белки, г</p>
-                        <p>{ingredientToShow.proteins}</p>
-                    </li>
+                        <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`}>
+                            <p>Углеводы, г</p>
+                            <p>{ingredientToShow.carbohydrates}</p>
+                        </li>
 
-                    <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`}>
-                        <p>Жиры, г</p>
-                        <p>{ingredientToShow.fat}</p>
-                    </li>
-
-                    <li className={`text text_type_main-default text_color_inactive ${IngredientDetailsStyles.nutrition}`}>
-                        <p>Углеводы, г</p>
-                        <p>{ingredientToShow.carbohydrates}</p>
-                    </li>
-
-                </ul>
+                    </ul>
+                </div>
             </div>
-        </div>
-
-    )
-}
+        )
+    } else {
+        return null
+    }
 
 }

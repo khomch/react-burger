@@ -15,7 +15,7 @@ export const ForgotPassword = () => {
 
     const [form, setValue] = useState({ email: '' });
 
-    const onChange = (e: { target: { name: string; value: string; }; }) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
 

@@ -1,15 +1,9 @@
-import { useEffect, FC, ReactNode } from 'react';
-import { Route, Redirect, useLocation } from 'react-router-dom';
+import { useEffect, FC } from 'react';
+import { Route, Redirect, useLocation, RouteProps } from 'react-router-dom';
 import { getUser } from '../../services/actions/auth';
 import { useSelector, useDispatch } from 'react-redux';
 
-interface IProtectedRoute {
-    children: ReactNode,
-    path: string,
-    exact: boolean
-}
-
-export const ProtectedRoute: FC<IProtectedRoute> = ({ children, ...rest }) => {
+export const ProtectedRoute: FC<RouteProps> = ({ children, ...rest }) => {
     const location = useLocation();
     const {
         user

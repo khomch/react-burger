@@ -23,14 +23,14 @@ export const Modals: FC<IModals> = ({ children }) => {
     );
 
     // хэндлер закрытия окна
-    const closeModalWindow = ():void => {
+    const closeModalWindow = () => {
         close()
         dispatch(closeModal());
 
     }
 
     // хэндлер закрытия по клику на оверлэй
-    const handleOverlayClick = (e: any):void =>{
+    const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) =>{
         if (e.target === e.currentTarget) {
             closeModalWindow();
         }

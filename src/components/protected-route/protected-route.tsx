@@ -1,15 +1,15 @@
-import { Route, Redirect, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, FC } from 'react';
+import { Route, Redirect, useLocation, RouteProps } from 'react-router-dom';
 import { getUser } from '../../services/actions/auth';
 import { useSelector, useDispatch } from 'react-redux';
 
-export function ProtectedRoute({ children, ...rest }) {
+export const ProtectedRoute: FC<RouteProps> = ({ children, ...rest }) => {
     const location = useLocation();
     const {
         user
-    } = useSelector(store => store.auth)
+    }:any = useSelector<any>(store => store.auth)
 
-    const dispatch = useDispatch();
+    const dispatch:any = useDispatch();
 
     useEffect(() => {
         dispatch(getUser())

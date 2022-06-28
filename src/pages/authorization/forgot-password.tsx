@@ -5,24 +5,23 @@ import { Link, Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { forgotPassword } from '../../services/actions/auth';
 
-export function ForgotPassword() {
-    const dispatch = useDispatch();
+export const ForgotPassword = () => {
+    const dispatch:any = useDispatch();
     const history = useHistory();
 
     const {
         forgotPasswordSuccess
-    } = useSelector(store => store.auth)
+    }: any = useSelector<any>(store => store.auth)
 
     const [form, setValue] = useState({ email: '' });
 
-    const onChange = e => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
 
     const handleForgotPassword = useCallback(
         e => {
             e.preventDefault();
-            console.log(form)
             dispatch(forgotPassword(form.email));
         },
         [dispatch, form]

@@ -5,14 +5,14 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import { Link } from 'react-router-dom';
 import { getUser, logout, updateUser } from '../../services/actions/auth';
 
-export function Profile() {
-    const dispatch = useDispatch();
+export const Profile = () => {
+    const dispatch:any = useDispatch();
     const {
         user
-    } = useSelector(store => store.auth)
+    }:any = useSelector<any>(store => store.auth)
 
-    const [form, setValue] = useState({ name: '', login: '', password: '' });
-    const [initialValue, setInitialValue] = useState({ name: '', login: '', password: '' });
+    const [form, setValue] = useState<{name: string, login: string, password?: string}>({ name: '', login: '', password: '' });
+    const [initialValue, setInitialValue] = useState<{name: string, login: string, password?: string}>({ name: '', login: '', password: '' });
 
     useEffect(() => {
         dispatch(getUser())
@@ -21,7 +21,7 @@ export function Profile() {
     }, [dispatch, user.name, user.email])
 
 
-    const onChange = e => {
+    const onChange = (e: { target: { name: string; value: string; }; }) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
 
@@ -29,19 +29,19 @@ export function Profile() {
         dispatch(logout())
     }
 
-    const onSaveClick = (e) => {
+    const onSaveClick = (e: { preventDefault: () => void; }) => {
         e.preventDefault()
         setInitialValue(form)
         dispatch(updateUser(form))
 
     }
 
-    const onCancelClick = (e) => {
+    const onCancelClick = (e: { preventDefault: () => void; }) => {
         e.preventDefault()
         setValue(initialValue);
     }
 
-    const compareValues = form.name === initialValue.name && form.email === initialValue.email && form.password === initialValue.password;
+    const compareValues = form.name === initialValue.name && form.login === initialValue.login && form.password === initialValue.password;
 
     return (
         <>
@@ -63,7 +63,7 @@ export function Profile() {
                         <Input placeholder="Логин" name="login" size={'default'} icon={'EditIcon'} value={form.login || ""} onChange={onChange} />
                     </div>
                     <div className={styles.input}>
-                        <Input placeholder="Пароль" name="password" type={'password'} size={'default'} icon={'EditIcon'} value={form.password || ""} onChange={onChange} autocomplete="current-password" />
+                        <Input placeholder="Пароль" name="password" type={'password'} size={'default'} icon={'EditIcon'} value={form.password || ""} onChange={onChange} />
                     </div>
                     <div className={styles.actions}>
                         <button onClick={onCancelClick} className={`text text_type_main-default ${styles.navButton} ${compareValues ? styles.navButtonDisabled : ""}`}>Отменить</button>

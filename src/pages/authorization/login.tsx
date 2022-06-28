@@ -7,17 +7,17 @@ import { login, getUser } from '../../services/actions/auth';
 
 
 export function Login() {
-    const location = useLocation();
+    const location: { state: { from: string } }  = useLocation();
     const {
         user,
         getUserRequest
-    } = useSelector(store => store.auth)
+    }:any = useSelector<any>(store => store.auth)
 
     const dispatch = useDispatch();
 
-    const [form, setValue] = useState({ email: '', password: '' });
+    const [form, setValue] = useState<{email: string, password: string}>({ email: '', password: '' });
 
-    const onChange = e => {
+    const onChange = (e: { target: { name: string; value: string; }; }) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
 
@@ -71,7 +71,7 @@ export function Login() {
                     <Input placeholder="Email" name="email" size={'default'} onChange={onChange} value={form.email} />
                 </div>
                 <div className={styles.input}>
-                    <PasswordInput name="password" onChange={onChange} value={form.password} autocomplete="current-password" />
+                    <PasswordInput name="password" onChange={onChange} value={form.password} />
                 </div>
                 <div className={styles.button}>
                     <Button type="primary" size="medium">

@@ -1,28 +1,30 @@
-import React from 'react';
+import React, { FC } from 'react';
 import IngredientsStyles from './ingredient.module.css';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingredientPropTypes from '../../utils/types';
-import PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
 import { useRouteMatch, useLocation, Link } from 'react-router-dom';
+import { TIngredient } from '../../utils/types';
 
+interface IIngredient {
+    ingredient: TIngredient,
+    handleOpenIngredient: () => void
+}
 
-
-function Ingredient({ ingredient, handleOpenIngredient }) {
+export const Ingredient: FC<IIngredient> = ({ ingredient, handleOpenIngredient }) => {
     const location = useLocation();
     const match = useRouteMatch();
     const {
         selectedBun,
         selectedIngredients
-    } = useSelector(store => store.ingredientsStore)
+    }: any = useSelector<any>(store => store.ingredientsStore)
 
-    const handleIngredientCount = (ingr) => {
+    const handleIngredientCount = (ingr: TIngredient) => {
         const countOne = 1;
         if (ingr.type === 'bun' && ingr.name === selectedBun.name) {
             return countOne;
         } else {
-            return selectedIngredients.filter((i) => i.name === ingr.name).length;
+            return selectedIngredients.filter((i: TIngredient) => i.name === ingr.name).length;
         }
     }
 
@@ -49,10 +51,3 @@ function Ingredient({ ingredient, handleOpenIngredient }) {
 
     )
 }
-
-Ingredient.propTypes = {
-    ingredient: ingredientPropTypes.isRequired,
-    handleOpenIngredient: PropTypes.func.isRequired
-};
-
-export default Ingredient; 

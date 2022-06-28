@@ -24,8 +24,8 @@ const getIngredientsRequest = () => {
 }
 
 // получаем все ингредиенты
-export function getIngredients() {
-    return function (dispatch) {
+export const getIngredients = (): any => {
+    return function (dispatch: any) {
         dispatch({
             type: GET_INGREDIENTS_REQUEST
         })
@@ -47,7 +47,7 @@ export function getIngredients() {
 
 
 // отправляем заказ на сервер
-const sendOrderRequest = (data) => {
+const sendOrderRequest = (data: any) => {
     return (fetch(`${baseUrl}orders/`, {
         headers: {
             'Content-Type': 'application/json'
@@ -60,8 +60,8 @@ const sendOrderRequest = (data) => {
         .then(checkResponse))
 }
 
-export function sendOrder(data) {
-    return function (dispatch) {
+export function sendOrder(data: any): any {
+    return function (dispatch: any) {
         dispatch({
             type: SEND_ORDER_REQUEST
         })
@@ -86,7 +86,7 @@ export function sendOrder(data) {
 
 
 // экшн добавления ингредиента
-export function addSelectedIngredient(e) {
+export function addSelectedIngredient(e: any) {
     return {
         type: ADD_INGREDIENT,
         selectedIngredientId: e.currentTarget.id,
@@ -95,7 +95,7 @@ export function addSelectedIngredient(e) {
 }
 
 // экшн добавления перетаскиванием
-export function addDraggedIngredient(ingredient) {
+export function addDraggedIngredient(ingredient: any) {
     return {
         type: ADD_DRAGGED_INGREDIENT,
         selectedIngredientId: ingredient._id,
@@ -104,7 +104,7 @@ export function addDraggedIngredient(ingredient) {
 }
 
 // открываем выбранный ингредиент
-export function openSelectedIngredient(id) {
+export function openSelectedIngredient(id: string) {
     return {
         type: OPEN_SELECTED_INGREDIENT,
         currentIngredientId: id
@@ -127,7 +127,7 @@ export function closeOrder() {
 
 
 // удаляем ингредиент из кон    структора
-export function deleteIngredient(e) {
+export function deleteIngredient(e: any) {
     return {
         type: DELETE_INGREDIENT,
         ingredientToDelNanoId: e.currentTarget.id
@@ -135,7 +135,7 @@ export function deleteIngredient(e) {
 }
 
 // обновляем список
-export function updateSelectedIngredients(dragIndex, hoverIndex) {
+export function updateSelectedIngredients(dragIndex: number, hoverIndex: number) {
     return {
         type: UPDATE_SELECTED_INGREDIENTS,
         dragIndex: dragIndex,

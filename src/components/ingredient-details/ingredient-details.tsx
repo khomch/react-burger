@@ -5,27 +5,26 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
     addSelectedIngredient
 } from '../../services/actions/ingredients';
+import { TIngredient } from '../../utils/types';
 
 
-function IngredientDetails() {
+export const IngredientDetails = () => {
 
     const dispatch = useDispatch();
-    const addIngredient = useCallback((e) => {
+    const addIngredient = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         dispatch(addSelectedIngredient(e));
     }, [dispatch])
 
     const {
         ingredients
-    } = useSelector(store => store.ingredientsStore)
+    }: any = useSelector<any>(store => store.ingredientsStore)
 
-    const { id } = useParams();
+    const { id }: { id: string } = useParams();
 
-    const ingredientToShow = ingredients.find(ingredient => ingredient._id === id)
+    const ingredientToShow = ingredients.find((ingredient: TIngredient) => ingredient._id === id)
 
     if (ingredientToShow) {
-
         return (
-
             <div className={IngredientDetailsStyles.ingredientDetails} onClick={addIngredient} id={ingredientToShow._id}>
                 <div className={IngredientDetailsStyles.container}>
                     <h2 className={`text text_type_main-large ${IngredientDetailsStyles.title}`}>Детали ингредиента</h2>
@@ -59,10 +58,9 @@ function IngredientDetails() {
                     </ul>
                 </div>
             </div>
-
         )
+    } else {
+        return null
     }
 
 }
-
-export default IngredientDetails;

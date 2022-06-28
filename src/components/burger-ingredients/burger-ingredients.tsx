@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import Ingredient from '../ingredient/ingredient';
+import { Ingredient } from '../ingredient/ingredient';
+import { TIngredient } from '../../utils/types';
 
-
-
-function BurgerIngredients(props) {
+export const BurgerIngredients: FC<any> = ({ handleOpenIngredient }) => {
   // стейт для переключения табов
-  const [currentTab, setCurrentTab] = useState('buns');
+  const [currentTab, setCurrentTab] = useState<string>('buns');
   // функция переключения таба
-  const onTabClick = (tab) => {
+  const onTabClick = (tab: string) => {
     setCurrentTab(tab);
     const element = document.getElementById(tab);
     if (element) element.scrollIntoView({ behavior: "smooth" });
@@ -19,14 +18,14 @@ function BurgerIngredients(props) {
 
   const {
     ingredients,
-  } = useSelector(store => store.ingredientsStore)
+  }: any = useSelector<any>(store => store.ingredientsStore)
 
-  function visibleCategory() {
-    const ingredientsContainer = document.getElementById('container');
-    const containerCoords =  ingredientsContainer.getBoundingClientRect();
-    const currentElementInCat = document.elementFromPoint(containerCoords.top, containerCoords.top);
-    const currentCategory = currentElementInCat.closest('ul');
-    return setCurrentTab(currentCategory.id);
+  const visibleCategory = () => {
+    const ingredientsContainer = document.getElementById('container') as HTMLElement;
+    const containerCoords = ingredientsContainer?.getBoundingClientRect() as DOMRect;
+    const currentElementInCat = document?.elementFromPoint(containerCoords?.top, containerCoords?.top);
+    const currentCategory = currentElementInCat?.closest('ul') as HTMLElement;
+    setCurrentTab(currentCategory.id);
   }
 
   return (
@@ -48,10 +47,10 @@ function BurgerIngredients(props) {
         <ul className={BurgerIngredientsStyles.ingredientList} id="buns">
           <h2 className={BurgerIngredientsStyles.h2}>Булки</h2>
           {ingredients
-            .filter((item) => item.type === 'bun')
-            .map((ingredient) => {
+            .filter((item: TIngredient) => item.type === 'bun')
+            .map((ingredient: TIngredient) => {
               return (
-                <Ingredient key={ingredient._id} ingredient={ingredient} handleOpenIngredient={props.handleOpenIngredient} />
+                <Ingredient key={ingredient._id} ingredient={ingredient} handleOpenIngredient={handleOpenIngredient} />
               )
             })
           }
@@ -60,10 +59,10 @@ function BurgerIngredients(props) {
         <ul className={BurgerIngredientsStyles.ingredientList} id="sauces">
           <h2 className={BurgerIngredientsStyles.h2} >Соусы</h2>
           {ingredients
-            .filter((item) => item.type === 'sauce')
-            .map((ingredient) => {
+            .filter((item: TIngredient) => item.type === 'sauce')
+            .map((ingredient: TIngredient) => {
               return (
-                <Ingredient key={ingredient._id} ingredient={ingredient} handleOpenIngredient={props.handleOpenIngredient} />
+                <Ingredient key={ingredient._id} ingredient={ingredient} handleOpenIngredient={handleOpenIngredient} />
               )
             })
           }
@@ -72,10 +71,10 @@ function BurgerIngredients(props) {
         <ul className={BurgerIngredientsStyles.ingredientList} id="mains">
           <h2 className={BurgerIngredientsStyles.h2} >Начинки</h2>
           {ingredients
-            .filter((item) => item.type === 'main')
-            .map((ingredient) => {
+            .filter((item: TIngredient) => item.type === 'main')
+            .map((ingredient: TIngredient) => {
               return (
-                <Ingredient key={ingredient._id} ingredient={ingredient} handleOpenIngredient={props.handleOpenIngredient} />
+                <Ingredient key={ingredient._id} ingredient={ingredient} handleOpenIngredient={handleOpenIngredient} />
               )
             })
           }
@@ -90,5 +89,3 @@ function BurgerIngredients(props) {
 BurgerIngredients.propTypes = {
   handleOpenIngredient: PropTypes.func.isRequired
 };
-
-export default BurgerIngredients;

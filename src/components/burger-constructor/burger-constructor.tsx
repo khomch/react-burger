@@ -1,12 +1,11 @@
 import React, { useState, useCallback, useEffect, FC } from 'react';
 import BurgerConstructorStyles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../utils/hooks';
 import { useDrop } from 'react-dnd';
 import { addIngredient } from '../../services/actions/ingredients'
 import { DraggableCard } from '../draggable-card/draggable-card';
 import { TConstructorIngredient, TIngredient } from '../../utils/types';
-import { RootState } from '../../services/store-types';
 
 
 interface IBurgerConstructor {
@@ -14,7 +13,7 @@ interface IBurgerConstructor {
 };
 
 export const BurgerConstructor: FC<IBurgerConstructor> = ({ handleTotalClick }) => {
-  const { selectedBun, selectedIngredients }: any = useSelector<RootState>(store => store.ingredientsStore)
+  const { selectedBun, selectedIngredients } = useSelector(store => store.ingredientsStore)
 
   const [total, setTotal] = useState<number>(0)
 
@@ -34,7 +33,7 @@ export const BurgerConstructor: FC<IBurgerConstructor> = ({ handleTotalClick }) 
     if (selectedIngredients || selectedBun) {
       const ingredientsPrices: number[] = selectedIngredients.map((i: TConstructorIngredient) => i.price)
       const pricesSum: number = ingredientsPrices.reduce((acc, total) => acc + total, 0)
-      setTotal((!selectedBun.price ? 0 : selectedBun.price * 2) + pricesSum)
+      setTotal((!selectedBun?.price ? 0 : selectedBun.price * 2) + pricesSum)
     }
   }, [selectedBun, selectedIngredients])
 
@@ -47,7 +46,7 @@ export const BurgerConstructor: FC<IBurgerConstructor> = ({ handleTotalClick }) 
   return (
     <section className={className} ref={dropTarget}>
 
-      {!selectedBun.name && !selectedIngredients[0]
+      {!selectedBun?.name && !selectedIngredients[0]
         ?
         <div className={BurgerConstructorStyles.chooseIngredient}><p className="text text_type_main-large">Выберите ингредиент</p></div>
         :
@@ -56,7 +55,7 @@ export const BurgerConstructor: FC<IBurgerConstructor> = ({ handleTotalClick }) 
           <div className={BurgerConstructorStyles.outside}>
 
             {
-              !selectedBun.name ? <p className="text text_type_main-default text_color_inactive">Выберите булку</p>
+              !selectedBun?.name ? <p className="text text_type_main-default text_color_inactive">Выберите булку</p>
                 :
                 <ConstructorElement
                   type="top"
@@ -82,7 +81,7 @@ export const BurgerConstructor: FC<IBurgerConstructor> = ({ handleTotalClick }) 
 
 
           <div className={BurgerConstructorStyles.outside}>
-            {selectedBun.name && <ConstructorElement
+            {selectedBun?.name && <ConstructorElement
               type="bottom"
               isLocked={true}
               text={`${selectedBun.name} (низ)`}

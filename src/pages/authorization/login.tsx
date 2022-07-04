@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import styles from './authorization.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../../utils/hooks';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { login, getUser } from '../../services/actions/auth';
@@ -11,7 +11,7 @@ export function Login() {
     const {
         user,
         getUserRequest
-    }:any = useSelector<any>(store => store.auth)
+    } = useSelector(store => store.auth)
 
     const dispatch = useDispatch();
 
@@ -33,7 +33,7 @@ export function Login() {
         dispatch(getUser())
     }, [dispatch])
 
-    if (user.email && location.state) {
+    if (user && location.state) {
         return (
             <Redirect
                 to={{
@@ -43,7 +43,7 @@ export function Login() {
         );
     }
 
-    if (user.email && !location.state) {
+    if (user && !location.state) {
         return (
             <Redirect
                 to={{

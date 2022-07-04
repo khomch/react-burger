@@ -22,13 +22,13 @@ const initialState: TIngredientsState = {
     ingredientsRequest: false,
     ingredientsFailed: false,
 
-    selectedBun: {},
+    selectedBun: null,
     selectedIngredients: [],
 
-    currentIngredient: {},
+    currentIngredient: null,
     modalState: false,
 
-    order: [],
+    order: null,
     orderRequest: false,
     orderFailed: false,
 };
@@ -61,16 +61,16 @@ export const ingredientsReducer = (state: TIngredientsState = initialState, acti
         case OPEN_SELECTED_INGREDIENT: {
             return {
                 ...state,
-                currentIngredient: state.ingredients.find((element: { _id: string }) => (element?._id === action.currentIngredientId)),
+                currentIngredient: state.ingredients?.find((element: { _id: string }) => (element?._id === action.currentIngredientId)),
                 modalState: true,
             }
         }
         case CLOSE_MODAL: {
             return {
                 ...state,
-                currentIngredient: {},
+                currentIngredient: null,
                 modalState: false,
-                order: {}
+                order: null
             }
         }
         case SEND_ORDER_REQUEST: {
@@ -98,7 +98,7 @@ export const ingredientsReducer = (state: TIngredientsState = initialState, acti
         case CLOSE_ORDER: {
             return {
                 ...state,
-                selectedBun: {},
+                selectedBun: null,
                 selectedIngredients: [],
             }
         }

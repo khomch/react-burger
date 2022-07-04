@@ -29,5 +29,5 @@ export type TAuthState = {
     updateUserSuccess: boolean,
     updateUserFailed: boolean,
 
-    user: TUser | object,
+    user: TUser | null,
 }

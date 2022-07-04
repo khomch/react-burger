@@ -2,6 +2,7 @@ import { setCookie, getCookie, deleteCookie } from '../../utils/cookies'
 import { baseUrl } from '../../utils/constants';
 import { checkResponse } from '../../utils/check-response';
 import { ILoginReq, ILoginResp, IRegistrationReq, IRegistrationResp, IUserRequestReq, IUserRequestResp } from '../../utils/types';
+import { AppDispatch } from '../store-types';
 
 import {
     FORGOT_PASSWORD_REQUEST,
@@ -42,8 +43,8 @@ const registrationRequest = (data: IRegistrationReq): Promise<IRegistrationResp>
         .then(checkResponse))
 }
 
-export const registration = (data: IRegistrationReq): any => {
-    return function (dispatch: any) {
+export const registration = (data: IRegistrationReq) => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: REGISTRATION_REQUEST
         })
@@ -125,8 +126,8 @@ const getUserRequest = () =>
         referrerPolicy: 'no-referrer'
     });
 
-export const getUser = (): any => {
-    return function (dispatch: any) {
+export const getUser = () => {
+    return function (dispatch: AppDispatch) {
         if (getCookie('token') || getCookie('refreshToken')) {
             dispatch({
                 type: GET_USER_REQUEST
@@ -169,7 +170,7 @@ const updateUserRequest = (data: Partial<IUserRequestReq>): Promise<IUserRequest
 }
 
 export const updateUser = (data: Partial<IUserRequestReq>) => {
-    return function (dispatch: any) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: UPDATE_USER_REQUEST
         })
@@ -190,8 +191,8 @@ export const updateUser = (data: Partial<IUserRequestReq>) => {
 }
 
 
-export const login = (data: ILoginReq): any => {
-    return function (dispatch: any) {
+export const login = (data: ILoginReq) => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: LOGIN_REQUEST
         })
@@ -226,7 +227,7 @@ const logoutRequest = () => {
 }
 
 export const logout = () => {
-    return function (dispatch: any) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: LOGOUT_REQUEST
         })
@@ -297,8 +298,8 @@ const resetPasswordRequest = (data: { password: string, token: string }) => {
         .then(checkResponse))
 }
 
-export const resetPassword = (data: { password: string, token: string }): any => {
-    return function (dispatch: any) {
+export const resetPassword = (data: { password: string, token: string }) => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: RESET_PASSWORD_REQUEST
         })

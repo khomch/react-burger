@@ -2,16 +2,16 @@ import React, { useCallback, useState } from 'react';
 import styles from './authorization.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../../utils/hooks';
 import { forgotPassword } from '../../services/actions/auth';
 
 export const ForgotPassword = () => {
-    const dispatch:any = useDispatch();
+    const dispatch = useDispatch();
     const history = useHistory();
 
     const {
         forgotPasswordSuccess
-    }: any = useSelector<any>(store => store.auth)
+    } = useSelector(store => store.auth)
 
     const [form, setValue] = useState({ email: '' });
 

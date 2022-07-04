@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import styles from './home.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../utils/hooks';
 import { BurgerIngredients } from '../../components/burger-ingredients/burger-ingredients';
 import { BurgerConstructor } from '../../components/burger-constructor/burger-constructor';
 import { IngredientDetails } from '../../components/ingredient-details/ingredient-details';
@@ -30,11 +30,11 @@ export const HomePage = () => {
         selectedBun,
         currentIngredient,
         order
-    }: any = useSelector<any>(store => store.ingredientsStore)
+    } = useSelector(store => store.ingredientsStore)
 
     const {
         user
-    }: any = useSelector<any>(store => store.auth)
+    } = useSelector(store => store.auth)
 
     const findIdInUrl = history.location.pathname.slice(history.location.pathname.lastIndexOf('/') + 1);
 
@@ -44,8 +44,7 @@ export const HomePage = () => {
             dispatch(openSelectedIngredient(findIdInUrl));
         }
     }, [ingredients, dispatch, findIdInUrl])
-
-
+    
     // хэндлер открытия ингредиента
     const handleOpenIngredient = (e: { currentTarget: { id: string; }; }) => {
         dispatch(openSelectedIngredient(e.currentTarget.id));
@@ -53,12 +52,11 @@ export const HomePage = () => {
 
     // хэндлер открытия тотала 
     const handleTotalClick = () => {
-
-        if (!user.email) {
+        if (!user) {
             history.push('/login')
         } else {
             const choosenBunIdArray: string[] = [];
-            choosenBunIdArray.splice(0, 1, selectedBun._id);
+            selectedBun && choosenBunIdArray.splice(0, 1, selectedBun._id);
             const choosenIngredientsIdsArray = selectedIngredients.map((i: TIngredient) => i._id);
             const ingredientsIdsArray = choosenBunIdArray.concat(choosenIngredientsIdsArray);
             dispatch(sendOrder(ingredientsIdsArray));
@@ -99,7 +97,7 @@ export const HomePage = () => {
                 </DndProvider>
             </section>
 
-            {Object.keys(currentIngredient).length !== 0
+            {currentIngredient
                 && background
                 &&
                 <Switch>
@@ -117,7 +115,7 @@ export const HomePage = () => {
                 </Switch>
             }
 
-            {Object.keys(order).length !== 0
+            {order
                 &&
                 <Modals>
                     <OrderDetails />

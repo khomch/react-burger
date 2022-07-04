@@ -1,4 +1,4 @@
-import { TIngredient } from '../../utils/types'
+import { TIngredient, TOrder } from '../../utils/types'
 import {
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
@@ -42,7 +42,7 @@ export interface ISendOrderRequest {
 
 export interface ISendOrderSuccess {
     readonly type: typeof SEND_ORDER_SUCCESS,
-    readonly order: string[]
+    readonly order: TOrder
 };
 
 export interface ISendOrderFailed {

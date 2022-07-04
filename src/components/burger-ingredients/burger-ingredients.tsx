@@ -2,7 +2,7 @@ import React, { useState, FC } from 'react';
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../utils/hooks';
 import { Ingredient } from '../ingredient/ingredient';
 import { TIngredient } from '../../utils/types';
 
@@ -18,7 +18,7 @@ export const BurgerIngredients: FC<any> = ({ handleOpenIngredient }) => {
 
   const {
     ingredients,
-  }: any = useSelector<any>(store => store.ingredientsStore)
+  } = useSelector(store => store.ingredientsStore)
 
   const visibleCategory = () => {
     const ingredientsContainer = document.getElementById('container') as HTMLElement;
@@ -46,8 +46,7 @@ export const BurgerIngredients: FC<any> = ({ handleOpenIngredient }) => {
 
         <ul className={BurgerIngredientsStyles.ingredientList} id="buns">
           <h2 className={BurgerIngredientsStyles.h2}>Булки</h2>
-          {ingredients
-            .filter((item: TIngredient) => item.type === 'bun')
+          {ingredients?.filter((item: TIngredient) => item.type === 'bun')
             .map((ingredient: TIngredient) => {
               return (
                 <Ingredient key={ingredient._id} ingredient={ingredient} handleOpenIngredient={handleOpenIngredient} />
@@ -58,8 +57,7 @@ export const BurgerIngredients: FC<any> = ({ handleOpenIngredient }) => {
 
         <ul className={BurgerIngredientsStyles.ingredientList} id="sauces">
           <h2 className={BurgerIngredientsStyles.h2} >Соусы</h2>
-          {ingredients
-            .filter((item: TIngredient) => item.type === 'sauce')
+          {ingredients?.filter((item: TIngredient) => item.type === 'sauce')
             .map((ingredient: TIngredient) => {
               return (
                 <Ingredient key={ingredient._id} ingredient={ingredient} handleOpenIngredient={handleOpenIngredient} />
@@ -70,8 +68,7 @@ export const BurgerIngredients: FC<any> = ({ handleOpenIngredient }) => {
 
         <ul className={BurgerIngredientsStyles.ingredientList} id="mains">
           <h2 className={BurgerIngredientsStyles.h2} >Начинки</h2>
-          {ingredients
-            .filter((item: TIngredient) => item.type === 'main')
+          {ingredients?.filter((item: TIngredient) => item.type === 'main')
             .map((ingredient: TIngredient) => {
               return (
                 <Ingredient key={ingredient._id} ingredient={ingredient} handleOpenIngredient={handleOpenIngredient} />

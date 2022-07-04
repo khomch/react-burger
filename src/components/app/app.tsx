@@ -4,17 +4,19 @@ import { AppHeader } from '../app-header/app-header';
 import { HomePage, Login, Register, ForgotPassword, Profile, ResetPassword } from '../../pages';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../utils/hooks';
 import {
   getIngredients
 } from '../../services/actions/ingredients';
+import { getUser } from '../../services/actions/auth';
 
 
 export const App = () => {
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getIngredients());
+    dispatch(getUser());
   }, [dispatch])
 
   return (

@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback, FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../../utils/hooks';
 import { useHistory } from 'react-router-dom'
 import { Modal } from '../modal/modal';
 import {
@@ -39,7 +39,7 @@ export const Modals: FC<IModals> = ({ children }) => {
     // получаем данные из стора о состоянии модального окна
     const {
         modalState,
-    }:any = useSelector<any>(store => store.ingredientsStore)
+    } = useSelector(store => store.ingredientsStore)
 
 
     return (

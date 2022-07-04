@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import IngredientsStyles from './ingredient.module.css';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../utils/hooks';
 import { useRouteMatch, useLocation, Link } from 'react-router-dom';
 import { TIngredient } from '../../utils/types';
 
@@ -17,11 +17,11 @@ export const Ingredient: FC<IIngredient> = ({ ingredient, handleOpenIngredient }
     const {
         selectedBun,
         selectedIngredients
-    }: any = useSelector<any>(store => store.ingredientsStore)
+    } = useSelector(store => store.ingredientsStore)
 
     const handleIngredientCount = (ingr: TIngredient) => {
         const countOne = 1;
-        if (ingr.type === 'bun' && ingr.name === selectedBun.name) {
+        if (ingr.type === 'bun' && ingr.name === selectedBun?.name) {
             return countOne;
         } else {
             return selectedIngredients.filter((i: TIngredient) => i.name === ingr.name).length;

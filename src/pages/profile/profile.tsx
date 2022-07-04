@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import styles from './profile.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from '../../utils/hooks';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { getUser, logout, updateUser } from '../../services/actions/auth';
 
 export const Profile = () => {
-    const dispatch:any = useDispatch();
+    const dispatch = useDispatch();
     const {
         user
-    }:any = useSelector<any>(store => store.auth)
+    } = useSelector(store => store.auth)
 
     const [form, setValue] = useState<{name: string, login: string, password?: string}>({ name: '', login: '', password: '' });
     const [initialValue, setInitialValue] = useState<{name: string, login: string, password?: string}>({ name: '', login: '', password: '' });
 
     useEffect(() => {
         dispatch(getUser())
-        setValue({ name: user.name, login: user.email })
-        setInitialValue({ name: user.name, login: user.email })
-    }, [dispatch, user.name, user.email])
+        user && setValue({ name: user.name, login: user.email })
+        user && setInitialValue({ name: user.name, login: user.email })
+    }, [dispatch, user])
 
 
     const onChange = (e: { target: { name: string; value: string; }; }) => {

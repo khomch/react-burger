@@ -53,7 +53,7 @@ const initialState: TAuthState = {
     updateUserSuccess: false,
     updateUserFailed: false,
 
-    user: {},
+    user: null,
 };
 
 
@@ -172,7 +172,7 @@ export const authReducer = (state: TAuthState = initialState, action: TAuthActio
                 logoutRequest: false,
                 logoutSuccess: true,
                 logoutFailed: false,
-                user: {}
+                user: null
             }
         }
         case LOGOUT_FAILED: {

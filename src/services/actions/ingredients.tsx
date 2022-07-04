@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 import { checkResponse } from '../../utils/check-response';
 import { baseUrl } from '../../utils/constants';
 import { IGetIngredientsResp, TIngredient } from '../../utils/types';
-import { AppDispatch, AppThunk } from '../store-types';
+import { AppDispatch } from '../store-types';
 import {
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
@@ -25,7 +25,7 @@ const getIngredientsRequest = (): Promise<IGetIngredientsResp> => {
 }
 
 // получаем все ингредиенты
-export const getIngredients: AppThunk = () => {
+export const getIngredients = () => {
     return function (dispatch: AppDispatch) {
         dispatch({
             type: GET_INGREDIENTS_REQUEST
@@ -61,8 +61,8 @@ const sendOrderRequest = (data: string[]) => {
         .then(checkResponse))
 }
 
-export function sendOrder(data: string[]): any {
-    return function (dispatch: any) {
+export function sendOrder(data: string[]) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: SEND_ORDER_REQUEST
         })

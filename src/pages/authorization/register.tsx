@@ -1,16 +1,16 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import styles from './authorization.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../../utils/hooks';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect } from 'react-router-dom';
 import { registration, getUser } from '../../services/actions/auth';
 
-export function Register() {
+export const Register = () => {
 
     const {
         user,
         getUserRequest
-    }: any = useSelector<any>(store => store.auth)
+    } = useSelector(store => store.auth)
 
     const dispatch = useDispatch();
 
@@ -32,7 +32,7 @@ export function Register() {
         dispatch(getUser())
     }, [dispatch])
 
-    if (user.email) {
+    if (user) {
         return (
             <Redirect
                 to={{

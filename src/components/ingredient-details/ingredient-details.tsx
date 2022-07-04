@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import IngredientDetailsStyles from './ingredient-details.module.css';
 import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../utils/hooks';
 import {
     addIngredient,
 } from '../../services/actions/ingredients';
@@ -11,17 +11,19 @@ import { TIngredient } from '../../utils/types';
 export const IngredientDetails = () => {
     const {
         ingredients
-    }: any = useSelector<any>(store => store.ingredientsStore)
+    } = useSelector(store => store.ingredientsStore)
 
     const dispatch = useDispatch();
     const addSelectedIngredient = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        const ingredientToAdd: TIngredient = ingredients.find((element: TIngredient) => element._id === e.currentTarget.id)
-        dispatch(addIngredient(ingredientToAdd));
+        const ingredientToAdd: TIngredient | undefined = ingredients.find((element) => element._id === e.currentTarget.id);
+        if (ingredientToAdd !== undefined) {
+            dispatch(addIngredient(ingredientToAdd));
+        }
     }, [dispatch, ingredients])
 
     const { id }: { id: string } = useParams();
 
-    const ingredientToShow = ingredients.find((ingredient: TIngredient) => ingredient._id === id)
+    const ingredientToShow = ingredients?.find((ingredient: TIngredient) => ingredient._id === id)
 
     if (ingredientToShow) {
         return (

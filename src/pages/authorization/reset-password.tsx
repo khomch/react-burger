@@ -2,16 +2,16 @@ import React, { useState, useCallback } from 'react';
 import styles from './authorization.module.css';
 import { Input, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useHistory, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../../utils/hooks';
 import { resetPassword } from '../../services/actions/auth';
 
-export const ResetPassword = ():any => {
+export const ResetPassword = () => {
 
     const dispatch = useDispatch();
 
     const {
         resetPasswordSuccess
-    }: any = useSelector<any>(store => store.auth)
+    } = useSelector(store => store.auth)
 
     const history: { location: { state: { pathname: string, from: string } } } = useHistory();
 
@@ -76,5 +76,5 @@ export const ResetPassword = ():any => {
             </section>
         );
     }
-
+    else { return (<></>) }
 }

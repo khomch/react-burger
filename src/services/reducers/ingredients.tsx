@@ -1,4 +1,5 @@
 import update from 'immutability-helper';
+import { TIngredientsState } from './ingredients-types';
 import {
     GET_INGREDIENTS_FAILED,
     GET_INGREDIENTS_REQUEST,
@@ -10,50 +11,30 @@ import {
     SEND_ORDER_REQUEST,
     SEND_ORDER_SUCCESS,
     CLOSE_ORDER,
-    ADD_DRAGGED_INGREDIENT,
     DELETE_INGREDIENT,
     UPDATE_SELECTED_INGREDIENTS,
-} from "../actions/ingredients";
+} from "../actions/ingredients-constants";
+import { TIngredientsActions } from '../actions/ingredients-types';
 
-const initialState = {
+
+const initialState: TIngredientsState = {
     ingredients: [],
     ingredientsRequest: false,
     ingredientsFailed: false,
 
-    selectedBun: [],
+    selectedBun: {},
     selectedIngredients: [],
 
     currentIngredient: {},
     modalState: false,
 
-    order: {},
+    order: [],
     orderRequest: false,
     orderFailed: false,
 };
 
 
-export const ingredientsReducer = (state = initialState, action: { type: string, selectedIngredientId: string, currentIngredientId: string, nanoid: string, ingredients: {}[], order: {}[], dragIndex: number, hoverIndex: number, ingredientToDelNanoId: string }) => {
-    function defineIngredientByType(array: any) {
-
-        const ingredient = array.find((element: { _id: string }) => (element._id === action.selectedIngredientId));
-
-        if (ingredient.type !== "bun") {
-            return {
-                ...state,
-                selectedIngredients: [...state.selectedIngredients,
-                {
-                    ...ingredient,
-                    nanoid: action.nanoid
-                }],
-            }
-        } else if (ingredient.type === "bun") {
-            return {
-                ...state,
-                selectedBun: ingredient
-            }
-        }
-    }
-
+export const ingredientsReducer = (state: TIngredientsState = initialState, action: TIngredientsActions): TIngredientsState => {
     switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
             return {
@@ -66,7 +47,7 @@ export const ingredientsReducer = (state = initialState, action: { type: string,
                 ...state,
                 ingredientsFailed: false,
                 ingredientsRequest: false,
-                ingredients: action.ingredients
+                ingredients: action.ingredients,
             }
         }
         case GET_INGREDIENTS_FAILED: {
@@ -76,13 +57,11 @@ export const ingredientsReducer = (state = initialState, action: { type: string,
                 ingredientsRequest: false,
             }
         }
-        case ADD_INGREDIENT: {
-            return defineIngredientByType(state.ingredients)
-        }
+
         case OPEN_SELECTED_INGREDIENT: {
             return {
                 ...state,
-                currentIngredient: state.ingredients.find((element: { _id: string }) => (element._id === action.currentIngredientId)),
+                currentIngredient: state.ingredients.find((element: { _id: string }) => (element?._id === action.currentIngredientId)),
                 modalState: true,
             }
         }
@@ -106,7 +85,7 @@ export const ingredientsReducer = (state = initialState, action: { type: string,
                 orderFailed: false,
                 orderRequest: false,
                 order: action.order,
-                modalState: true
+                modalState: true,
             }
         }
         case SEND_ORDER_FAILED: {
@@ -119,14 +98,25 @@ export const ingredientsReducer = (state = initialState, action: { type: string,
         case CLOSE_ORDER: {
             return {
                 ...state,
-                selectedBun: [],
+                selectedBun: {},
                 selectedIngredients: [],
             }
         }
 
-        case ADD_DRAGGED_INGREDIENT: {
-            return defineIngredientByType(state.ingredients)
+        case ADD_INGREDIENT: {
+            return action.ingredient.type !== 'bun' ? {
+                ...state,
+                selectedIngredients: [...state.selectedIngredients,
+                {
+                    ...action.ingredient,
+                    nanoid: action.nanoid
+                }]
+            } : {
+                ...state,
+                selectedBun: action.ingredient
+            }
         }
+
 
         case DELETE_INGREDIENT: {
             return {

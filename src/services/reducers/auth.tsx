@@ -1,3 +1,4 @@
+import { TAuthState } from "./auth-types";
 import {
     FORGOT_PASSWORD_REQUEST,
     FORGOT_PASSWORD_FAILED,
@@ -20,10 +21,10 @@ import {
     UPDATE_USER_REQUEST,
     UPDATE_USER_SUCCESS,
     UPDATE_USER_FAILED,
+} from "../actions/auth-constants";
+import { TAuthActions } from "../actions/auth-types";
 
-} from "../actions/auth";
-
-const initialState = {
+const initialState: TAuthState = {
     forgotPasswordSuccess: false,
     forgotPasswordRequest: false,
     forgotPasswordFailed: false,
@@ -40,20 +41,23 @@ const initialState = {
     loginSuccess: false,
     loginFailed: false,
 
-    logOutRequest: false,
-    logOutSuccess: false,
-    logOutFailed: false,
+    logoutRequest: false,
+    logoutSuccess: false,
+    logoutFailed: false,
 
     getUserRequest: false,
     getUserSuccess: false,
     getUserFailed: false,
 
-    user: {},
+    updateUserRequest: false,
+    updateUserSuccess: false,
+    updateUserFailed: false,
 
+    user: {},
 };
 
 
-export const authReducer = (state = initialState, action: { type: string, user: {} }) => {
+export const authReducer = (state: TAuthState = initialState, action: TAuthActions): TAuthState => {
 
     switch (action.type) {
         case FORGOT_PASSWORD_REQUEST: {

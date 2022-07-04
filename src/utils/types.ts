@@ -26,6 +26,11 @@ export type TOrder = {
     ingredients: string;
 }
 
+export type TUser = {
+    email: string,
+    name: string
+}
+
 export interface IRegistrationReq {
     email: string,
     password: string,
@@ -69,6 +74,11 @@ export interface IUserRequestResp {
         email: string,
         name: string
     },
+}
+
+export interface IGetIngredientsResp {
+    success: boolean,
+    data: TIngredient[],
 }
 
 

@@ -17,7 +17,7 @@ export const DraggableCard: FC<IDraggebleCard> = ({ ingredient, index }) => {
     const dispatch = useDispatch();
 
     const handleDeleteIngredient = (e: MouseEvent) => {
-        return dispatch(deleteIngredient(e))
+        return dispatch(deleteIngredient(e.currentTarget.id))
     }
 
     const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {

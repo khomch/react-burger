@@ -3,9 +3,10 @@ import BurgerConstructorStyles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
-import { addDraggedIngredient } from '../../services/actions/ingredients'
+import { addIngredient } from '../../services/actions/ingredients'
 import { DraggableCard } from '../draggable-card/draggable-card';
-import { TConstructorIngredient } from '../../utils/types';
+import { TConstructorIngredient, TIngredient } from '../../utils/types';
+import { RootState } from '../../services/store-types';
 
 
 interface IBurgerConstructor {
@@ -13,7 +14,7 @@ interface IBurgerConstructor {
 };
 
 export const BurgerConstructor: FC<IBurgerConstructor> = ({ handleTotalClick }) => {
-  const { selectedBun, selectedIngredients }: any = useSelector<any>(store => store.ingredientsStore)
+  const { selectedBun, selectedIngredients }: any = useSelector<RootState>(store => store.ingredientsStore)
 
   const [total, setTotal] = useState<number>(0)
 
@@ -24,8 +25,8 @@ export const BurgerConstructor: FC<IBurgerConstructor> = ({ handleTotalClick }) 
     collect: monitor => ({
       isHover: monitor.isOver()
     }),
-    drop(itemId) {
-      dispatch(addDraggedIngredient(itemId))
+    drop(ingredient: TIngredient) {
+      dispatch(addIngredient(ingredient))
     }
   });
 

@@ -11,7 +11,7 @@ import {
 
 
 export const App = () => {
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   useEffect(() => {
     dispatch(getIngredients());

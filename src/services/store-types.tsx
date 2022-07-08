@@ -4,10 +4,13 @@ import { Action, ActionCreator, Dispatch } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import store from "./store";
+import { TWsActions } from "./actions/ws-types";
+import { TFeedActions } from "./actions/feed-types";
+import { TModalsActions } from "./actions/modals-types";
 
 export type RootState = ReturnType<typeof store.getState>; 
 
-type TApplicationActions = TIngredientsActions | TAuthActions;
+export type TApplicationActions = TIngredientsActions | TAuthActions | TWsActions | TFeedActions | TModalsActions;
 
 export type AppThunk<TReturn = void> = ActionCreator<
   ThunkAction<TReturn, Action, RootState, TApplicationActions>

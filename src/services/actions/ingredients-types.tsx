@@ -5,13 +5,12 @@ import {
     GET_INGREDIENTS_FAILED,
     ADD_INGREDIENT,
     OPEN_SELECTED_INGREDIENT,
-    CLOSE_MODAL,
     SEND_ORDER_REQUEST,
     SEND_ORDER_SUCCESS,
     SEND_ORDER_FAILED,
     CLOSE_ORDER,
     DELETE_INGREDIENT,
-    UPDATE_SELECTED_INGREDIENTS
+    UPDATE_SELECTED_INGREDIENTS,
 } from './ingredients-constants'
 
 export interface IGetIngredients {
@@ -30,10 +29,6 @@ export interface IGetIngredientsFailed {
 export interface IOpenSelectedIngredient {
     readonly type: typeof OPEN_SELECTED_INGREDIENT,
     readonly currentIngredientId: string,
-};
-
-export interface ICloseModal {
-    readonly type: typeof CLOSE_MODAL,
 };
 
 export interface ISendOrderRequest {
@@ -81,7 +76,6 @@ export type TIngredientsActions =
     | IGetIngredientsFailed
     | IAddIngredient
     | IOpenSelectedIngredient
-    | ICloseModal
     | ISendOrderRequest
     | ISendOrderSuccess
     | ISendOrderFailed

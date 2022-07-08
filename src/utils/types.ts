@@ -22,13 +22,6 @@ export type TOrder = {
         number: number
     };
     success: boolean
-    // _id: string;
-    // status: string;
-    // name: string;
-    // createdAt: string;
-    // updatedAt: string;
-    // number: number;
-    // ingredients: string;
 }
 
 export type TUser = {
@@ -87,3 +80,19 @@ export interface IGetIngredientsResp {
 }
 
 
+
+export interface IOrderFromServer {
+    createdAt: string,
+    ingredients: Array<string>,
+    name: string,
+    number: number,
+    owner: string,
+    status: string,
+    updatedAt: string,
+    _id: string
+}
+
+export interface IGetOrderResp {
+    orders: Array<IOrderFromServer>,
+    success: boolean
+}

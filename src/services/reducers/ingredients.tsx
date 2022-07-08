@@ -6,7 +6,6 @@ import {
     GET_INGREDIENTS_SUCCESS,
     ADD_INGREDIENT,
     OPEN_SELECTED_INGREDIENT,
-    CLOSE_MODAL,
     SEND_ORDER_FAILED,
     SEND_ORDER_REQUEST,
     SEND_ORDER_SUCCESS,
@@ -62,15 +61,6 @@ export const ingredientsReducer = (state: TIngredientsState = initialState, acti
             return {
                 ...state,
                 currentIngredient: state.ingredients?.find((element: { _id: string }) => (element?._id === action.currentIngredientId)),
-                modalState: true,
-            }
-        }
-        case CLOSE_MODAL: {
-            return {
-                ...state,
-                currentIngredient: null,
-                modalState: false,
-                order: null
             }
         }
         case SEND_ORDER_REQUEST: {

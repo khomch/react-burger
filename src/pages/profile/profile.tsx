@@ -3,7 +3,7 @@ import styles from './profile.module.css';
 import { useDispatch, useSelector } from '../../utils/hooks';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { getUser, logout, updateUser } from '../../services/actions/auth';
+import { logout, updateUser } from '../../services/actions/auth';
 
 export const Profile = () => {
     const dispatch = useDispatch();
@@ -15,10 +15,11 @@ export const Profile = () => {
     const [initialValue, setInitialValue] = useState<{name: string, login: string, password?: string}>({ name: '', login: '', password: '' });
 
     useEffect(() => {
-        dispatch(getUser())
-        user && setValue({ name: user.name, login: user.email })
-        user && setInitialValue({ name: user.name, login: user.email })
-    }, [dispatch, user])
+        if (user) {
+            setValue({ name: user.name, login: user.email })
+            setInitialValue({ name: user.name, login: user.email })
+        }
+    }, [user?.name, user?.email, user])
 
 
     const onChange = (e: { target: { name: string; value: string; }; }) => {

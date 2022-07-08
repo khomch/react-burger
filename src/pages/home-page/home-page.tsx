@@ -10,10 +10,10 @@ import { OrderDetails } from '../../components/order-details/order-details';
 import { Modals } from '../../components/modals/modals'
 import { Switch, Route, useHistory, useRouteMatch, useLocation } from 'react-router-dom';
 import {
-    openSelectedIngredient,
-    sendOrder,
+    openSelectedIngredient, sendOrder,
 } from '../../services/actions/ingredients';
 import { TIngredient } from '../../utils/types';
+import { openModal } from '../../services/actions/modals';
 
 export const HomePage = () => {
     const match = useRouteMatch();
@@ -42,12 +42,14 @@ export const HomePage = () => {
         if (ingredients.find((ingredient: TIngredient) => ingredient._id === findIdInUrl)) {
 
             dispatch(openSelectedIngredient(findIdInUrl));
+            dispatch(openModal());
         }
     }, [ingredients, dispatch, findIdInUrl])
     
     // хэндлер открытия ингредиента
     const handleOpenIngredient = (e: { currentTarget: { id: string; }; }) => {
         dispatch(openSelectedIngredient(e.currentTarget.id));
+        dispatch(openModal());
     }
 
     // хэндлер открытия тотала 
@@ -60,6 +62,7 @@ export const HomePage = () => {
             const choosenIngredientsIdsArray = selectedIngredients.map((i: TIngredient) => i._id);
             const ingredientsIdsArray = choosenBunIdArray.concat(choosenIngredientsIdsArray);
             dispatch(sendOrder(ingredientsIdsArray));
+            dispatch(openModal());
         }
     }
 

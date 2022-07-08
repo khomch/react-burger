@@ -51,7 +51,6 @@ export const registration = (data: IRegistrationReq) => {
         registrationRequest(data)
             .then(res => {
                 if (res && res.success) {
-                    console.log(res)
                     dispatch({
                         type: REGISTRATION_SUCCESS,
                         user: res.user

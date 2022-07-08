@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid';
 import { checkResponse } from '../../utils/check-response';
 import { baseUrl } from '../../utils/constants';
+import { getCookie } from '../../utils/cookies';
 import { IGetIngredientsResp, TIngredient } from '../../utils/types';
 import { AppDispatch } from '../store-types';
 import {
@@ -9,15 +10,14 @@ import {
     GET_INGREDIENTS_FAILED,
     ADD_INGREDIENT,
     OPEN_SELECTED_INGREDIENT,
-    CLOSE_MODAL,
     SEND_ORDER_REQUEST,
     SEND_ORDER_SUCCESS,
     SEND_ORDER_FAILED,
     CLOSE_ORDER,
     DELETE_INGREDIENT,
-    UPDATE_SELECTED_INGREDIENTS
+    UPDATE_SELECTED_INGREDIENTS,
 } from './ingredients-constants'
-import { IAddIngredient, ICloseModal, ICloseOrder, IDeleteIngredient, IOpenSelectedIngredient, IUpdateSelectedIngredients } from './ingredients-types';
+import { IAddIngredient, ICloseOrder, IDeleteIngredient, IOpenSelectedIngredient, IUpdateSelectedIngredients } from './ingredients-types';
 
 const getIngredientsRequest = (): Promise<IGetIngredientsResp> => {
     return (fetch(`${baseUrl}ingredients/`)
@@ -51,7 +51,8 @@ export const getIngredients = () => {
 const sendOrderRequest = (data: string[]) => {
     return (fetch(`${baseUrl}orders/`, {
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + getCookie('token')
         },
         method: "POST",
         body: JSON.stringify({
@@ -61,7 +62,7 @@ const sendOrderRequest = (data: string[]) => {
         .then(checkResponse))
 }
 
-export function sendOrder(data: string[]) {
+export const sendOrder = (data: string[]) => {
     return function (dispatch: AppDispatch) {
         dispatch({
             type: SEND_ORDER_REQUEST
@@ -86,7 +87,7 @@ export function sendOrder(data: string[]) {
 }
 
 // экшн добавления ингредиента
-export function addIngredient(ingredient: TIngredient):IAddIngredient {
+export const addIngredient = (ingredient: TIngredient):IAddIngredient => {
     return {
         type: ADD_INGREDIENT,
         selectedIngredientId: ingredient._id,
@@ -96,22 +97,15 @@ export function addIngredient(ingredient: TIngredient):IAddIngredient {
 }
 
 // открываем выбранный ингредиент
-export function openSelectedIngredient(id: string):IOpenSelectedIngredient {
-    return {
+export const openSelectedIngredient = (id: string):IOpenSelectedIngredient => {
+    return  {
         type: OPEN_SELECTED_INGREDIENT,
-        currentIngredientId: id
-    }
-}
-
-// закрываем модалку
-export function closeModal():ICloseModal {
-    return {
-        type: CLOSE_MODAL
-    }
+        currentIngredientId: id, 
+    } 
 }
 
 // отправляем заказ
-export function closeOrder():ICloseOrder {
+export const closeOrder = ():ICloseOrder => {
     return {
         type: CLOSE_ORDER
     }
@@ -119,7 +113,7 @@ export function closeOrder():ICloseOrder {
 
 
 // удаляем ингредиент из кон    структора
-export function deleteIngredient(id: string):IDeleteIngredient {
+export const deleteIngredient = (id: string):IDeleteIngredient => {
     return {
         type: DELETE_INGREDIENT,
         ingredientToDelNanoId: id
@@ -127,7 +121,7 @@ export function deleteIngredient(id: string):IDeleteIngredient {
 }
 
 // обновляем список
-export function updateSelectedIngredients(dragIndex: number, hoverIndex: number):IUpdateSelectedIngredients {
+export const updateSelectedIngredients = (dragIndex: number, hoverIndex: number):IUpdateSelectedIngredients => {
     return {
         type: UPDATE_SELECTED_INGREDIENTS,
         dragIndex: dragIndex,

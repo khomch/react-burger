@@ -8,7 +8,7 @@ import { TIngredient } from '../../utils/types';
 
 interface IIngredient {
     ingredient: TIngredient,
-    handleOpenIngredient: () => void
+    handleOpenIngredient: (e: { currentTarget: { id: string; }})  => void
 }
 
 export const Ingredient: FC<IIngredient> = ({ ingredient, handleOpenIngredient }) => {

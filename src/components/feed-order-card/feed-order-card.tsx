@@ -3,8 +3,15 @@ import { useSelector } from '../../utils/hooks';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { setDateAndTime } from '../../utils/set-order-date-and-time';
 import { useHistory, useLocation, useRouteMatch } from 'react-router';
+import { IOrderFromServer, TIngredient } from '../../utils/types';
+import { FC } from 'react';
 
-export const FeedOrderCard: any = ({ order, index }: any) => {
+interface IFeedOrderCard {
+    order: IOrderFromServer,
+    index: number
+}
+
+export const FeedOrderCard: FC<IFeedOrderCard> = ({ order, index }) => {
     const history = useHistory();
     const location = useLocation();
     const match = useRouteMatch();
@@ -12,24 +19,23 @@ export const FeedOrderCard: any = ({ order, index }: any) => {
     const {
         ingredients,
     } = useSelector(store => store.ingredientsStore)
-    
-    const orderIngredients: any = order.ingredients.map((i: any) => ingredients.filter((ingredient: any) => ingredient._id === i))
-    const orderPriceWithoutBun = orderIngredients.flat().filter((ingr: any) => ingr.type !== 'bun').map((i: any) => i.price).reduce(function (previousValue: number, currentValue: number) {
+
+    const orderIngredients: TIngredient[] = order.ingredients.map((i: string) => ingredients.filter((ingredient: TIngredient) => ingredient._id === i)).flat()
+    const orderPriceWithoutBun = orderIngredients.filter((ingr: TIngredient) => ingr.type !== 'bun').map((i: TIngredient) => i.price).reduce(function (previousValue: number, currentValue: number) {
         return previousValue + currentValue;
     }, 0)
-    const bunPrice = orderIngredients.flat().find((ingr: any) => ingr.type === 'bun') ? orderIngredients.flat().find((ingr: any) => ingr.type === 'bun').price : 0;
-    const orderPrice = orderPriceWithoutBun + (bunPrice * 2)
+    const bunPrice = orderIngredients.find((ingr: TIngredient) => ingr.type === 'bun') ? orderIngredients?.find((ingr: TIngredient) => ingr.type === 'bun')?.price : 0;
+    const orderPrice = bunPrice && orderPriceWithoutBun + (bunPrice * 2)
 
-    const handleFeedOrderCardClick = (e: any) => {
+    const handleFeedOrderCardClick = (e: { currentTarget: { id: string; }}) => {
         const orderNumber: string = e.currentTarget.id
         history.push({
             pathname: `${match.url.slice(-1) === '/' ? match.url : `${match.url}/`}${orderNumber}`,
             state: { background: location }
         })
     }
-
     return (
-
+        order &&
         <div className={styles.feedOrderCard} key={index} id={order.number} onClick={handleFeedOrderCardClick}>
             <div className={styles.numberAndTime}>
                 <span className={'text text_type_digits-default'}>{`#${order.number}`}</span>

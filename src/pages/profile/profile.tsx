@@ -1,76 +1,112 @@
-import React, { useEffect, useState } from 'react';
 import styles from './profile.module.css';
 import { useDispatch, useSelector } from '../../utils/hooks';
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
-import { logout, updateUser } from '../../services/actions/auth';
+import { Link, Route, Switch, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { logout } from '../../services/actions/auth';
+import { ProfileForm } from '../../components/profile-form/profile-form';
+import { FeedOrders } from '../../components/feed-orders/feed-orders';
+import { useEffect } from 'react';
+import { wsConnectionStartProfile } from '../../services/actions/ws';
+import { getOrder } from '../../services/actions/feed';
+import { Modals } from '../../components/modals/modals';
+import { SelectedOrder } from '../../components/selected-order/selected-order';
 
 export const Profile = () => {
+
     const dispatch = useDispatch();
-    const {
-        user
-    } = useSelector(store => store.auth)
-
-    const [form, setValue] = useState<{name: string, login: string, password?: string}>({ name: '', login: '', password: '' });
-    const [initialValue, setInitialValue] = useState<{name: string, login: string, password?: string}>({ name: '', login: '', password: '' });
-
-    useEffect(() => {
-        if (user) {
-            setValue({ name: user.name, login: user.email })
-            setInitialValue({ name: user.name, login: user.email })
-        }
-    }, [user?.name, user?.email, user])
-
-
-    const onChange = (e: { target: { name: string; value: string; }; }) => {
-        setValue({ ...form, [e.target.name]: e.target.value });
-    };
-
     const onClick = () => {
         dispatch(logout())
     }
+    const match = useRouteMatch();
+    const history = useHistory();
+    const location: { state: { background: string }, pathname: string } = useLocation();
+    const findIdInUrl = history.location.pathname.slice(history.location.pathname.lastIndexOf('/') + 1);
+    const orderNumber = match.path !== history.location.pathname && history.location.pathname !== '/profile' && findIdInUrl
+    const background = location.state && location.state.background;
 
-    const onSaveClick = (e: { preventDefault: () => void; }) => {
-        e.preventDefault()
-        setInitialValue(form)
-        dispatch(updateUser(form))
+    const {
+        ordersFeed,
+    } = useSelector(store => store.ws)
 
+    const {
+        selectedOrder,
+    } = useSelector(store => store.feed)
+
+
+    useEffect(() => {
+        if (location.pathname.includes('profile/orders') && orderNumber) {
+            dispatch(wsConnectionStartProfile());
+            orderNumber && dispatch(getOrder(orderNumber))
+        }
+
+    }, [dispatch, location.pathname, orderNumber])
+
+    if (orderNumber && selectedOrder && !background && location.pathname !== ('/profile/orders' || '/profile/orders/')) {
+        return (
+            <Switch>
+                <Route
+                    path={`${match.path}/:number`}
+                    children={() => {
+                        return (
+                            <SelectedOrder selectedOrder={selectedOrder[0]} isModal={false}
+                            />
+                        );
+                    }}
+                />
+            </Switch>
+        )
     }
-
-    const onCancelClick = (e: { preventDefault: () => void; }) => {
-        e.preventDefault()
-        setValue(initialValue);
-    }
-
-    const compareValues = form.name === initialValue.name && form.login === initialValue.login && form.password === initialValue.password;
 
     return (
         <>
             <section className={styles.container}>
                 <nav className={styles.nav}>
                     <ul className={styles.links}>
-                        <li className={`${styles.link} text text_type_main-large ${styles.navButton} ${styles.navButtonIsActive}`}>Профиль</li>
+                        <li className={`${styles.link} text text_type_main-large ${styles.navButton} ${styles.navButtonIsActive}`}><Link to="/profile" className={`text text_type_main-large ${styles.navButton}`}>Профиль</Link></li>
                         <li className={styles.link}><Link to="/profile/orders" className={`text text_type_main-large ${styles.navButton}`}>История заказов</Link></li>
                         <li className={styles.link}><button onClick={onClick} className={`text text_type_main-large ${styles.navButton}`}>Выход</button></li>
                     </ul>
                     <p className='text text_type_main-default text_color_inactive'>В этом разделе вы можете изменить свои персональные данные</p>
                 </nav>
 
-                <form className={styles.form}>
-                    <div className={styles.input}>
-                        <Input placeholder="Имя" name="name" size={'default'} icon={'EditIcon'} value={form.name || ""} onChange={onChange} />
-                    </div>
-                    <div className={styles.input}>
-                        <Input placeholder="Логин" name="login" size={'default'} icon={'EditIcon'} value={form.login || ""} onChange={onChange} />
-                    </div>
-                    <div className={styles.input}>
-                        <Input placeholder="Пароль" name="password" type={'password'} size={'default'} icon={'EditIcon'} value={form.password || ""} onChange={onChange} />
-                    </div>
-                    <div className={styles.actions}>
-                        <button onClick={onCancelClick} className={`text text_type_main-default ${styles.navButton} ${compareValues ? styles.navButtonDisabled : ""}`}>Отменить</button>
-                        <Button onClick={onSaveClick} disabled={compareValues ? true : false}>Сохранить</Button>
-                    </div>
-                </form>
+                {<Switch>
+                    <Route
+                        path={`${match.path}/`} exact={true}
+                        children={() => {
+                            return (
+                                <ProfileForm />
+                            );
+                        }}
+                    />
+                </Switch>}
+
+                {<Switch>
+                    <Route
+                        path={`${match.path}/orders`}
+                        children={() => {
+                            return (<div className={styles.feedOrders}>
+                                <FeedOrders ordersFeed={ordersFeed} />
+                            </div>
+                            );
+                        }}
+                    />
+                </Switch>}
+
+                {background
+                    && selectedOrder
+                    &&
+                    <Switch>
+                        <Modals >
+                            <Route
+                                path={`${match.path}/:number`}
+                                children={() => {
+                                    return (
+                                        <SelectedOrder selectedOrder={selectedOrder[0]} isModal={true}
+                                        />
+                                    );
+                                }}
+                            />
+                        </Modals>
+                    </Switch>}
 
             </section>
         </>

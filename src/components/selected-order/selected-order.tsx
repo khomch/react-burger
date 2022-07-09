@@ -18,14 +18,12 @@ export const SelectedOrder = ({ selectedOrder, isModal }: { selectedOrder: IOrde
         ingredients,
     } = useSelector(store => store.ingredientsStore)
 
-
-
-    const orderIngredients: any = selectedOrder.ingredients.map((i: any) => ingredients.filter((ingredient: any) => ingredient._id === i)).flat()
-    const orderPriceWithoutBun = orderIngredients.filter((ingr: any) => ingr.type !== 'bun').map((i: any) => i.price).reduce(function (previousValue: number, currentValue: number) {
+    const orderIngredients: TIngredient[] = selectedOrder.ingredients.map((i: string) => ingredients.filter((ingredient: TIngredient) => ingredient._id === i)).flat()
+    const orderPriceWithoutBun = orderIngredients.filter((ingr: TIngredient) => ingr.type !== 'bun').map((i: TIngredient) => i.price).reduce(function (previousValue: number, currentValue: number) {
         return previousValue + currentValue;
     }, 0)
-    const bunPrice = orderIngredients.find((ingr: any) => ingr.type === 'bun') ? orderIngredients.flat().find((ingr: any) => ingr.type === 'bun').price : 0;
-    const orderPrice = orderPriceWithoutBun + (bunPrice * 2)
+    const bunPrice = orderIngredients.find((ingr: TIngredient) => ingr.type === 'bun') ? orderIngredients?.flat().find((ingr: TIngredient) => ingr?.type === 'bun')?.price : 0;
+    const orderPrice = bunPrice && orderPriceWithoutBun + (bunPrice * 2)
 
 
     const filteredOrder = orderIngredients.filter((item: TIngredient, index: number) => {

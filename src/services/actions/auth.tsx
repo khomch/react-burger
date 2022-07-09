@@ -199,7 +199,6 @@ export const login = (data: ILoginReq) => {
             .then(res => {
 
                 if (res && res.success) {
-                    console.log(res.user)
                     dispatch({
                         type: LOGIN_SUCCESS,
                         user: res.user
@@ -234,7 +233,6 @@ export const logout = () => {
             .then(res => {
 
                 if (res && res.success) {
-                    console.log(res)
                     dispatch({
                         type: LOGOUT_SUCCESS,
                     })
@@ -264,7 +262,7 @@ const forgotPasswordRequest = (data: string) => {
 }
 
 export const forgotPassword = (data: string) => {
-    return function (dispatch: any) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: FORGOT_PASSWORD_REQUEST
         })

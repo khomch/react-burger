@@ -85,14 +85,28 @@ export interface IOrderFromServer {
     createdAt: string,
     ingredients: Array<string>,
     name: string,
-    number: number,
+    number: string,
     owner: string,
     status: string,
     updatedAt: string,
     _id: string
 }
 
+export interface IOrdersFeed {
+    orders: Array<IOrderFromServer>,
+    total: number,
+    totalToday: number
+}
+
 export interface IGetOrderResp {
     orders: Array<IOrderFromServer>,
     success: boolean
+}
+
+export interface IWsActions {
+    wsInit: string,
+    onOpen: string,
+    onClose: string,
+    onError: string,
+    onMessage: string
 }

@@ -1,6 +1,8 @@
 
+import { IOrdersFeed } from '../../utils/types';
 import {
-    WS_CONNECTION_START,
+    WS_CONNECTION_START_FEED,
+    WS_CONNECTION_START_PROFILE,
     WS_CONNECTION_SUCCESS,
     WS_CONNECTION_ERROR,
     WS_CONNECTION_CLOSED,
@@ -8,29 +10,33 @@ import {
 
 } from '../actions/ws-constants';
 import { TWsActions } from '../actions/ws-types';
-//   import type { IMessage, TWSActions } from '../types';
 
 type TWSState = {
     wsConnected: boolean;
-    ordersFeed: {
-        orders: Array<object>,
-        total: number,
-        totalToday: number 
-    } | null;
+    ordersFeed: IOrdersFeed | null;
     error?: Event;
+    wsUrl: null
 }
 
 const initialState = {
     wsConnected: false,
     ordersFeed: null,
-    error: undefined
+    error: undefined,
+    wsUrl: null
 };
 
 // Создадим редьюсер для WebSocket
-export const wsReducer = (state = initialState, action: TWsActions): TWSState => {
+export const wsReducer = (state: TWSState = initialState, action: TWsActions): TWSState => {
     switch (action.type) {
-   
-        case WS_CONNECTION_START:
+
+        case WS_CONNECTION_START_FEED:
+            return {
+                ...state,
+                error: undefined,
+                wsConnected: false,
+            };
+
+        case WS_CONNECTION_START_PROFILE:
             return {
                 ...state,
                 error: undefined,
@@ -43,7 +49,7 @@ export const wsReducer = (state = initialState, action: TWsActions): TWSState =>
                 wsConnected: true,
             };
 
-      case WS_CONNECTION_ERROR:
+        case WS_CONNECTION_ERROR:
             return {
                 ...state,
                 wsConnected: false

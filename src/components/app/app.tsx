@@ -35,7 +35,7 @@ export const App = () => {
             <Route path="/register" exact={true} children={<Register />} />
             <Route path="/forgot-password" exact={true} children={<ForgotPassword />} />
             <Route path="/reset-password" exact={true} children={<ResetPassword />} />
-            <ProtectedRoute path="/profile" exact={true} children={<Profile />} />
+            <ProtectedRoute path="/profile" children={<Profile />} />
             <Route path={"/"} children={<HomePage />} />
 
           </Switch>

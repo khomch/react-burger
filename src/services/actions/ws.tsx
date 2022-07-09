@@ -1,16 +1,25 @@
+import { IOrdersFeed } from "../../utils/types";
 import {
-    WS_CONNECTION_START,
+    WS_CONNECTION_START_FEED,
+    WS_CONNECTION_START_PROFILE,
     WS_CONNECTION_SUCCESS,
     WS_CONNECTION_ERROR,
     WS_CONNECTION_CLOSED,
-    WS_SEND_MESSAGE,
     WS_GET_MESSAGE
 } from "./ws-constants";
-import { IWsConnectionClosed, IWsConnectionError, IWsConnectionStart, IWsConnectionSuccess, IWsGetMessage, IWsSendMessage } from "./ws-types";
+import { IWsConnectionClosed, IWsConnectionError, IWsConnectionStartFeed, IWsConnectionStartProfile, IWsConnectionSuccess, IWsGetMessage } from "./ws-types";
 
-export const wsConnectionStart = (): IWsConnectionStart => {
+export const wsConnectionStartFeed = (): IWsConnectionStartFeed => {
     return {
-        type: WS_CONNECTION_START
+        type: WS_CONNECTION_START_FEED
+        
+    };
+};
+
+export const wsConnectionStartProfile = (): IWsConnectionStartProfile => {
+    return {
+        type: WS_CONNECTION_START_PROFILE
+        
     };
 };
 
@@ -32,16 +41,9 @@ export const wsConnectionClosed = (): IWsConnectionClosed => {
     };
 };
 
-export const wsGetMessage = (message: any): IWsGetMessage => {
+export const wsGetMessage = (message: IOrdersFeed): IWsGetMessage => {
     return {
         type: WS_GET_MESSAGE,
-        payload: message
-    };
-};
-
-export const wsSendMessage = (message: any): IWsSendMessage => {
-    return {
-        type: WS_SEND_MESSAGE,
         payload: message
     };
 };

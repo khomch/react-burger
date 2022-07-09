@@ -1,3 +1,4 @@
+import { IOrderFromServer } from '../../utils/types'
 import {
     GET_ORDER_REQUEST,
     GET_ORDER_SUCCESS,
@@ -12,7 +13,7 @@ export interface IGetOrder {
 
 export interface IGetOrderSuccess {
     readonly type: typeof GET_ORDER_SUCCESS,
-    readonly payload: any[]
+    readonly payload: IOrderFromServer[]
 };
 
 export interface IGetOrderFailed {

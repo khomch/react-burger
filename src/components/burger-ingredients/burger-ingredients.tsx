@@ -1,12 +1,16 @@
 import React, { useState, FC } from 'react';
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import { useSelector } from '../../utils/hooks';
 import { Ingredient } from '../ingredient/ingredient';
 import { TIngredient } from '../../utils/types';
 
-export const BurgerIngredients: FC<any> = ({ handleOpenIngredient }) => {
+
+interface IBurgerIngredients {
+  handleOpenIngredient: (e: { currentTarget: { id: string; }}) => void
+}
+
+export const BurgerIngredients: FC<IBurgerIngredients> = ({ handleOpenIngredient }) => {
   // стейт для переключения табов
   const [currentTab, setCurrentTab] = useState<string>('buns');
   // функция переключения таба
@@ -82,7 +86,3 @@ export const BurgerIngredients: FC<any> = ({ handleOpenIngredient }) => {
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  handleOpenIngredient: PropTypes.func.isRequired
-};

@@ -1,5 +1,7 @@
+import { IOrdersFeed } from "../../utils/types";
 import {
-    WS_CONNECTION_START,
+    WS_CONNECTION_START_FEED,
+    WS_CONNECTION_START_PROFILE,
     WS_CONNECTION_SUCCESS,
     WS_CONNECTION_ERROR,
     WS_CONNECTION_CLOSED,
@@ -7,8 +9,13 @@ import {
     WS_GET_MESSAGE
 } from "./ws-constants";
 
-export interface IWsConnectionStart {
-    readonly type: typeof WS_CONNECTION_START
+export interface IWsConnectionStartFeed {
+    readonly type: typeof WS_CONNECTION_START_FEED
+
+};
+
+export interface IWsConnectionStartProfile {
+    readonly type: typeof WS_CONNECTION_START_PROFILE
 
 };
 
@@ -27,24 +34,13 @@ export interface IWsConnectionClosed {
 
 export interface IWsGetMessage {
     readonly type: typeof WS_GET_MESSAGE,
-    readonly payload:
-    {
-        orders: Array<object>,
-        total: number,
-        totalToday: number
-    } | null;
-
-};
-
-export interface IWsSendMessage {
-    readonly type: typeof WS_SEND_MESSAGE,
-    readonly payload: any
+    readonly payload: IOrdersFeed
 };
 
 export type TWsActions =
-    | IWsConnectionStart
+    | IWsConnectionStartFeed
+    | IWsConnectionStartProfile
     | IWsConnectionSuccess
     | IWsConnectionError
     | IWsConnectionClosed
     | IWsGetMessage
-    | IWsSendMessage

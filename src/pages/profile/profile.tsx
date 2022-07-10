@@ -5,7 +5,7 @@ import { logout } from '../../services/actions/auth';
 import { ProfileForm } from '../../components/profile-form/profile-form';
 import { FeedOrders } from '../../components/feed-orders/feed-orders';
 import { useEffect } from 'react';
-import { wsConnectionStartProfile } from '../../services/actions/ws';
+import { wsConnectionStartProfile, wsDisconnect } from '../../services/actions/ws';
 import { getOrder } from '../../services/actions/feed';
 import { Modals } from '../../components/modals/modals';
 import { SelectedOrder } from '../../components/selected-order/selected-order';
@@ -36,6 +36,10 @@ export const Profile = () => {
         if (location.pathname.includes('profile/orders') && orderNumber) {
             dispatch(wsConnectionStartProfile());
             orderNumber && dispatch(getOrder(orderNumber))
+            
+            return () => {
+                dispatch(wsDisconnect())
+           }
         }
 
     }, [dispatch, location.pathname, orderNumber])

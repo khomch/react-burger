@@ -4,7 +4,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { setDateAndTime } from '../../utils/set-order-date-and-time';
 import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import { IOrderFromServer, TIngredient } from '../../utils/types';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 interface IFeedOrderCard {
     order: IOrderFromServer,
@@ -15,6 +15,15 @@ export const FeedOrderCard: FC<IFeedOrderCard> = ({ order, index }) => {
     const history = useHistory();
     const location = useLocation();
     const match = useRouteMatch();
+
+    const [orderState, setOrderState] = useState<IOrderFromServer | null>(null)
+    useEffect(() => {
+        setOrderState(order)
+
+        return () => {
+            setOrderState(null)
+        }
+    }, [order])
 
     const {
         ingredients,
@@ -27,24 +36,31 @@ export const FeedOrderCard: FC<IFeedOrderCard> = ({ order, index }) => {
     const bunPrice = orderIngredients.find((ingr: TIngredient) => ingr.type === 'bun') ? orderIngredients?.find((ingr: TIngredient) => ingr.type === 'bun')?.price : 0;
     const orderPrice = bunPrice && orderPriceWithoutBun + (bunPrice * 2)
 
-    const handleFeedOrderCardClick = (e: { currentTarget: { id: string; }}) => {
+    const handleFeedOrderCardClick = (e: { currentTarget: { id: string; } }) => {
         const orderNumber: string = e.currentTarget.id
         history.push({
             pathname: `${match.url.slice(-1) === '/' ? match.url : `${match.url}/`}${orderNumber}`,
             state: { background: location }
         })
     }
+
+    if (orderState === null) {
+        return (
+
+            <h2 className={styles.h2}>Загрузка...</h2>
+        )
+    }
     return (
-        order &&
-        <div className={styles.feedOrderCard} key={index} id={order.number} onClick={handleFeedOrderCardClick}>
+        orderState &&
+        <div className={styles.feedOrderCard} key={index} id={orderState.number} onClick={handleFeedOrderCardClick}>
             <div className={styles.numberAndTime}>
-                <span className={'text text_type_digits-default'}>{`#${order.number}`}</span>
+                <span className={'text text_type_digits-default'}>{`#${orderState.number}`}</span>
                 <span className={'text text_type_main-default text_color_inactive'}>{setDateAndTime(order.createdAt)}</span>
             </div>
-            <h2 className={styles.h2}>{order.name}</h2>
+            <h2 className={styles.h2}>{orderState.name}</h2>
             <div className={styles.imagesAndPriceContainer}>
                 <ul className={styles.imagesContainer} >
-                    {order.ingredients.slice(0, 5).map((ingredientId: string, i: number) => {
+                    {orderState.ingredients.slice(0, 5).map((ingredientId: string, i: number) => {
                         return (
                             <li className={styles.imageWithBorder} key={i}>
                                 <img className={styles.image} src={ingredients.find((ingr) => ingredientId === ingr._id)?.image} alt={ingredients.find((i) => ingredientId === i._id)?.name} />

@@ -12,30 +12,32 @@ import {
     WS_CONNECTION_CLOSED,
     WS_CONNECTION_ERROR,
     WS_GET_MESSAGE,
+    WS_DISCONNECT
 } from './actions/ws-constants';
-import { wsUrlFeed, wsUrlProfile } from '../utils/ws-address';
 
 const wsActionsFeed = {
     wsInit: WS_CONNECTION_START_FEED,
     onOpen: WS_CONNECTION_SUCCESS,
     onClose: WS_CONNECTION_CLOSED,
     onError: WS_CONNECTION_ERROR,
-    onMessage: WS_GET_MESSAGE
+    onMessage: WS_GET_MESSAGE,
+    disconnect: WS_DISCONNECT
 };
 const wsActionsProfile = {
     wsInit: WS_CONNECTION_START_PROFILE,
     onOpen: WS_CONNECTION_SUCCESS,
     onClose: WS_CONNECTION_CLOSED,
     onError: WS_CONNECTION_ERROR,
-    onMessage: WS_GET_MESSAGE
+    onMessage: WS_GET_MESSAGE,
+    disconnect: WS_DISCONNECT
 };
 
 
 const store = createStore(rootReducer,
     composeWithDevTools(
         applyMiddleware(
-            socketMiddleware(wsUrlFeed, wsActionsFeed),
-            socketMiddleware(wsUrlProfile, wsActionsProfile),
+            socketMiddleware(wsActionsFeed),
+            socketMiddleware(wsActionsProfile),
             thunk
         )
     )

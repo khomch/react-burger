@@ -1,11 +1,11 @@
 import React from 'react';
 import AppHeaderStyles from './app-header.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { NavLink, useRouteMatch } from 'react-router-dom';
+import { Link, NavLink, useRouteMatch } from 'react-router-dom';
 
 
 export const AppHeader = () => {
-  
+
   const isConstructor = useRouteMatch({ path: "/", exact: true });
   const isFeed = useRouteMatch("/feed");
   const isProfile = useRouteMatch("/profile");
@@ -43,7 +43,7 @@ export const AppHeader = () => {
         </ul>
 
         <div className={AppHeaderStyles.logo}>
-          <Logo />
+          <Link to={'/'}><Logo /></Link>
         </div>
 
         <div className={AppHeaderStyles.profile}>

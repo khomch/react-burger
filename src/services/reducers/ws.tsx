@@ -15,14 +15,12 @@ type TWSState = {
     wsConnected: boolean;
     ordersFeed: IOrdersFeed | null;
     error?: Event;
-    wsUrl: null
 }
 
 const initialState = {
     wsConnected: false,
     ordersFeed: null,
     error: undefined,
-    wsUrl: null
 };
 
 // Создадим редьюсер для WebSocket
@@ -59,7 +57,7 @@ export const wsReducer = (state: TWSState = initialState, action: TWsActions): T
             return {
                 ...state,
                 error: undefined,
-                wsConnected: false
+                wsConnected: false,
             };
 
         case WS_GET_MESSAGE:

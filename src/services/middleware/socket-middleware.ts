@@ -1,17 +1,17 @@
-import { Middleware } from "redux";
-import { AppDispatch } from "../store-types";
+import { Middleware, MiddlewareAPI } from "redux";
+import { AppDispatch, RootState } from "../store-types";
 
-export const socketMiddleware = (wsUrl: string, wsActions: object): Middleware => {
-  return (store: { dispatch: AppDispatch; getState: object; }) => {
+export const socketMiddleware = (wsActions: object): Middleware => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
 
     return (next: (arg0: any) => void) => (action: { type: string; payload: string; }) => {
       const { dispatch } = store;
-      const { type } = action;
-      const { wsInit, onOpen, onClose, onError, onMessage }: any = wsActions;
+      const { type, payload } = action;
+      const { wsInit, onOpen, onClose, onError, onMessage, disconnect }: any = wsActions;
 
       if (type === wsInit) {
-        socket = new WebSocket(`${wsUrl}`);
+        socket = new WebSocket(`${payload}`);
       }
       if (socket) {
         socket.onopen = (event: Event) => {
@@ -33,6 +33,10 @@ export const socketMiddleware = (wsUrl: string, wsActions: object): Middleware =
         socket.onclose = (event: Event) => {
           dispatch({ type: onClose, payload: event });
         };
+      }
+
+      if (type === disconnect) {
+        socket?.close()
       }
 
       next(action);

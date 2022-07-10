@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, Route, useHistory, useRouteMatch, useLocation } from 'react-router-dom';
 import { Modals } from '../../components/modals/modals'
 import styles from './feed.module.css';
 import { useDispatch, useSelector } from '../../utils/hooks';
-import { wsConnectionStartFeed } from '../../services/actions/ws';
+import { wsConnectionStartFeed, wsDisconnect } from '../../services/actions/ws';
 import { FeedOrders } from '../../components/feed-orders/feed-orders';
 import { FeedStatus } from '../../components/feed-status/feed-status';
 import { SelectedOrder } from '../../components/selected-order/selected-order';
 import { getOrder } from '../../services/actions/feed';
+import { IOrdersFeed } from '../../utils/types';
 
 export const Feed = () => {
 
@@ -28,7 +29,18 @@ export const Feed = () => {
     useEffect(() => {
         dispatch(wsConnectionStartFeed());
         orderNumber && dispatch(getOrder(orderNumber))
+
+        return () => {
+            dispatch(wsDisconnect())
+        }
+
     }, [dispatch, orderNumber])
+
+    const [orders, setOrders] = useState<IOrdersFeed | null>(null)
+    useEffect(() => {
+        setOrders(ordersFeed)
+    }, [ordersFeed])
+
 
     if (selectedOrder && !background && location.pathname !== ('/feed' || '/feed/')) {
         return (
@@ -46,7 +58,7 @@ export const Feed = () => {
         )
     }
 
-    if (ordersFeed) {
+    if (orders !== null) {
         return (
             <>
                 <h1 className={`text text_type_main-large ${styles.h1}`}>
@@ -76,12 +88,8 @@ export const Feed = () => {
                             />
                         </Modals>
                     </Switch>}
-
-
             </>
         )
     }
-
     else return <></>
-
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './selected-order.module.css';
 import { useDispatch, useSelector } from '../../utils/hooks';
 import { IOrderFromServer, TIngredient } from '../../utils/types';
@@ -30,7 +30,23 @@ export const SelectedOrder = ({ selectedOrder, isModal }: { selectedOrder: IOrde
         return orderIngredients.indexOf(item) === index
     })
 
-    if (selectedOrder) {
+    const [order, setOrder] = useState<IOrderFromServer | null>(null)
+
+    useEffect(() => {
+        selectedOrder && setOrder(selectedOrder)
+    }, [selectedOrder])
+
+
+
+    if (order === null) {
+        return (
+            <div className={styles.selectedOrder}>
+                Загрузка...
+            </div>
+        )
+    }
+
+    if (order) {
         return (
             <div className={styles.selectedOrder}>
                 <div className={styles.container}>

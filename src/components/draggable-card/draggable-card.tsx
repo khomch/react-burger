@@ -2,7 +2,7 @@ import React, { useCallback, useRef, FC, MouseEvent } from 'react';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import DraggableCardStyles from './draggable-card.module.css';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../utils/hooks';
 import { updateSelectedIngredients, deleteIngredient } from '../../services/actions/ingredients';
 import { TConstructorIngredient } from '../../utils/types';
 

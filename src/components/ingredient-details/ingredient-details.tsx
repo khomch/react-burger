@@ -1,31 +1,33 @@
 import React, { useCallback } from 'react';
 import IngredientDetailsStyles from './ingredient-details.module.css';
 import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../utils/hooks';
 import {
-    addSelectedIngredient
+    addIngredient,
 } from '../../services/actions/ingredients';
 import { TIngredient } from '../../utils/types';
 
 
 export const IngredientDetails = () => {
-
-    const dispatch = useDispatch();
-    const addIngredient = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        dispatch(addSelectedIngredient(e));
-    }, [dispatch])
-
     const {
         ingredients
-    }: any = useSelector<any>(store => store.ingredientsStore)
+    } = useSelector(store => store.ingredientsStore)
+
+    const dispatch = useDispatch();
+    const addSelectedIngredient = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        const ingredientToAdd: TIngredient | undefined = ingredients.find((element) => element._id === e.currentTarget.id);
+        if (ingredientToAdd !== undefined) {
+            dispatch(addIngredient(ingredientToAdd));
+        }
+    }, [dispatch, ingredients])
 
     const { id }: { id: string } = useParams();
 
-    const ingredientToShow = ingredients.find((ingredient: TIngredient) => ingredient._id === id)
+    const ingredientToShow = ingredients?.find((ingredient: TIngredient) => ingredient._id === id)
 
     if (ingredientToShow) {
         return (
-            <div className={IngredientDetailsStyles.ingredientDetails} onClick={addIngredient} id={ingredientToShow._id}>
+            <div className={IngredientDetailsStyles.ingredientDetails} onClick={addSelectedIngredient} id={ingredientToShow._id}>
                 <div className={IngredientDetailsStyles.container}>
                     <h2 className={`text text_type_main-large ${IngredientDetailsStyles.title}`}>Детали ингредиента</h2>
                     <img src={ingredientToShow.image_large}

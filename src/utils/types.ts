@@ -17,13 +17,16 @@ export type TConstructorIngredient = TIngredient & {
 };
 
 export type TOrder = {
-    _id: string;
-    status: string;
     name: string;
-    createdAt: string;
-    updatedAt: string;
-    number: number;
-    ingredients: string;
+    order: {
+        number: number
+    };
+    success: boolean
+}
+
+export type TUser = {
+    email: string,
+    name: string
 }
 
 export interface IRegistrationReq {
@@ -71,4 +74,39 @@ export interface IUserRequestResp {
     },
 }
 
+export interface IGetIngredientsResp {
+    success: boolean,
+    data: TIngredient[],
+}
 
+
+
+export interface IOrderFromServer {
+    createdAt: string,
+    ingredients: Array<string>,
+    name: string,
+    number: string,
+    owner: string,
+    status: string,
+    updatedAt: string,
+    _id: string
+}
+
+export interface IOrdersFeed {
+    orders: Array<IOrderFromServer>,
+    total: number,
+    totalToday: number
+}
+
+export interface IGetOrderResp {
+    orders: Array<IOrderFromServer>,
+    success: boolean
+}
+
+export interface IWsActions {
+    wsInit: string,
+    onOpen: string,
+    onClose: string,
+    onError: string,
+    onMessage: string
+}

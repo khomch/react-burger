@@ -2,30 +2,31 @@ import { setCookie, getCookie, deleteCookie } from '../../utils/cookies'
 import { baseUrl } from '../../utils/constants';
 import { checkResponse } from '../../utils/check-response';
 import { ILoginReq, ILoginResp, IRegistrationReq, IRegistrationResp, IUserRequestReq, IUserRequestResp } from '../../utils/types';
+import { AppDispatch } from '../store-types';
 
-export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST';
-export const FORGOT_PASSWORD_FAILED = 'FORGOT_PASSWORD_FAILED';
-export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
-export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
-export const RESET_PASSWORD_FAILED = 'RESET_PASSWORD_FAILED';
-export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
-export const REGISTRATION_REQUEST = 'REGISTRATION_REQUEST';
-export const REGISTRATION_SUCCESS = 'REGISTRATION_SUCCESS';
-export const REGISTRATION_FAILED = 'REGISTRATION_FAILED';
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILED = 'LOGIN_FAILED';
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOGOUT_FAILED = 'LOGOUT_FAILED';
-export const GET_USER_REQUEST = 'GET_USER_REQUEST';
-export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
-export const GET_USER_FAILED = 'GET_USER_FAILED';
-export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
-export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
-export const UPDATE_USER_FAILED = 'UPDATE_USER_FAILED';
-
-
+import {
+    FORGOT_PASSWORD_REQUEST,
+    FORGOT_PASSWORD_FAILED,
+    FORGOT_PASSWORD_SUCCESS,
+    RESET_PASSWORD_REQUEST,
+    RESET_PASSWORD_FAILED,
+    RESET_PASSWORD_SUCCESS,
+    REGISTRATION_REQUEST,
+    REGISTRATION_FAILED,
+    REGISTRATION_SUCCESS,
+    LOGIN_FAILED,
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGOUT_FAILED,
+    LOGOUT_REQUEST,
+    LOGOUT_SUCCESS,
+    GET_USER_FAILED,
+    GET_USER_REQUEST,
+    GET_USER_SUCCESS,
+    UPDATE_USER_FAILED,
+    UPDATE_USER_REQUEST,
+    UPDATE_USER_SUCCESS
+} from './auth-constants';
 
 const registrationRequest = (data: IRegistrationReq): Promise<IRegistrationResp> => {
     return (fetch(`${baseUrl}auth/register`, {
@@ -42,15 +43,14 @@ const registrationRequest = (data: IRegistrationReq): Promise<IRegistrationResp>
         .then(checkResponse))
 }
 
-export const registration = (data: IRegistrationReq): any => {
-    return function (dispatch: any) {
+export const registration = (data: IRegistrationReq) => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: REGISTRATION_REQUEST
         })
         registrationRequest(data)
             .then(res => {
                 if (res && res.success) {
-                    console.log(res)
                     dispatch({
                         type: REGISTRATION_SUCCESS,
                         user: res.user
@@ -125,8 +125,8 @@ const getUserRequest = () =>
         referrerPolicy: 'no-referrer'
     });
 
-export const getUser = ():any  => {
-    return function (dispatch: any) {
+export const getUser = () => {
+    return function (dispatch: AppDispatch) {
         if (getCookie('token') || getCookie('refreshToken')) {
             dispatch({
                 type: GET_USER_REQUEST
@@ -169,7 +169,7 @@ const updateUserRequest = (data: Partial<IUserRequestReq>): Promise<IUserRequest
 }
 
 export const updateUser = (data: Partial<IUserRequestReq>) => {
-    return function (dispatch: any) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: UPDATE_USER_REQUEST
         })
@@ -190,8 +190,8 @@ export const updateUser = (data: Partial<IUserRequestReq>) => {
 }
 
 
-export const login = (data: ILoginReq): any => {
-    return function (dispatch: any) {
+export const login = (data: ILoginReq) => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: LOGIN_REQUEST
         })
@@ -225,7 +225,7 @@ const logoutRequest = () => {
 }
 
 export const logout = () => {
-    return function (dispatch: any) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: LOGOUT_REQUEST
         })
@@ -233,7 +233,6 @@ export const logout = () => {
             .then(res => {
 
                 if (res && res.success) {
-                    console.log(res)
                     dispatch({
                         type: LOGOUT_SUCCESS,
                     })
@@ -263,7 +262,7 @@ const forgotPasswordRequest = (data: string) => {
 }
 
 export const forgotPassword = (data: string) => {
-    return function (dispatch: any) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: FORGOT_PASSWORD_REQUEST
         })
@@ -296,8 +295,8 @@ const resetPasswordRequest = (data: { password: string, token: string }) => {
         .then(checkResponse))
 }
 
-export const resetPassword = (data: { password: string, token: string }): any => {
-    return function (dispatch: any) {
+export const resetPassword = (data: { password: string, token: string }) => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: RESET_PASSWORD_REQUEST
         })

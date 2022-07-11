@@ -2,7 +2,7 @@ import React, { useCallback, useRef, FC, MouseEvent } from 'react';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import DraggableCardStyles from './draggable-card.module.css';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../utils/hooks';
 import { updateSelectedIngredients, deleteIngredient } from '../../services/actions/ingredients';
 import { TConstructorIngredient } from '../../utils/types';
 
@@ -17,7 +17,7 @@ export const DraggableCard: FC<IDraggebleCard> = ({ ingredient, index }) => {
     const dispatch = useDispatch();
 
     const handleDeleteIngredient = (e: MouseEvent) => {
-        return dispatch(deleteIngredient(e))
+        return dispatch(deleteIngredient(e.currentTarget.id))
     }
 
     const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {

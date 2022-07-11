@@ -1,15 +1,15 @@
 import { useEffect, FC } from 'react';
 import { Route, Redirect, useLocation, RouteProps } from 'react-router-dom';
 import { getUser } from '../../services/actions/auth';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../utils/hooks';
 
 export const ProtectedRoute: FC<RouteProps> = ({ children, ...rest }) => {
     const location = useLocation();
     const {
         user
-    }:any = useSelector<any>(store => store.auth)
+    } = useSelector(store => store.auth)
 
-    const dispatch:any = useDispatch();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getUser())
@@ -19,7 +19,7 @@ export const ProtectedRoute: FC<RouteProps> = ({ children, ...rest }) => {
         <Route
             {...rest}
             render={() =>
-                user.name ? (
+                user?.name ? (
                     children
                 ) : (
                     <Redirect

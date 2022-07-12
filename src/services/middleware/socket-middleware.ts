@@ -11,7 +11,12 @@ export const socketMiddleware = (wsActions: object): Middleware => {
       const { wsInit, onOpen, onClose, onError, onMessage, disconnect }: any = wsActions;
 
       if (type === wsInit) {
-        socket = new WebSocket(`${payload}`);
+        if (payload === null) {
+          console.error('Invalid token')
+        } else {
+          socket = new WebSocket(`${payload}`);
+        }
+
       }
       if (socket) {
         socket.onopen = (event: Event) => {
@@ -43,3 +48,14 @@ export const socketMiddleware = (wsActions: object): Middleware => {
     };
   };
 };
+
+// export const socketMiddlewareWithReconnect = (wsActions: object) => {
+//   return (store: MiddlewareAPI<AppDispatch, RootState>) => {
+//     let socket: WebSocket | null = null;
+
+//     return (next: (arg0: any) => void) => (action: { type: string; payload: string; }) => {
+//       const { dispatch } = store;
+//       const { type, payload } = action;
+//       const { wsInit, onOpen, onClose, onError, onMessage, disconnect }: any = wsActions;
+//     }
+//   }

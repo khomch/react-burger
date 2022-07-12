@@ -22,7 +22,7 @@ export const wsConnectionStartFeed = (): IWsConnectionStartFeed => {
 export const wsConnectionStartProfile = (): IWsConnectionStartProfile => {
     return {
         type: WS_CONNECTION_START_PROFILE,
-        payload: wsUrlProfile
+        payload: wsUrlProfile()
         
     };
 };

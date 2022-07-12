@@ -78,6 +78,29 @@ const loginRequest = (data: ILoginReq): Promise<ILoginResp> => {
         .then(checkResponse))
 }
 
+export const login = (data: ILoginReq) => {
+    return function (dispatch: AppDispatch) {
+        dispatch({
+            type: LOGIN_REQUEST
+        })
+        loginRequest(data)
+            .then(res => {
+
+                if (res && res.success) {
+                    dispatch({
+                        type: LOGIN_SUCCESS,
+                        user: res.user
+                    })
+                    setToken(res)
+                }
+            })
+            .catch(err => dispatch({
+                type: LOGIN_FAILED,
+                err: err
+            }));
+    }
+}
+
 const updateToken = async () => {
     await (
         fetch(`${baseUrl}auth/token`, {
@@ -93,7 +116,7 @@ const updateToken = async () => {
         })
 }
 
-const setToken = (res: ILoginResp) => {
+export const setToken = (res: ILoginResp) => {
     if (res.success && res.accessToken.indexOf('Bearer') === 0) {
         setCookie('token', res.accessToken.split('Bearer ')[1], { expires: 1200 });
         setCookie('refreshToken', res.refreshToken);
@@ -103,7 +126,7 @@ const setToken = (res: ILoginResp) => {
     }
 }
 
-const checkToken = () => {
+export const checkToken = () => {
     if (getCookie('token')) {
         return getCookie('token')
     } else if (!getCookie('token') && getCookie('refreshToken')) {
@@ -190,28 +213,7 @@ export const updateUser = (data: Partial<IUserRequestReq>) => {
 }
 
 
-export const login = (data: ILoginReq) => {
-    return function (dispatch: AppDispatch) {
-        dispatch({
-            type: LOGIN_REQUEST
-        })
-        loginRequest(data)
-            .then(res => {
 
-                if (res && res.success) {
-                    dispatch({
-                        type: LOGIN_SUCCESS,
-                        user: res.user
-                    })
-                    setToken(res)
-                }
-            })
-            .catch(err => dispatch({
-                type: LOGIN_FAILED,
-                err: err
-            }));
-    }
-}
 
 const logoutRequest = () => {
     return (fetch(`${baseUrl}auth/logout`, {

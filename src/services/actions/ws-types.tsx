@@ -17,7 +17,7 @@ export interface IWsConnectionStartFeed {
 
 export interface IWsConnectionStartProfile {
     readonly type: typeof WS_CONNECTION_START_PROFILE,
-    readonly payload: string
+    readonly payload: string | null | void
 
 };
 

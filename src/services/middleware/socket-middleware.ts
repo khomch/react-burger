@@ -48,14 +48,3 @@ export const socketMiddleware = (wsActions: object): Middleware => {
     };
   };
 };
-
-// export const socketMiddlewareWithReconnect = (wsActions: object) => {
-//   return (store: MiddlewareAPI<AppDispatch, RootState>) => {
-//     let socket: WebSocket | null = null;
-
-//     return (next: (arg0: any) => void) => (action: { type: string; payload: string; }) => {
-//       const { dispatch } = store;
-//       const { type, payload } = action;
-//       const { wsInit, onOpen, onClose, onError, onMessage, disconnect }: any = wsActions;
-//     }
-//   }

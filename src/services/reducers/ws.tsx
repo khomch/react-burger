@@ -7,6 +7,7 @@ import {
     WS_CONNECTION_ERROR,
     WS_CONNECTION_CLOSED,
     WS_GET_MESSAGE,
+    WS_CLEAR_FEED,
 
 } from '../actions/ws-constants';
 import { TWsActions } from '../actions/ws-types';
@@ -65,6 +66,11 @@ export const wsReducer = (state: TWSState = initialState, action: TWsActions): T
                 ...state,
                 error: undefined,
                 ordersFeed: action.payload
+            };
+        case WS_CLEAR_FEED:
+            return {
+                ...state,
+                ordersFeed: null
             };
         default:
             return state;

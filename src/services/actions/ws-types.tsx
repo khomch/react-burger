@@ -6,7 +6,8 @@ import {
     WS_CONNECTION_ERROR,
     WS_CONNECTION_CLOSED,
     WS_GET_MESSAGE,
-    WS_DISCONNECT
+    WS_DISCONNECT,
+    WS_CLEAR_FEED
 } from "./ws-constants";
 
 export interface IWsConnectionStartFeed {
@@ -47,6 +48,10 @@ export interface IWsGetMessage {
     readonly payload: IOrdersFeed
 };
 
+export interface IWsClearFeed {
+    readonly type: typeof WS_CLEAR_FEED,
+};
+
 export type TWsActions =
     | IWsConnectionStartFeed
     | IWsConnectionStartProfile
@@ -55,3 +60,4 @@ export type TWsActions =
     | IWsConnectionClosed
     | IWsGetMessage
     | IWsDisconnect
+    | IWsClearFeed

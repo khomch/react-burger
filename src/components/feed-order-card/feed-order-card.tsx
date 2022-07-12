@@ -35,8 +35,8 @@ export const FeedOrderCard: FC<IFeedOrderCard> = ({ order, index }) => {
         return previousValue + currentValue;
     }, 0)
     const bunPrice = orderIngredients.find((ingr: TIngredient) => ingr.type === 'bun') ? orderIngredients?.find((ingr: TIngredient) => ingr.type === 'bun')?.price : 0;
-    const orderPrice = bunPrice && orderPriceWithoutBun + (bunPrice * 2)
-
+    const orderPrice = (orderPriceWithoutBun + (bunPrice ? (bunPrice * 2) : 0))
+    
     const handleFeedOrderCardClick = (e: { currentTarget: { id: string; } }) => {
         const orderNumber: string = e.currentTarget.id
         history.push({

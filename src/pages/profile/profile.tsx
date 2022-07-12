@@ -5,7 +5,7 @@ import { logout } from '../../services/actions/auth';
 import { ProfileForm } from '../../components/profile-form/profile-form';
 import { FeedOrders } from '../../components/feed-orders/feed-orders';
 import { useEffect } from 'react';
-import { wsConnectionStartProfile, wsDisconnect } from '../../services/actions/ws';
+import { wsClearFeed, wsConnectionStartProfile, wsDisconnect } from '../../services/actions/ws';
 import { getOrder } from '../../services/actions/feed';
 import { Modals } from '../../components/modals/modals';
 import { SelectedOrder } from '../../components/selected-order/selected-order';
@@ -43,6 +43,10 @@ export const Profile = () => {
         }
 
     }, [dispatch, location.pathname, orderNumber])
+
+    useEffect(() => {
+        dispatch(wsClearFeed())
+    },[dispatch])
 
     if (orderNumber && selectedOrder && !background && location.pathname !== ('/profile/orders' || '/profile/orders/')) {
         return (
@@ -85,7 +89,7 @@ export const Profile = () => {
 
                 {<Switch>
                     <Route
-                        path={`${match.path}/orders`}
+                        path={`${match.path}/orders`} exact={true}
                         children={() => {
                             return (<div className={styles.feedOrders}>
                                 <FeedOrders ordersFeed={ordersFeed} />

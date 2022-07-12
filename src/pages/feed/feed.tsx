@@ -3,7 +3,7 @@ import { Switch, Route, useHistory, useRouteMatch, useLocation } from 'react-rou
 import { Modals } from '../../components/modals/modals'
 import styles from './feed.module.css';
 import { useDispatch, useSelector } from '../../utils/hooks';
-import { wsConnectionStartFeed, wsDisconnect } from '../../services/actions/ws';
+import { wsClearFeed, wsConnectionStartFeed, wsDisconnect } from '../../services/actions/ws';
 import { FeedOrders } from '../../components/feed-orders/feed-orders';
 import { FeedStatus } from '../../components/feed-status/feed-status';
 import { SelectedOrder } from '../../components/selected-order/selected-order';
@@ -26,6 +26,8 @@ export const Feed = () => {
     } = useSelector(store => store.feed)
 
     const dispatch = useDispatch();
+
+
     useEffect(() => {
         dispatch(wsConnectionStartFeed());
         orderNumber && dispatch(getOrder(orderNumber))
@@ -35,6 +37,10 @@ export const Feed = () => {
         }
 
     }, [dispatch, orderNumber])
+
+    useEffect(() => {
+        dispatch(wsClearFeed())
+    },[dispatch])
 
     const [orders, setOrders] = useState<IOrdersFeed | null>(null)
     useEffect(() => {

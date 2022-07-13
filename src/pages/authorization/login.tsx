@@ -63,7 +63,7 @@ export function Login() {
 
         <section className={styles.container}>
 
-            <form className={styles.form} onSubmit={handleLogin}>
+            <form className={styles.form} onSubmit={handleLogin} id="authorization_form">
                 <h1 className={`text text_type_main-medium ${styles.h1}`}>
                     Вход
                 </h1>

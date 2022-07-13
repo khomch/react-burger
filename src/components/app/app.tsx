@@ -19,7 +19,6 @@ export const App = () => {
     dispatch(getUser());
   }, [dispatch])
 
-
   return (
     <Router>
       <div className={AppStyles.app}>

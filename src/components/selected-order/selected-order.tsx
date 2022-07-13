@@ -35,8 +35,6 @@ export const SelectedOrder = ({ selectedOrder, isModal }: { selectedOrder: IOrde
         selectedOrder && setOrder(selectedOrder)
     }, [selectedOrder])
 
-
-
     if (order === null) {
         return (
             <div className={styles.selectedOrder}>

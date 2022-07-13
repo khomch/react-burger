@@ -33,20 +33,22 @@ export const Profile = () => {
 
 
     useEffect(() => {
-        if (location.pathname.includes('profile/orders') && orderNumber) {
-            dispatch(wsConnectionStartProfile());
-            orderNumber && dispatch(getOrder(orderNumber))
-            
-            return () => {
-                dispatch(wsDisconnect())
-           }
+        // if (location.pathname.includes('profile/orders') && orderNumber) {
+        dispatch(wsConnectionStartProfile());
+        orderNumber && dispatch(getOrder(orderNumber))
+
+        return () => {
+            dispatch(wsDisconnect())
         }
 
-    }, [dispatch, location.pathname, orderNumber])
+    }, [dispatch, orderNumber])
 
     useEffect(() => {
         dispatch(wsClearFeed())
-    },[dispatch])
+    }, [dispatch])
+
+
+
 
     if (orderNumber && selectedOrder && !background && location.pathname !== ('/profile/orders' || '/profile/orders/')) {
         return (
@@ -76,7 +78,10 @@ export const Profile = () => {
                     <p className='text text_type_main-default text_color_inactive'>В этом разделе вы можете изменить свои персональные данные</p>
                 </nav>
 
-                {<Switch>
+
+
+
+                <Switch>
                     <Route
                         path={`${match.path}/`} exact={true}
                         children={() => {
@@ -85,36 +90,32 @@ export const Profile = () => {
                             );
                         }}
                     />
-                </Switch>}
+                    {ordersFeed !== null &&
+                        <Route
+                            path={`${match.path}/orders`}
+                            children={() => {
+                                return (<div className={styles.feedOrders}>
+                                    <FeedOrders ordersFeed={ordersFeed} />
+                                    {background
+                                        && selectedOrder
+                                        &&
+                                        <Modals >
+                                            <Route
+                                                path={`${match.path}/:number`}
+                                                children={() => {
+                                                    return (
+                                                        <SelectedOrder selectedOrder={selectedOrder[0]} isModal={true}
+                                                        />
+                                                    );
+                                                }}
+                                            />
+                                        </Modals>}
+                                </div>
+                                );
+                            }}
+                        />}
 
-                {<Switch>
-                    <Route
-                        path={`${match.path}/orders`} exact={true}
-                        children={() => {
-                            return (<div className={styles.feedOrders}>
-                                <FeedOrders ordersFeed={ordersFeed} />
-                            </div>
-                            );
-                        }}
-                    />
-                </Switch>}
-
-                {background
-                    && selectedOrder
-                    &&
-                    <Switch>
-                        <Modals >
-                            <Route
-                                path={`${match.path}/:number`}
-                                children={() => {
-                                    return (
-                                        <SelectedOrder selectedOrder={selectedOrder[0]} isModal={true}
-                                        />
-                                    );
-                                }}
-                            />
-                        </Modals>
-                    </Switch>}
+                </Switch>
 
             </section>
         </>

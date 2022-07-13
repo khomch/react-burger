@@ -34,9 +34,10 @@ export const wsConnectionSuccess = (): IWsConnectionSuccess => {
     };
 };
 
-export const wsConnectionError = (): IWsConnectionError => {
+export const wsConnectionError = (e: Event): IWsConnectionError => {
     return {
-        type: WS_CONNECTION_ERROR
+        type: WS_CONNECTION_ERROR,
+        payload: e
     };
 };
 

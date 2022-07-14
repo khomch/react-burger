@@ -44,7 +44,7 @@ export const BurgerConstructor: FC<IBurgerConstructor> = ({ handleTotalClick }) 
   const className = `${BurgerConstructorStyles.constr} ${isHover ? BurgerConstructorStyles.isHover : ""}`
 
   return (
-    <section className={className} ref={dropTarget}>
+    <section className={className} ref={dropTarget} id={'burger-constructor'}>
 
       {!selectedBun?.name && !selectedIngredients[0]
         ?
@@ -94,7 +94,7 @@ export const BurgerConstructor: FC<IBurgerConstructor> = ({ handleTotalClick }) 
       }
 
       {total > 0 &&
-        <div className={BurgerConstructorStyles.total}>
+        <div className={BurgerConstructorStyles.total} id="order-button">
 
           <p className={`text text_type_digits-medium ${BurgerConstructorStyles.totalPrice}`}>
             {total} <CurrencyIcon type="primary" />

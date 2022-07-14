@@ -7,23 +7,24 @@ import {
     WS_CONNECTION_ERROR,
     WS_CONNECTION_CLOSED,
     WS_GET_MESSAGE,
-    WS_DISCONNECT
+    WS_DISCONNECT,
+    WS_CLEAR_FEED
 } from "./ws-constants";
-import { IWsConnectionClosed, IWsConnectionError, IWsConnectionStartFeed, IWsConnectionStartProfile, IWsConnectionSuccess, IWsDisconnect, IWsGetMessage } from "./ws-types";
+import { IWsClearFeed, IWsConnectionClosed, IWsConnectionError, IWsConnectionStartFeed, IWsConnectionStartProfile, IWsConnectionSuccess, IWsDisconnect, IWsGetMessage } from "./ws-types";
 
 export const wsConnectionStartFeed = (): IWsConnectionStartFeed => {
     return {
         type: WS_CONNECTION_START_FEED,
         payload: wsUrlFeed
-        
+
     };
 };
 
 export const wsConnectionStartProfile = (): IWsConnectionStartProfile => {
     return {
         type: WS_CONNECTION_START_PROFILE,
-        payload: wsUrlProfile
-        
+        payload: wsUrlProfile()
+
     };
 };
 
@@ -33,9 +34,10 @@ export const wsConnectionSuccess = (): IWsConnectionSuccess => {
     };
 };
 
-export const wsConnectionError = (): IWsConnectionError => {
+export const wsConnectionError = (e: Event): IWsConnectionError => {
     return {
-        type: WS_CONNECTION_ERROR
+        type: WS_CONNECTION_ERROR,
+        payload: e
     };
 };
 
@@ -57,3 +59,9 @@ export const wsGetMessage = (message: IOrdersFeed): IWsGetMessage => {
         payload: message
     };
 };
+
+export const wsClearFeed = (): IWsClearFeed => {
+    return {
+        type: WS_CLEAR_FEED,
+    }
+}

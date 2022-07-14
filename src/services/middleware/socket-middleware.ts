@@ -11,7 +11,12 @@ export const socketMiddleware = (wsActions: object): Middleware => {
       const { wsInit, onOpen, onClose, onError, onMessage, disconnect }: any = wsActions;
 
       if (type === wsInit) {
-        socket = new WebSocket(`${payload}`);
+        if (payload === null) {
+          console.error('Invalid token')
+        } else {
+          socket = new WebSocket(`${payload}`);
+        }
+
       }
       if (socket) {
         socket.onopen = (event: Event) => {

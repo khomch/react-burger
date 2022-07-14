@@ -15,6 +15,7 @@ export const FeedOrderCard: FC<IFeedOrderCard> = ({ order, index }) => {
     const history = useHistory();
     const location = useLocation();
     const match = useRouteMatch();
+    const maxIngredients = 5;
 
     const [orderState, setOrderState] = useState<IOrderFromServer | null>(null)
     useEffect(() => {
@@ -34,8 +35,8 @@ export const FeedOrderCard: FC<IFeedOrderCard> = ({ order, index }) => {
         return previousValue + currentValue;
     }, 0)
     const bunPrice = orderIngredients.find((ingr: TIngredient) => ingr.type === 'bun') ? orderIngredients?.find((ingr: TIngredient) => ingr.type === 'bun')?.price : 0;
-    const orderPrice = bunPrice && orderPriceWithoutBun + (bunPrice * 2)
-
+    const orderPrice = (orderPriceWithoutBun + (bunPrice ? (bunPrice * 2) : 0))
+    
     const handleFeedOrderCardClick = (e: { currentTarget: { id: string; } }) => {
         const orderNumber: string = e.currentTarget.id
         history.push({
@@ -43,6 +44,8 @@ export const FeedOrderCard: FC<IFeedOrderCard> = ({ order, index }) => {
             state: { background: location }
         })
     }
+
+
 
     if (orderState === null) {
         return (
@@ -60,17 +63,27 @@ export const FeedOrderCard: FC<IFeedOrderCard> = ({ order, index }) => {
             <h2 className={styles.h2}>{orderState.name}</h2>
             <div className={styles.imagesAndPriceContainer}>
                 <ul className={styles.imagesContainer} >
-                    {orderState.ingredients.slice(0, 5).map((ingredientId: string, i: number) => {
+                    {orderState.ingredients.slice(0, maxIngredients).map((ingredientId: string, i: number) => {
+                        let zIndex = maxIngredients - i;
+                        let right = 20 * i;
                         return (
-                            <li className={styles.imageWithBorder} key={i}>
+                            <li
+                                className={styles.imageWithBorder}
+                                key={i}
+                                style={{ zIndex: zIndex, right: right }}
+                            >
                                 <img className={styles.image} src={ingredients.find((ingr) => ingredientId === ingr._id)?.image} alt={ingredients.find((i) => ingredientId === i._id)?.name} />
                             </li>
 
                         )
                     })}
                     {orderIngredients.flat()[5] && <li className={styles.imageWithBorderLastOneConteiner}>
-                        <div className={`${styles.imageWithBorder} ${styles.imageWithBorderLastOne}`}><img className={`${styles.image} ${styles.imageLastOne}`} src={orderIngredients.flat()[5].image} alt={orderIngredients.flat()[5].name} /></div>
-                        <div className={`text text_type_digits-default ${styles.ingredientsCount}`}>{`+${orderIngredients.flat().slice(5).length}`}</div>
+                        <div className={`${styles.imageWithBorder} ${styles.imageWithBorder}`}
+                            style={{ zIndex: 0, right: 100 }}><img className={`${styles.image} ${styles.imageLastOne}`} src={orderIngredients.flat()[5].image} alt={orderIngredients.flat()[5].name} /></div>
+                        <div
+                            className={`text text_type_digits-default ${styles.ingredientsCount}`}
+                            style={{ zIndex: 0, right: 115 }}
+                        >{`+${orderIngredients.flat().slice(5).length}`}</div>
                     </li>}
                 </ul>
                 <span></span>

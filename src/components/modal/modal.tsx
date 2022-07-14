@@ -35,7 +35,7 @@ export const Modal: FC<IModal> = ({ children, closeModal, modalState, handleOver
     <>
       <div className={modalState === true ? ModuleStyles.modal : ModuleStyles.modalHidden} onClick={handleOverlayClick}>
         <div className={ModuleStyles.modalContent}>
-          <div className={ModuleStyles.closeIcon} onClick={closeModal}><CloseIcon type="primary" /></div>
+          <div className={ModuleStyles.closeIcon} id="close-icon" onClick={closeModal}><CloseIcon type="primary" /></div>
           {children}</div>
 
       </div>

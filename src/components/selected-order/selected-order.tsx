@@ -23,8 +23,7 @@ export const SelectedOrder = ({ selectedOrder, isModal }: { selectedOrder: IOrde
         return previousValue + currentValue;
     }, 0)
     const bunPrice = orderIngredients.find((ingr: TIngredient) => ingr.type === 'bun') ? orderIngredients?.flat().find((ingr: TIngredient) => ingr?.type === 'bun')?.price : 0;
-    const orderPrice = bunPrice && orderPriceWithoutBun + (bunPrice * 2)
-
+    const orderPrice = (orderPriceWithoutBun + (bunPrice ? (bunPrice * 2) : 0))
 
     const filteredOrder = orderIngredients.filter((item: TIngredient, index: number) => {
         return orderIngredients.indexOf(item) === index
@@ -35,8 +34,6 @@ export const SelectedOrder = ({ selectedOrder, isModal }: { selectedOrder: IOrde
     useEffect(() => {
         selectedOrder && setOrder(selectedOrder)
     }, [selectedOrder])
-
-
 
     if (order === null) {
         return (

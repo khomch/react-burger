@@ -1,22 +1,19 @@
-# Stellar Burger 
+# **Stellar Burger: сервис заказа бургеров на React**
+Репозиторий для проекта `Stellar Burger`: конструктор бургеров (drag-and-drop) с возможностью отслеживать ленту заказов в онлайне (через WebSocket). 
 
-This project by Prakticum Student. It is available on [khomchenko.nomoredomains.xyz](https://khomchenko.nomoredomains.xyz) or on [gh-pages](https://vskipel.github.io/react-burger/#/).
+## Технологии
+1. React
+2. Redux
+3. TypeScript
+4. Cypress
 
-## Technologies
+## Ссылки
+[khomchenko.nomoredomains.xyz](https://khomchenko.nomoredomains.xyz) 
+[gh-pages](https://vskipel.github.io/react-burger/#/)
 
-In the project I used:
 
-### React
-Application was created with CRA with functional components.
+## Версия
+1.0
 
-### Redux
-Redux was used to manage app's state.
-
-### TypeScript
-All fles were written in tsx.
-
-### Cypress
-Business-logic tested with Cypress.
-
-#### Credits
-Project by Anton Khomchenko
+## Автор
+Anton Khomchenko

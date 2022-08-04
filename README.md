@@ -1,7 +1,7 @@
 # **Stellar Burger: сервис заказа бургеров на React**
 Репозиторий для проекта `Stellar Burger`: конструктор бургеров (drag-and-drop) с возможностью отслеживать ленту заказов в онлайне (через WebSocket). 
 
-![Проект Stellar Burger](https://github.com/khomch/react-burger/blob/main/readme/react-burger_shots.png?raw=true)
+![Проект Stellar Burger](https://github.com/khomch/react-burger/blob/main/readme/react-burger-index.png?raw=true)
 
 ## Технологии
 1. React

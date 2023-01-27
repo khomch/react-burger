@@ -1,4 +1,4 @@
-# **Stellar Burger: burger ordering service [TS, React, Redux, DnD]**
+# **Stellar Burger: burger ordering service**
 Application `Stellar Burger`: burger constructor (drag-and-drop) which allows to track the order feed online (via WebSocket).
 
 ![Stellar Burger](https://github.com/khomch/react-burger/blob/main/readme/react-burger-index.png?raw=true)

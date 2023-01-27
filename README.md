@@ -1,9 +1,9 @@
-# **Stellar Burger: сервис заказа бургеров на React**
-Репозиторий для проекта `Stellar Burger`: конструктор бургеров (drag-and-drop) с возможностью отслеживать ленту заказов в онлайне (через WebSocket). 
+# **Stellar Burger: burger ordering service [TS, React, Redux, DnD]**
+Application `Stellar Burger`: burger constructor (drag-and-drop) which allows to track the order feed online (via WebSocket).
 
-![Проект Stellar Burger](https://github.com/khomch/react-burger/blob/main/readme/react-burger-index.png?raw=true)
+![Stellar Burger](https://github.com/khomch/react-burger/blob/main/readme/react-burger-index.png?raw=true)
 
-## Технологии
+## Technologies
 1. React
 2. Redux
 3. TypeScript
@@ -11,17 +11,17 @@
 5. Git
 
 
-## Инструкция по развёртыванию и используемые версии пакетов
+## How to install
 
 ### Frontend
 
-#### Инструкция по развертыванию
-1. Установить все необходимые пакеты с помощью npm `npm install`
-2. Запустить проект в окружении разработки командой `npm run start`
-3. Сборка проекта осуществляется с помощью `npm run build`
-4. Деплой проекта осуществляется с помощью `npm run deploy`
+#### How to start
+1. Install packages with `npm install`
+2. Start dev build with `npm run start`
+3. Build production version with `npm run build`
+4. Deploy to server with `npm run deploy`
 
-#### Используемые версии пакетов
+#### NPM packages
 * React: 17.0.1
 * React-dom: 17.0.2
 * React-router-dom: 5.2.1
@@ -31,14 +31,14 @@
 * Cypress: 10.3.3
 * Typescript: 4.1.3
 
-## Ссылки
+## Links
 [khomchenko.nomoredomains.xyz](https://khomchenko.nomoredomains.xyz) 
 
 [gh-pages](https://vskipel.github.io/react-burger/#/)
 
-## Версия
+## Version
 1.0
 
-## Автор
+## Author
 Anton Khomchenko
 

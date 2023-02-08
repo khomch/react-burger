@@ -34,7 +34,6 @@ Application `Stellar Burger`: burger constructor (drag-and-drop) which allows to
 ## Links
 [khomchenko.nomoredomains.xyz](https://khomchenko.nomoredomains.xyz) 
 
-[gh-pages](https://vskipel.github.io/react-burger/#/)
 
 ## Version
 1.0
